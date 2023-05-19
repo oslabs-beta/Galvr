@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: bb-frontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            bb: web
+    template:
+        metadata:
+            labels:
+                bb: web
+        spec:
+            containers:
+                - name: bb-front
+                  image: test-frontend
+                  imagePullPolicy: Never
+                  ports:
+                      - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: bb-frontend
+spec:
+    type: NodePort
+    selector:
+        bb: web
+    ports:
+        - port: 8080
+          targetPort: 8080
+          nodePort: 30002
