@@ -1,4 +1,5 @@
 const express = require('express');
+
 const app = express();
 const getItems = require('./routes/getItems');
 const addItem = require('./routes/addItem');
@@ -15,4 +16,3 @@ app.delete('/items/:id', deleteItem);
 app.use(express.static(__dirname + '/static'));
 
 app.listen(8080, () => console.log('Listening on port 8080'));
-

@@ -1,3 +1,5 @@
-/node_modules
+.env
+node_modules
 package-lock.json
-.eslintcache
+.DS_Store
+dist

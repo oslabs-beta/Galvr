@@ -18,13 +18,6 @@
   "resolutions": {
     "ansi-regex": "5.0.1"
   },
-  "prettier": {
-    "trailingComma": "all",
-    "tabWidth": 4,
-    "useTabs": false,
-    "semi": true,
-    "singleQuote": true
-  },
   "devDependencies": {
     "jest": "^29.3.1",
     "nodemon": "^2.0.20",
