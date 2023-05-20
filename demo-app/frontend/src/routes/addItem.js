@@ -1,9 +1,15 @@
-module.exports = async (req, res) => {
-  const item = await fetch(`http://${process.env.BB_BACKEND_SERVICE_HOST}:${process.env.BB_BACKEND_SERVICE_PORT}/items`, {
-            method: 'POST',
-            body: JSON.stringify({ name: req.body.name }),
-            headers: { 'Content-Type': 'application/json' },
-        })
-  const data = await item.json();
-  res.send(data); 
+const backend = require('../backendUrl');
+
+module.exports = async (req, res, next) => {
+  try {
+    const item = await fetch(backend, {
+      method: 'POST',
+      body: JSON.stringify({ name: req.body.name }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await item.json();
+    return res.send(data);
+  } catch (err) {
+    return next(err);
+  }
 };

@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: todo-frontend
+  template:
+    metadata:
+      labels:
+        run: todo-frontend
+      annotations:
+        instrumentation.opentelemetry.io/inject-nodejs: 'true'
+    spec:
+      containers:
+        - name: todo-front
+          image: todo-frontend
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-frontend
+spec:
+  type: NodePort
+  selector:
+    run: todo-frontend
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: todo-backend
+  template:
+    metadata:
+      labels:
+        run: todo-backend
+      annotations:
+        instrumentation.opentelemetry.io/inject-nodejs: 'true'
+    spec:
+      containers:
+        - name: todo-back
+          image: todo-backend
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-backend
+  labels:
+    run: todo-backend
+spec:
+  selector:
+    run: todo-backend
+  ports:
+    - port: 3000
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-getmidsvc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: todo-getmidsvc
+  template:
+    metadata:
+      labels:
+        run: todo-getmidsvc
+      annotations:
+        instrumentation.opentelemetry.io/inject-nodejs: 'true'
+    spec:
+      containers:
+        - name: todo-getmidsvc
+          image: todo-getmidsvc
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-getmidsvc
+spec:
+  selector:
+    run: todo-getmidsvc
+  ports:
+    - port: 3000
+      targetPort: 3000
