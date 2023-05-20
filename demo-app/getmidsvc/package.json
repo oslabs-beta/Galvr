@@ -1,19 +1,16 @@
 {
-  "name": "101-app",
+  "name": "getmidsvc",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "server.js",
   "license": "MIT",
   "scripts": {
     "prettify": "prettier -l --write \"**/*.js\"",
     "test": "jest",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "mysql2": "^2.3.3",
-    "sqlite3": "^5.1.2",
-    "uuid": "^9.0.0",
-    "wait-port": "^1.0.4"
+    "express": "^4.18.2"
   },
   "resolutions": {
     "ansi-regex": "5.0.1"
