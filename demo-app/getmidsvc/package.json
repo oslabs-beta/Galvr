@@ -10,7 +10,8 @@
     "dev": "nodemon src/server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.11"
   },
   "resolutions": {
     "ansi-regex": "5.0.1"
