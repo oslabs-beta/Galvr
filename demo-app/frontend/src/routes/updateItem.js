@@ -1,8 +1,9 @@
+const nodeFetch = require('node-fetch');
 const backend = require('../backendUrl');
 
 module.exports = async (req, res, next) => {
   try {
-    const item = await fetch(`${backend}/${req.params.id}`, {
+    const item = await nodeFetch(`${backend}/${req.params.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         name: req.body.name,

@@ -29,7 +29,7 @@ spec:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
+          processors: []
           exporters: [logging, jaeger]
         metrics:
           receivers: [otlp]
@@ -39,3 +39,7 @@ spec:
           receivers: [otlp]
           processors: [memory_limiter, batch]
           exporters: [logging]
+
+      telemetry:
+        logs:
+          level: "debug"

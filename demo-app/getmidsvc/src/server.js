@@ -1,3 +1,4 @@
+const nodeFetch = require('node-fetch');
 const express = require('express');
 const backend = require('./backendUrl');
 
@@ -8,7 +9,7 @@ app.use(express.json());
 // Forward getItem request to backend
 app.get('/items', async (req, res, next) => {
   try {
-    const items = await fetch(backend);
+    const items = await nodeFetch(backend);
     const data = await items.json();
     res.send(data);
   } catch (err) {
