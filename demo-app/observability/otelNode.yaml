@@ -1,0 +1,12 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: demo-instrumentation
+spec:
+  exporter:
+    endpoint: http://otel-collector:4317
+  propagators:
+    - jaeger
+  sampler:
+    type: parentbased_traceidratio
+    argument: '1'

@@ -13,6 +13,11 @@ app.post('/items', addItem);
 app.put('/items/:id', updateItem);
 app.delete('/items/:id', deleteItem);
 
-app.use(express.static(__dirname + '/static'));
+app.use(express.static(`${__dirname}/static`));
 
-app.listen(8080, () => console.log('Listening on port 8080'));
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(400);
+});
+
+app.listen(3000, () => console.log('Listening on port 3000'));

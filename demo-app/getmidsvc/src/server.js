@@ -1,21 +1,15 @@
 const express = require('express');
+const backend = require('./backendUrl');
 
 const app = express();
 
 app.use(express.json());
 
 // Forward getItem request to backend
-app.get('/', async (req, res, next) => {
+app.get('/items', async (req, res, next) => {
   try {
-    console.log('Received request in getMidSvc.');
-
-    const items = await fetch(
-      `http://${process.env.BB_BACKEND_SERVICE_HOST}:${process.env.BB_BACKEND_SERVICE_PORT}/items`
-    );
+    const items = await fetch(backend);
     const data = await items.json();
-
-    console.log('Received response in getMidSvc.');
-
     res.send(data);
   } catch (err) {
     next(err);
@@ -25,6 +19,7 @@ app.get('/', async (req, res, next) => {
 // Error handler
 app.use((err, req, res, next) => {
   console.log(`Error: ${err}`);
+  res.status(400);
 });
 
 app.listen(3000, () => console.log('Listening on port 3000'));

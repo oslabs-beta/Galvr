@@ -1,7 +1,11 @@
-module.exports = async (req, res) => {
-  const items = await fetch(
-    `http://${process.env.BB_GETMIDSVC_SERVICE_HOST}:${process.env.BB_GETMIDSVC_SERVICE_PORT}`
-  );
-  const data = await items.json();
-  res.send(data);
+const backend = require('../getmidsvcUrl');
+
+module.exports = async (req, res, next) => {
+  try {
+    const items = await fetch(backend);
+    const data = await items.json();
+    return res.send(data);
+  } catch (err) {
+    return next(err);
+  }
 };
