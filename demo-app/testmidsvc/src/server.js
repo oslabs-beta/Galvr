@@ -9,7 +9,6 @@ app.use(express.json());
 // Forward getItem request to backend
 app.get('/items', async (req, res, next) => {
   try {
-    const temp = fetch()
     console.log('Test Microservice has been encountered')
     res.status(200);
   } catch (err) {
