@@ -24,7 +24,11 @@ spec:
         endpoint: jaeger-collector:14250
         tls:
           insecure: true
-        
+      otlphttp:
+        endpoint: http://todo-metricendpoint:3000
+        tls: 
+          insecure: true
+
     service:
       pipelines:
         traces:
@@ -34,12 +38,4 @@ spec:
         metrics:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [logging]
-        logs:
-          receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [logging]
-
-      telemetry:
-        logs:
-          level: "debug"
+          exporters: [logging, otlphttp]
