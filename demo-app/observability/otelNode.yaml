@@ -6,7 +6,8 @@ spec:
   exporter:
     endpoint: http://otel-collector:4317
   propagators:
-    - jaeger
+    - tracecontext
+    - baggage
   sampler:
     type: parentbased_traceidratio
     argument: '1'

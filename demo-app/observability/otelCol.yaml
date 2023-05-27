@@ -12,10 +12,6 @@ spec:
 
     exporters:
       logging: 
-      jaeger:
-        endpoint: jaeger-collector:14250
-        tls:
-          insecure: true
       otlphttp:
         endpoint: http://todo-metricendpoint:3000
         tls: 
@@ -26,7 +22,7 @@ spec:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [jaeger]
+          exporters: [otlphttp]
         metrics:
           receivers: [otlp]
           processors: []
