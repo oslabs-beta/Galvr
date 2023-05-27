@@ -9,37 +9,24 @@ spec:
         protocols:
           grpc:
           http:
-    processors:
-      memory_limiter:
-        check_interval: 1s
-        limit_percentage: 75
-        spike_limit_percentage: 15
-      batch:
-        send_batch_size: 10000
-        timeout: 10s
 
     exporters:
       logging: 
-      jaeger:
-        endpoint: jaeger-collector:14250
-        tls:
+      otlphttp:
+        endpoint: http://todo-metricendpoint:3000
+        tls: 
           insecure: true
-        
+
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [logging, jaeger]
+          exporters: [otlphttp]
         metrics:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [logging]
-        logs:
-          receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [logging]
-
+          processors: []
+          exporters: [otlphttp]
       telemetry:
         logs:
           level: "debug"
