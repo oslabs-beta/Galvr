@@ -7,10 +7,16 @@ const app = express();
 app.use(express.json());
 
 // Forward getItem request to backend
-app.get('/items', async (req, res, next) => {
+app.post('/items', async (req, res, next) => {
   try {
-    console.log('Test Microservice has been encountered')
-    res.status(200);
+    console.log('reached')
+    const item = await fetch(backend, {
+      method: 'POST',
+      body: JSON.stringify({ name: req.body.name }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await item.json();
+    return res.send(data);
   } catch (err) {
     next(err);
   }

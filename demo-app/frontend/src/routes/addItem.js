@@ -1,4 +1,4 @@
-const backend = require('../backendUrl');
+const backend = require('../postmidsvcUrl');
 
 module.exports = async (req, res, next) => {
   try {

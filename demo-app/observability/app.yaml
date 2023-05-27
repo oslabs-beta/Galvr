@@ -107,22 +107,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-testmidsvc
+  name: todo-postmidsvc
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: todo-testmidsvc
+      run: todo-postmidsvc
   template:
     metadata:
       labels:
-        run: todo-testmidsvc
+        run: todo-postmidsvc
       annotations:
         instrumentation.opentelemetry.io/inject-nodejs: 'true'
     spec:
       containers:
-        - name: todo-testmidsvc
-          image: todo-testmidsvc
+        - name: todo-postmidsvc
+          image: todo-postmidsvc
           imagePullPolicy: Never
           ports:
             - containerPort: 3000
@@ -130,10 +130,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-testmidsvc
+  name: todo-postmidsvc
 spec:
   selector:
-    run: todo-testmidsvc
+    run: todo-postmidsvc
   ports:
     - port: 3000
       targetPort: 3000
