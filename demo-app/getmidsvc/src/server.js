@@ -9,6 +9,7 @@ app.use(express.json());
 // Forward getItem request to backend
 app.get('/items', async (req, res, next) => {
   try {
+    console.log('getmidsvc has been changed')
     const items = await nodeFetch(backend);
     const data = await items.json();
     res.send(data);

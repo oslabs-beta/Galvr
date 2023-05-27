@@ -103,3 +103,37 @@ spec:
   ports:
     - port: 3000
       targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-postmidsvc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: todo-postmidsvc
+  template:
+    metadata:
+      labels:
+        run: todo-postmidsvc
+      annotations:
+        instrumentation.opentelemetry.io/inject-nodejs: 'true'
+    spec:
+      containers:
+        - name: todo-postmidsvc
+          image: todo-postmidsvc
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-postmidsvc
+spec:
+  selector:
+    run: todo-postmidsvc
+  ports:
+    - port: 3000
+      targetPort: 3000
