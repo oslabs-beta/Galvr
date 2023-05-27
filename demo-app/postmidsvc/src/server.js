@@ -1,4 +1,5 @@
 const express = require('express');
+const nodeFetch = require('node-fetch');
 
 const backend = require('./backendUrl');
 
@@ -6,11 +7,11 @@ const app = express();
 
 app.use(express.json());
 
-// Forward getItem request to backend
+// Forward addItem request to backend
 app.post('/items', async (req, res, next) => {
   try {
     console.log('reached')
-    const item = await fetch(backend, {
+    const item = await nodeFetch(backend, {
       method: 'POST',
       body: JSON.stringify({ name: req.body.name }),
       headers: { 'Content-Type': 'application/json' },
@@ -18,7 +19,7 @@ app.post('/items', async (req, res, next) => {
     const data = await item.json();
     return res.send(data);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 });
 
