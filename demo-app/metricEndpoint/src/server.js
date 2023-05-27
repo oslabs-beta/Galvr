@@ -49,7 +49,7 @@ async function run() {
   app.post('/v1/traces', (req, res) => {
     if (req.body) {
       const trace = traceRequest.decode(req.body);
-      console.log('trace: ', JSON.stringify(metrics));
+      console.log('trace: ', JSON.stringify(trace));
     }
     res
       .set('Content-Type', 'application/x-protobuf')
