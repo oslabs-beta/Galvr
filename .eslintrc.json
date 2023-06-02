@@ -1,15 +1,11 @@
 /* eslint-env node */
 {
+  "root": true,
   "env": {
     "browser": true,
     "es2021": true
   },
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:react/recommended",
-    "airbnb-base",
-    "prettier"
-  ],
+  "extends": ["plugin:react/recommended", "airbnb-base", "next", "prettier"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
@@ -49,22 +45,3 @@
     }
   ]
 }
-
-// module.exports = {
-//     extends: ['eslint:recommended'],
-//     plugins: ['@typescript-eslint'],
-//     parser: '@typescript-eslint/parser',
-//     root: true,
-//     overrides: [
-//         {
-//             files: ['*.ts', '*.tsx'],
-//             extends: [
-//                 'plugin:@typescript-eslint/recommended',
-//                 'plugin:@typescript-eslint/recommended-requiring-type-checking',
-//             ],
-//             parserOptions: {
-//                 project: ['./tsconfig.json'],
-//             },
-//         },
-//     ],
-// };

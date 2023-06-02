@@ -7,7 +7,7 @@
     "module": "commonjs" /* Specify what module code is generated. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
-    "noUnusedLocals": true /* Enable error reporting when local variables aren't read. */,
+    // "noUnusedLocals": true /* Enable error reporting when local variables aren't read. */,
     // "noUnusedParameters": true /* Raise an error when a function parameter isn't read. */,
     "noImplicitReturns": true /* Enable error reporting for codepaths that do not explicitly return in a function. */,
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
@@ -22,6 +22,6 @@
       This specific array tells the TypeScript compiler that in addition to looking in node_modules/@types for every import (*) also look in our own .d.ts file location <baseUrl> + src/types/*. */,
     "types": ["jest", "node"]
   },
-  "include": ["./**/*"],
-  "exclude": ["./node_modules"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }
