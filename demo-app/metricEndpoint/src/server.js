@@ -1,59 +1,27 @@
 const express = require('express');
 const protobuf = require('protobufjs');
-const zlib = require('zlib');
 
 const app = express();
 
-app.use((req, res, next) => {
-  const data = [];
-  req.addListener('data', (chunk) => {
-    data.push(Buffer.from(chunk));
-  });
-  req.addListener('end', () => {
-    const buffer = Buffer.concat(data);
-    zlib.gunzip(buffer, (err, result) => {
-      if (!err) {
-        req.body = result;
-        next();
-      } else {
-        next(err);
-      }
-    });
-  });
-});
-
 async function run() {
-  const metricRoot = await protobuf.load('src/metrics_service.proto');
-  const metricRequest = metricRoot.lookupType(
+  const root = await protobuf.load('src/metrics_service.proto');
+  const metricRequest = root.lookupType(
     'opentelemetry.proto.collector.metrics.v1.ExportMetricsServiceRequest'
   );
-  const metricResponse = metricRoot.lookupType(
+
+  const metricResponse = root.lookupType(
     'opentelemetry.proto.collector.metrics.v1.ExportMetricsServiceResponse'
   );
-  app.post('/v1/metrics', (req, res) => {
+
+  app.use('/v1/metrics', (req, res) => {
+    console.log(req.body);
     if (req.body) {
-      const metrics = metricRequest.decode(req.body);
-      console.log('metrics: ', JSON.stringify(metrics));
+      const metrics = metricRequest.decode(Buffer.from(req.body));
+      console.log(metrics);
     }
     res
       .set('Content-Type', 'application/x-protobuf')
       .send(metricResponse.encode(metricResponse.create({})).finish());
-  });
-  const traceRoot = await protobuf.load('src/trace_service.proto');
-  const traceRequest = traceRoot.lookupType(
-    'opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest'
-  );
-  const traceResponse = traceRoot.lookupType(
-    'opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse'
-  );
-  app.post('/v1/traces', (req, res) => {
-    if (req.body) {
-      const trace = traceRequest.decode(req.body);
-      console.log('trace: ', JSON.stringify(metrics));
-    }
-    res
-      .set('Content-Type', 'application/x-protobuf')
-      .send(traceResponse.encode(traceResponse.create({})).finish());
   });
 }
 
