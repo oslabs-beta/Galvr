@@ -9,6 +9,14 @@ spec:
         protocols:
           grpc:
           http:
+    processors:
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 75
+        spike_limit_percentage: 15
+      batch:
+        send_batch_size: 10000
+        timeout: 10s
 
     exporters:
       logging: 
@@ -26,11 +34,8 @@ spec:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [jaeger]
+          exporters: [logging, jaeger]
         metrics:
           receivers: [otlp]
-          processors: []
-          exporters: [otlphttp]
-      telemetry:
-        logs:
-          level: "debug"
+          processors: [memory_limiter, batch]
+          exporters: [logging, otlphttp]
