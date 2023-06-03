@@ -10,12 +10,12 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "import"],
   "rules": {
     "react/jsx-filename-extension": "off",
     "react/prop-types": "off",
     "no-underscore-dangle": "off",
-    "import/extensions": ["warn", "always", { "js": "never" }],
+    "import/extensions": ["warn", "always", { "js": "never", "tsx": "never" }],
     "no-unused-vars": "warn"
   },
   "overrides": [
@@ -41,6 +41,18 @@
         "@typescript-eslint/return-await": ["error", "in-try-catch"],
         "@typescript-eslint/strict-boolean-expressions": "off",
         "@typescript-eslint/restrict-template-expressions": "warn"
+      },
+      // To resolve import path parsing issue with typescript
+      "settings": {
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts", ".tsx"]
+        },
+        "import/resolver": {
+          "typescript": {
+            "alwaysTryTypes": true,
+            "project": ["./client/tsconfig.json", "./tsconfig.json"]
+          }
+        }
       }
     }
   ]
