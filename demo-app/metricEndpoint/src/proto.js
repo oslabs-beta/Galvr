@@ -1,26 +1,22 @@
 const protobuf = require('protobufjs');
 
-const exports = {};
+const protoExports = {};
 
-async function setup() {
-  const traceRoot = await protobuf.load('src/proto/trace_service.proto');
-  exports.traceRequest = traceRoot.lookupType(
-    'opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest'
-  );
-  exports.traceResponse = traceRoot.lookupType(
-    'opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse'
-  );
-  const metricRoot = await protobuf.load('src/proto/metrics_service.proto');
-  exports.metricRequest = metricRoot.lookupType(
-    'opentelemetry.proto.collector.metrics.v1.ExportMetricsServiceRequest'
-  );
-  exports.metricResponse = metricRoot.lookupType(
-    'opentelemetry.proto.collector.metrics.v1.ExportMetricsServiceResponse'
-  );
-  const statusRoot = await protobuf.load('src/proto/status.proto');
-  exports.protoStatus = statusRoot.lookupType('google.rpc.Status');
-}
+const traceRoot = protobuf.loadSync('src/proto/trace_service.proto');
+protoExports.traceRequest = traceRoot.lookupType(
+  'opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest'
+);
+protoExports.traceResponse = traceRoot.lookupType(
+  'opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse'
+);
+const metricRoot = protobuf.loadSync('src/proto/metrics_service.proto');
+protoExports.metricRequest = metricRoot.lookupType(
+  'opentelemetry.proto.collector.metrics.v1.ExportMetricsServiceRequest'
+);
+protoExports.metricResponse = metricRoot.lookupType(
+  'opentelemetry.proto.collector.metrics.v1.ExportMetricsServiceResponse'
+);
+const statusRoot = protobuf.loadSync('src/proto/status.proto');
+protoExports.protoStatus = statusRoot.lookupType('google.rpc.Status');
 
-setup().catch((err) => console.log(err));
-
-module.exports = exports;
+module.exports = protoExports;
