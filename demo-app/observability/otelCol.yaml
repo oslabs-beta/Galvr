@@ -22,11 +22,8 @@ spec:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [otlphttp]
+          exporters: [logging]
         metrics:
           receivers: [otlp]
           processors: []
           exporters: [otlphttp]
-      telemetry:
-        logs:
-          level: "debug"
