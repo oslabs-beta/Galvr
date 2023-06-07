@@ -1,5 +1,5 @@
 const nodeFetch = require('node-fetch');
-const backend = require('../backendUrl');
+const backend = require('../postmidsvcUrl');
 
 module.exports = async (req, res, next) => {
   try {
