@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: mongodb-controller
+  template:
+    metadata:
+      labels:
+        run: mongodb-controller
+      annotations:
+        instrumentation.opentelemetry.io/inject-nodejs: 'true'
+    spec:
+      containers:
+        - name: mongodb-controller
+          image: mongodb-controller
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-controller
+  labels:
+    run: mongodb-controller
+spec:
+  selector:
+    run: mongodb-controller
+  ports:
+    - port: 3000
+      protocol: TCP

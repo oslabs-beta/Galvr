@@ -89,8 +89,7 @@ metricController.metricParser = (req, res, next) => {
 metricController.metricSaver = (req, res, next) => {
   try {
     if (res.locals.metrics) {
-      console.log('resource: ', res.locals.metrics[0].resource);
-      console.log('scopeMetrics: ', res.locals.metrics[0].scopeMetrics);
+      console.log(JSON.stringify(res.locals.metrics));
     }
     return next();
   } catch (err) {
