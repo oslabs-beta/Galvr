@@ -11,8 +11,6 @@ spec:
     metadata:
       labels:
         run: mongodb-controller
-      annotations:
-        instrumentation.opentelemetry.io/inject-nodejs: 'true'
     spec:
       containers:
         - name: mongodb-controller
@@ -28,8 +26,10 @@ metadata:
   labels:
     run: mongodb-controller
 spec:
+  type: NodePort
   selector:
     run: mongodb-controller
   ports:
     - port: 3000
-      protocol: TCP
+      targetPort: 3000
+      nodePort: 30001
