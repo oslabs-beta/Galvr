@@ -1,16 +1,16 @@
 'use client';
 
-import React, { userState, useEffect } from 'react';
+// import React, { userState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function Nav() {
+export default function Nav(): JSX.Element {
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-s flex-center">
         <Image
-          src="/../public/flame.png"
-          alt="Glavr Logo"
+          src="/flame.png"
+          alt="Galvr Logo"
           width={30}
           height={30}
           className="object-contain"

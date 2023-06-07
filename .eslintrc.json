@@ -15,7 +15,11 @@
     "react/jsx-filename-extension": "off",
     "react/prop-types": "off",
     "no-underscore-dangle": "off",
-    "import/extensions": ["warn", "always", { "js": "never", "tsx": "never" }],
+    "import/extensions": [
+      "warn",
+      "always",
+      { "js": "never", "tsx": "never", "ts": "never" }
+    ],
     "no-unused-vars": "warn"
   },
   "overrides": [
