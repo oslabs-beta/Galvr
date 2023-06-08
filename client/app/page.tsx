@@ -4,7 +4,7 @@ import Graph from '@/components/Graph.tsx';
 
 export default function Home(): JSX.Element {
   return (
-    <section className="w-full flex-center flex-col" class ="bg-sky-500/100">
+    <section className="w-full flex-center flex-col">
       <h1 className="head_text text-center">
         Galvr
         <br className="max-md:hidden" />
