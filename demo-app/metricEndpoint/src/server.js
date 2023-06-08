@@ -1,9 +1,13 @@
 const express = require('express');
 const zlib = require('zlib');
 
+const mongoose = require('mongoose');
+
 const metricRouter = require('./routers/metricRouter');
 const traceRouter = require('./routers/traceRouter');
 const { protoStatus } = require('./proto');
+
+mongoose.connect('mongodb://localhost:27017/')
 
 const app = express();
 

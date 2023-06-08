@@ -1,5 +1,7 @@
 const { metricRequest } = require('../proto');
 
+const Services = require('./models/serviceModel')
+
 const metricController = {};
 
 metricController.metricDecoder = (req, res, next) => {
@@ -86,16 +88,5 @@ metricController.metricParser = (req, res, next) => {
   }
 };
 
-metricController.metricSaver = (req, res, next) => {
-  try {
-    if (res.locals.metrics) {
-      console.log('resource: ', res.locals.metrics[0].resource);
-      console.log('scopeMetrics: ', res.locals.metrics[0].scopeMetrics);
-    }
-    return next();
-  } catch (err) {
-    return next({ log: err, status: 502, message: 'Error saving metrics' });
-  }
-};
 
 module.exports = metricController;
