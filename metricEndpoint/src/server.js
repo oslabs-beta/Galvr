@@ -3,9 +3,12 @@ const zlib = require('zlib');
 
 const metricRouter = require('./routers/metricRouter');
 const traceRouter = require('./routers/traceRouter');
+const metricsFromDBRouter = require('./routers/metricsFromDBRouter');
 const { protoStatus } = require('./proto');
 
 const app = express();
+
+app.use('/metricsFromDB', metricsFromDBRouter);
 
 app.use((req, res, next) => {
   const data = [];
@@ -27,6 +30,8 @@ app.use((req, res, next) => {
 
 app.use('/v1/metrics', metricRouter);
 app.use('/v1/traces', traceRouter);
+
+app.use((req, res) => res.sendStatus(404));
 
 app.use((err, req, res, next) => {
   const defaultErr = {
@@ -52,7 +57,5 @@ app.use((err, req, res, next) => {
 
   return res.status(errorObj.status).json(errorObj.message);
 });
-
-app.use((req, res) => res.sendStatus(404));
 
 app.listen(3000, () => console.log('Listening on port 3000'));

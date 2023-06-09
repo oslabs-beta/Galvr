@@ -5,21 +5,19 @@ export default function HistogramAttr({
 }: {
   attrArrays: any[][];
 }): JSX.Element {
-  const attrTables = attrArrays.map((attrArr, i) => (
+  const attrTables = attrArrays.map((attrObj, i) => (
     <div key={i}>
-      <CardHeader className="space-y-0 p-4 pb-2">
+      <CardHeader className="space-y-0 p-4 pb-1">
         <CardTitle>{`Datapoint ${i + 1}`}</CardTitle>
       </CardHeader>
-      <CardContent className="pl-0">
-        {attrArr.map((attrObj) => (
-          <div className="flex items-center" key={attrObj.key}>
+      <CardContent className="p-0 pr-3">
+        {Object.keys(attrObj).map((key) => (
+          <div className="flex items-center" key={key}>
             <div className="ml-4 space-y-1">
-              <p className="text-xs font-medium leading-none">{attrObj.key}</p>
+              <p className="text-xs font-medium leading-none">{key}</p>
             </div>
             <div className="ml-auto font-medium">
-              <p className="text-xs font-medium leading-none">
-                {Object.values(attrObj.value as string)[0]}
-              </p>
+              <p className="text-xs font-medium leading-none">{attrObj[key]}</p>
             </div>
           </div>
         ))}
