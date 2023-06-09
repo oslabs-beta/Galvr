@@ -11,8 +11,8 @@ export default function Nav(): JSX.Element {
         <Image
           src="/Galvr.png"
           alt="Galvr Logo"
-          width={30}
-          height={30}
+          width={70}
+          height={70}
           className="object-contain"
         />
         <p className="logo_text">Galvr</p>
