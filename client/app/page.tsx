@@ -1,6 +1,6 @@
 // import Image from 'next/image';
 // eslint-disable-next-line import/no-unresolved
-import Graph from '@/components/Graph.tsx';
+import Graph from '@/components/Graph';
 
 export default function Home(): JSX.Element {
   return (
@@ -19,7 +19,3 @@ export default function Home(): JSX.Element {
   );
 }
 
-
-// page: Name, Title, Description 
-// content: 3-4 links to histogram other graphs
-// header and footer
