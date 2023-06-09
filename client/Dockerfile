@@ -1,3 +1,4 @@
+# # Dockerfile config from NextJS official documentation
 # FROM node:18-alpine AS base
 
 # # Install dependencies only when needed
@@ -57,6 +58,10 @@
 # ENV PORT 3000
 
 # CMD ["node", "server.js"]
+
+
+
+# NextJS Dev Mode For Testing
 
 FROM node:18-alpine
 WORKDIR /app

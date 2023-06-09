@@ -17,7 +17,9 @@ export default function HistogramAttr({
               <p className="text-xs font-medium leading-none">{key}</p>
             </div>
             <div className="ml-auto font-medium">
-              <p className="text-xs font-medium leading-none">{attrObj[key]}</p>
+              <p className="text-xs font-medium leading-none">
+                {attrObj[key as keyof typeof attrObj]}
+              </p>
             </div>
           </div>
         ))}

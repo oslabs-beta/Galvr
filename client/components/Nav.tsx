@@ -23,12 +23,12 @@ export default function Nav(): JSX.Element {
           <Link href="histograms" className="black_btn">
             Histograms
           </Link>
-          <Link href="Graph_2" className="black_btn">
-            Graph_2
-          </Link>
-          <Link href="Graph_3" className="black_btn">
+          <a href="http://localhost:16686/dependencies" className="black_btn">
+            Jaeger
+          </a>
+          {/* <Link href="Graph_3" className="black_btn">
             Graph_3
-          </Link>
+          </Link> */}
         </div>
       </div>
     </nav>
