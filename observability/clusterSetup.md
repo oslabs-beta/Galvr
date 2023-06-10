@@ -27,7 +27,7 @@ kubectl apply -f otelCol.yaml
 kubectl apply -f otelNode.yaml
 ```
 
-Make sure you have built the image for each service in our app using:
+Make sure you have built the image for each service in our app, the metricEndpoint backend and client frontend using following command in the corresponding directories:
 
 ```
 docker build -t todo-<service name> .
@@ -48,3 +48,24 @@ kubectl port-forward services/jaeger-query 16686:16686
 ```
 
 Navigate to localhost:16686 to view the Jaeger UI!
+
+To start the Galvr MongoDB database instance, go to the db/k8 directory and run the following:
+
+```
+kubectl apply -f mongo-db.yaml
+kubectl apply -f mongo-svc.yaml
+```
+
+To start the Galvr metricEndpoint backend server, go to the metricEndpoint/k8 directory and run the following:
+
+```
+kubectl apply -f endpoint.yaml
+```
+
+To start the Galvr NextJS frontend, go to the client/k8s directory and run the following:
+
+```
+kubectl apply -f galvr-nextjs.yaml
+```
+
+The Galvr app should be at localhost:30003. (May need to port-forward the galvr-nextjs service if you are running the cluster in Minikube).
