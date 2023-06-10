@@ -34,8 +34,9 @@ export default function Histogram({
   const datasets = dataArrays.map((dataArr, i: number) => ({
     label: `Datapoint ${i + 1}`,
     data: dataArr.slice(1),
-    backgroundColor:
-      i % 2 ? 'rgba(255, 99, 132, 0.5)' : 'rgba(53, 162, 235, 0.5)',
+    backgroundColor: `hsl(${Math.floor(
+      (i * 360) / dataArrays.length
+    )}, 80%, 50%)`,
   }));
 
   const options = {

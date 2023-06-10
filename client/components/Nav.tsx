@@ -21,14 +21,14 @@ export default function Nav(): JSX.Element {
       <div className="sm:flex hidden">
         <div className="flex gap-3 md:grap-5">
           <Link href="histograms" className="black_btn">
-            Histograms
+            Metrics
           </Link>
-          <Link href="Graph_2" className="black_btn">
-            Graph_2
-          </Link>
-          <Link href="Graph_3" className="black_btn">
+          <a href="http://localhost:16686/dependencies" className="black_btn">
+            Traces
+          </a>
+          {/* <Link href="Graph_3" className="black_btn">
             Graph_3
-          </Link>
+          </Link> */}
         </div>
       </div>
     </nav>
