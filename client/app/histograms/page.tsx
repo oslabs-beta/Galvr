@@ -96,6 +96,7 @@ export default async function HistogramPage(): Promise<JSX.Element> {
           className="space-y-4"
           key={resourceObj.resource['k8s.pod.name']}
         >
+          <hr className="border-gray-300 my-6" />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
