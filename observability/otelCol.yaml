@@ -10,6 +10,12 @@ spec:
           grpc:
           http:
 
+    processors:
+      batch:
+      batch/metrics:
+        send_batch_size: 1000
+        timeout: 5s
+
     exporters:
       logging: 
       otlphttp:
@@ -29,5 +35,5 @@ spec:
           exporters: [jaeger]
         metrics:
           receivers: [otlp]
-          processors: []
+          processors: [batch/metrics]
           exporters: [otlphttp]

@@ -23,8 +23,10 @@ router.post(
   }
 );
 
-router.get('/', metricGetter, (req, res) => {
-  res.json(res.locals.metrics);
-});
+/* A separate Router (metricsFromDBRouter) is currently used for handling requested from NextJS pod. */
+
+// router.get('/', metricGetter, (req, res) => {
+//   res.json(res.locals.metrics);
+// });
 
 module.exports = router;

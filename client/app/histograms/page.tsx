@@ -82,7 +82,12 @@ export default async function HistogramPage(): Promise<JSX.Element> {
           <Card className="col-span-2 overflow-auto h-96">
             <HistogramAttr
               attrArrays={histoObj.histogram.dataPoints.map(
-                (dataPoint: any) => dataPoint.attributes
+                (dataPoint: any) => ({
+                  count: dataPoint.count,
+                  min: dataPoint.min,
+                  max: dataPoint.max,
+                  ...dataPoint.attributes,
+                })
               )}
             />
           </Card>
