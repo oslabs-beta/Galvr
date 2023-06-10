@@ -29,8 +29,10 @@
   },
   "dependencies": {
     "express": "^4.18.2",
+    "mongoose": "^7.2.3",
     "next": "^13.4.4",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "ts-proto": "^1.148.2"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
