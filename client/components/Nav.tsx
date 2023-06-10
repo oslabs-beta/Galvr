@@ -9,10 +9,10 @@ export default function Nav(): JSX.Element {
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-s flex-center">
         <Image
-          src="/flame.png"
+          src="/Galvr.png"
           alt="Galvr Logo"
-          width={30}
-          height={30}
+          width={70}
+          height={70}
           className="object-contain"
         />
         <p className="logo_text">Galvr</p>

@@ -12,17 +12,10 @@ export default function Home(): JSX.Element {
           Performance Metrics & Visualization
         </span>
       </h1>
-      <p className="desc text-center">
-        Galvr creates and collect telemetry data from your services and
-        translates that into a valuable visualization dashboard in order to help
-        users swiftly analyze performance and identify latency.{' '}
-      </p>
+      <p className="desc text-center">Galvr creates and collect telemetry data from your services and translates that into a valuable visualization dashboard in order to help users swiftly analyze performance and identify latency.  </p>
 
       <Graph />
     </section>
   );
 }
 
-// page: Name, Title, Description
-// content: 3-4 links to histogram other graphs
-// header and footer
