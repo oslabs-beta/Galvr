@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
 
-const { metricResponse } = require('../proto');
-const {
+import { ExportMetricsServiceResponse } from '../proto/metricTypes';
+import {
   metricDecoder,
   metricParser,
   metricSaver,
   metricGetter,
-} = require('../controllers/metricController');
+} from '../controllers/metricController';
 
 const router = express.Router();
 
@@ -19,7 +19,11 @@ router.post(
   (req, res) => {
     res
       .set('Content-Type', 'application/x-protobuf')
-      .send(metricResponse.encode(metricResponse.create({})).finish());
+      .send(
+        ExportMetricsServiceResponse.encode(
+          ExportMetricsServiceResponse.create()
+        )
+      );
   }
 );
 
@@ -29,4 +33,4 @@ router.post(
 //   res.json(res.locals.metrics);
 // });
 
-module.exports = router;
+export default router;
