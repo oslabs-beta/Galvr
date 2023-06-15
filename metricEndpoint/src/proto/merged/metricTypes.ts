@@ -83,7 +83,7 @@ export function dataPointFlagsToJSON(object: DataPointFlags): string {
 export interface AnyValue {
   stringValue?: string | undefined;
   boolValue?: boolean | undefined;
-  intValue?: string | undefined;
+  intValue?: number | undefined;
   doubleValue?: number | undefined;
   arrayValue?: ArrayValue | undefined;
   kvlistValue?: KeyValueList | undefined;
@@ -168,21 +168,21 @@ export interface Summary {
 
 export interface NumberDataPoint {
   attributes: KeyValue[];
-  startTimeUnixNano: string;
-  timeUnixNano: string;
+  startTimeUnixNano: number;
+  timeUnixNano: number;
   asDouble?: number | undefined;
-  asInt?: string | undefined;
+  asInt?: number | undefined;
   exemplars: Exemplar[];
   flags: number;
 }
 
 export interface HistogramDataPoint {
   attributes: KeyValue[];
-  startTimeUnixNano: string;
-  timeUnixNano: string;
-  count: string;
+  startTimeUnixNano: number;
+  timeUnixNano: number;
+  count: number;
   sum?: number | undefined;
-  bucketCounts: string[];
+  bucketCounts: number[];
   explicitBounds: number[];
   exemplars: Exemplar[];
   flags: number;
@@ -192,12 +192,12 @@ export interface HistogramDataPoint {
 
 export interface ExponentialHistogramDataPoint {
   attributes: KeyValue[];
-  startTimeUnixNano: string;
-  timeUnixNano: string;
-  count: string;
+  startTimeUnixNano: number;
+  timeUnixNano: number;
+  count: number;
   sum?: number | undefined;
   scale: number;
-  zeroCount: string;
+  zeroCount: number;
   positive: ExponentialHistogramDataPoint_Buckets | undefined;
   negative: ExponentialHistogramDataPoint_Buckets | undefined;
   flags: number;
@@ -209,14 +209,14 @@ export interface ExponentialHistogramDataPoint {
 
 export interface ExponentialHistogramDataPoint_Buckets {
   offset: number;
-  bucketCounts: string[];
+  bucketCounts: number[];
 }
 
 export interface SummaryDataPoint {
   attributes: KeyValue[];
-  startTimeUnixNano: string;
-  timeUnixNano: string;
-  count: string;
+  startTimeUnixNano: number;
+  timeUnixNano: number;
+  count: number;
   sum: number;
   quantileValues: SummaryDataPoint_ValueAtQuantile[];
   flags: number;
@@ -229,9 +229,9 @@ export interface SummaryDataPoint_ValueAtQuantile {
 
 export interface Exemplar {
   filteredAttributes: KeyValue[];
-  timeUnixNano: string;
+  timeUnixNano: number;
   asDouble?: number | undefined;
-  asInt?: string | undefined;
+  asInt?: number | undefined;
   spanId: Uint8Array;
   traceId: Uint8Array;
 }
@@ -245,7 +245,7 @@ export interface ExportMetricsServiceResponse {
 }
 
 export interface ExportMetricsPartialSuccess {
-  rejectedDataPoints: string;
+  rejectedDataPoints: number;
   errorMessage: string;
 }
 
@@ -320,7 +320,7 @@ export const AnyValue = {
             break;
           }
 
-          message.intValue = longToString(reader.int64() as Long);
+          message.intValue = longToNumber(reader.int64() as Long);
           continue;
         case 4:
           if (tag !== 33) {
@@ -367,7 +367,7 @@ export const AnyValue = {
       boolValue: isSet(object.boolValue)
         ? Boolean(object.boolValue)
         : undefined,
-      intValue: isSet(object.intValue) ? String(object.intValue) : undefined,
+      intValue: isSet(object.intValue) ? Number(object.intValue) : undefined,
       doubleValue: isSet(object.doubleValue)
         ? Number(object.doubleValue)
         : undefined,
@@ -388,7 +388,8 @@ export const AnyValue = {
     message.stringValue !== undefined &&
       (obj.stringValue = message.stringValue);
     message.boolValue !== undefined && (obj.boolValue = message.boolValue);
-    message.intValue !== undefined && (obj.intValue = message.intValue);
+    message.intValue !== undefined &&
+      (obj.intValue = Math.round(message.intValue));
     message.doubleValue !== undefined &&
       (obj.doubleValue = message.doubleValue);
     message.arrayValue !== undefined &&
@@ -1809,8 +1810,8 @@ export const Summary = {
 function createBaseNumberDataPoint(): NumberDataPoint {
   return {
     attributes: [],
-    startTimeUnixNano: '0',
-    timeUnixNano: '0',
+    startTimeUnixNano: 0,
+    timeUnixNano: 0,
     asDouble: undefined,
     asInt: undefined,
     exemplars: [],
@@ -1826,10 +1827,10 @@ export const NumberDataPoint = {
     for (const v of message.attributes) {
       KeyValue.encode(v!, writer.uint32(58).fork()).ldelim();
     }
-    if (message.startTimeUnixNano !== '0') {
+    if (message.startTimeUnixNano !== 0) {
       writer.uint32(17).fixed64(message.startTimeUnixNano);
     }
-    if (message.timeUnixNano !== '0') {
+    if (message.timeUnixNano !== 0) {
       writer.uint32(25).fixed64(message.timeUnixNano);
     }
     if (message.asDouble !== undefined) {
@@ -1867,14 +1868,14 @@ export const NumberDataPoint = {
             break;
           }
 
-          message.startTimeUnixNano = longToString(reader.fixed64() as Long);
+          message.startTimeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 3:
           if (tag !== 25) {
             break;
           }
 
-          message.timeUnixNano = longToString(reader.fixed64() as Long);
+          message.timeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 4:
           if (tag !== 33) {
@@ -1888,7 +1889,7 @@ export const NumberDataPoint = {
             break;
           }
 
-          message.asInt = longToString(reader.sfixed64() as Long);
+          message.asInt = longToNumber(reader.sfixed64() as Long);
           continue;
         case 5:
           if (tag !== 42) {
@@ -1919,13 +1920,13 @@ export const NumberDataPoint = {
         ? object.attributes.map((e: any) => KeyValue.fromJSON(e))
         : [],
       startTimeUnixNano: isSet(object.startTimeUnixNano)
-        ? String(object.startTimeUnixNano)
-        : '0',
+        ? Number(object.startTimeUnixNano)
+        : 0,
       timeUnixNano: isSet(object.timeUnixNano)
-        ? String(object.timeUnixNano)
-        : '0',
+        ? Number(object.timeUnixNano)
+        : 0,
       asDouble: isSet(object.asDouble) ? Number(object.asDouble) : undefined,
-      asInt: isSet(object.asInt) ? String(object.asInt) : undefined,
+      asInt: isSet(object.asInt) ? Number(object.asInt) : undefined,
       exemplars: Array.isArray(object?.exemplars)
         ? object.exemplars.map((e: any) => Exemplar.fromJSON(e))
         : [],
@@ -1943,11 +1944,11 @@ export const NumberDataPoint = {
       obj.attributes = [];
     }
     message.startTimeUnixNano !== undefined &&
-      (obj.startTimeUnixNano = message.startTimeUnixNano);
+      (obj.startTimeUnixNano = Math.round(message.startTimeUnixNano));
     message.timeUnixNano !== undefined &&
-      (obj.timeUnixNano = message.timeUnixNano);
+      (obj.timeUnixNano = Math.round(message.timeUnixNano));
     message.asDouble !== undefined && (obj.asDouble = message.asDouble);
-    message.asInt !== undefined && (obj.asInt = message.asInt);
+    message.asInt !== undefined && (obj.asInt = Math.round(message.asInt));
     if (message.exemplars) {
       obj.exemplars = message.exemplars.map((e) =>
         e ? Exemplar.toJSON(e) : undefined
@@ -1971,8 +1972,8 @@ export const NumberDataPoint = {
     const message = createBaseNumberDataPoint();
     message.attributes =
       object.attributes?.map((e) => KeyValue.fromPartial(e)) || [];
-    message.startTimeUnixNano = object.startTimeUnixNano ?? '0';
-    message.timeUnixNano = object.timeUnixNano ?? '0';
+    message.startTimeUnixNano = object.startTimeUnixNano ?? 0;
+    message.timeUnixNano = object.timeUnixNano ?? 0;
     message.asDouble = object.asDouble ?? undefined;
     message.asInt = object.asInt ?? undefined;
     message.exemplars =
@@ -1985,9 +1986,9 @@ export const NumberDataPoint = {
 function createBaseHistogramDataPoint(): HistogramDataPoint {
   return {
     attributes: [],
-    startTimeUnixNano: '0',
-    timeUnixNano: '0',
-    count: '0',
+    startTimeUnixNano: 0,
+    timeUnixNano: 0,
+    count: 0,
     sum: undefined,
     bucketCounts: [],
     explicitBounds: [],
@@ -2006,13 +2007,13 @@ export const HistogramDataPoint = {
     for (const v of message.attributes) {
       KeyValue.encode(v!, writer.uint32(74).fork()).ldelim();
     }
-    if (message.startTimeUnixNano !== '0') {
+    if (message.startTimeUnixNano !== 0) {
       writer.uint32(17).fixed64(message.startTimeUnixNano);
     }
-    if (message.timeUnixNano !== '0') {
+    if (message.timeUnixNano !== 0) {
       writer.uint32(25).fixed64(message.timeUnixNano);
     }
-    if (message.count !== '0') {
+    if (message.count !== 0) {
       writer.uint32(33).fixed64(message.count);
     }
     if (message.sum !== undefined) {
@@ -2063,21 +2064,21 @@ export const HistogramDataPoint = {
             break;
           }
 
-          message.startTimeUnixNano = longToString(reader.fixed64() as Long);
+          message.startTimeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 3:
           if (tag !== 25) {
             break;
           }
 
-          message.timeUnixNano = longToString(reader.fixed64() as Long);
+          message.timeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 4:
           if (tag !== 33) {
             break;
           }
 
-          message.count = longToString(reader.fixed64() as Long);
+          message.count = longToNumber(reader.fixed64() as Long);
           continue;
         case 5:
           if (tag !== 41) {
@@ -2088,7 +2089,7 @@ export const HistogramDataPoint = {
           continue;
         case 6:
           if (tag === 49) {
-            message.bucketCounts.push(longToString(reader.fixed64() as Long));
+            message.bucketCounts.push(longToNumber(reader.fixed64() as Long));
 
             continue;
           }
@@ -2096,7 +2097,7 @@ export const HistogramDataPoint = {
           if (tag === 50) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.bucketCounts.push(longToString(reader.fixed64() as Long));
+              message.bucketCounts.push(longToNumber(reader.fixed64() as Long));
             }
 
             continue;
@@ -2163,15 +2164,15 @@ export const HistogramDataPoint = {
         ? object.attributes.map((e: any) => KeyValue.fromJSON(e))
         : [],
       startTimeUnixNano: isSet(object.startTimeUnixNano)
-        ? String(object.startTimeUnixNano)
-        : '0',
+        ? Number(object.startTimeUnixNano)
+        : 0,
       timeUnixNano: isSet(object.timeUnixNano)
-        ? String(object.timeUnixNano)
-        : '0',
-      count: isSet(object.count) ? String(object.count) : '0',
+        ? Number(object.timeUnixNano)
+        : 0,
+      count: isSet(object.count) ? Number(object.count) : 0,
       sum: isSet(object.sum) ? Number(object.sum) : undefined,
       bucketCounts: Array.isArray(object?.bucketCounts)
-        ? object.bucketCounts.map((e: any) => String(e))
+        ? object.bucketCounts.map((e: any) => Number(e))
         : [],
       explicitBounds: Array.isArray(object?.explicitBounds)
         ? object.explicitBounds.map((e: any) => Number(e))
@@ -2195,13 +2196,13 @@ export const HistogramDataPoint = {
       obj.attributes = [];
     }
     message.startTimeUnixNano !== undefined &&
-      (obj.startTimeUnixNano = message.startTimeUnixNano);
+      (obj.startTimeUnixNano = Math.round(message.startTimeUnixNano));
     message.timeUnixNano !== undefined &&
-      (obj.timeUnixNano = message.timeUnixNano);
-    message.count !== undefined && (obj.count = message.count);
+      (obj.timeUnixNano = Math.round(message.timeUnixNano));
+    message.count !== undefined && (obj.count = Math.round(message.count));
     message.sum !== undefined && (obj.sum = message.sum);
     if (message.bucketCounts) {
-      obj.bucketCounts = message.bucketCounts.map((e) => e);
+      obj.bucketCounts = message.bucketCounts.map((e) => Math.round(e));
     } else {
       obj.bucketCounts = [];
     }
@@ -2235,9 +2236,9 @@ export const HistogramDataPoint = {
     const message = createBaseHistogramDataPoint();
     message.attributes =
       object.attributes?.map((e) => KeyValue.fromPartial(e)) || [];
-    message.startTimeUnixNano = object.startTimeUnixNano ?? '0';
-    message.timeUnixNano = object.timeUnixNano ?? '0';
-    message.count = object.count ?? '0';
+    message.startTimeUnixNano = object.startTimeUnixNano ?? 0;
+    message.timeUnixNano = object.timeUnixNano ?? 0;
+    message.count = object.count ?? 0;
     message.sum = object.sum ?? undefined;
     message.bucketCounts = object.bucketCounts?.map((e) => e) || [];
     message.explicitBounds = object.explicitBounds?.map((e) => e) || [];
@@ -2253,12 +2254,12 @@ export const HistogramDataPoint = {
 function createBaseExponentialHistogramDataPoint(): ExponentialHistogramDataPoint {
   return {
     attributes: [],
-    startTimeUnixNano: '0',
-    timeUnixNano: '0',
-    count: '0',
+    startTimeUnixNano: 0,
+    timeUnixNano: 0,
+    count: 0,
     sum: undefined,
     scale: 0,
-    zeroCount: '0',
+    zeroCount: 0,
     positive: undefined,
     negative: undefined,
     flags: 0,
@@ -2277,13 +2278,13 @@ export const ExponentialHistogramDataPoint = {
     for (const v of message.attributes) {
       KeyValue.encode(v!, writer.uint32(10).fork()).ldelim();
     }
-    if (message.startTimeUnixNano !== '0') {
+    if (message.startTimeUnixNano !== 0) {
       writer.uint32(17).fixed64(message.startTimeUnixNano);
     }
-    if (message.timeUnixNano !== '0') {
+    if (message.timeUnixNano !== 0) {
       writer.uint32(25).fixed64(message.timeUnixNano);
     }
-    if (message.count !== '0') {
+    if (message.count !== 0) {
       writer.uint32(33).fixed64(message.count);
     }
     if (message.sum !== undefined) {
@@ -2292,7 +2293,7 @@ export const ExponentialHistogramDataPoint = {
     if (message.scale !== 0) {
       writer.uint32(48).sint32(message.scale);
     }
-    if (message.zeroCount !== '0') {
+    if (message.zeroCount !== 0) {
       writer.uint32(57).fixed64(message.zeroCount);
     }
     if (message.positive !== undefined) {
@@ -2348,21 +2349,21 @@ export const ExponentialHistogramDataPoint = {
             break;
           }
 
-          message.startTimeUnixNano = longToString(reader.fixed64() as Long);
+          message.startTimeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 3:
           if (tag !== 25) {
             break;
           }
 
-          message.timeUnixNano = longToString(reader.fixed64() as Long);
+          message.timeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 4:
           if (tag !== 33) {
             break;
           }
 
-          message.count = longToString(reader.fixed64() as Long);
+          message.count = longToNumber(reader.fixed64() as Long);
           continue;
         case 5:
           if (tag !== 41) {
@@ -2383,7 +2384,7 @@ export const ExponentialHistogramDataPoint = {
             break;
           }
 
-          message.zeroCount = longToString(reader.fixed64() as Long);
+          message.zeroCount = longToNumber(reader.fixed64() as Long);
           continue;
         case 8:
           if (tag !== 66) {
@@ -2455,15 +2456,15 @@ export const ExponentialHistogramDataPoint = {
         ? object.attributes.map((e: any) => KeyValue.fromJSON(e))
         : [],
       startTimeUnixNano: isSet(object.startTimeUnixNano)
-        ? String(object.startTimeUnixNano)
-        : '0',
+        ? Number(object.startTimeUnixNano)
+        : 0,
       timeUnixNano: isSet(object.timeUnixNano)
-        ? String(object.timeUnixNano)
-        : '0',
-      count: isSet(object.count) ? String(object.count) : '0',
+        ? Number(object.timeUnixNano)
+        : 0,
+      count: isSet(object.count) ? Number(object.count) : 0,
       sum: isSet(object.sum) ? Number(object.sum) : undefined,
       scale: isSet(object.scale) ? Number(object.scale) : 0,
-      zeroCount: isSet(object.zeroCount) ? String(object.zeroCount) : '0',
+      zeroCount: isSet(object.zeroCount) ? Number(object.zeroCount) : 0,
       positive: isSet(object.positive)
         ? ExponentialHistogramDataPoint_Buckets.fromJSON(object.positive)
         : undefined,
@@ -2492,13 +2493,14 @@ export const ExponentialHistogramDataPoint = {
       obj.attributes = [];
     }
     message.startTimeUnixNano !== undefined &&
-      (obj.startTimeUnixNano = message.startTimeUnixNano);
+      (obj.startTimeUnixNano = Math.round(message.startTimeUnixNano));
     message.timeUnixNano !== undefined &&
-      (obj.timeUnixNano = message.timeUnixNano);
-    message.count !== undefined && (obj.count = message.count);
+      (obj.timeUnixNano = Math.round(message.timeUnixNano));
+    message.count !== undefined && (obj.count = Math.round(message.count));
     message.sum !== undefined && (obj.sum = message.sum);
     message.scale !== undefined && (obj.scale = Math.round(message.scale));
-    message.zeroCount !== undefined && (obj.zeroCount = message.zeroCount);
+    message.zeroCount !== undefined &&
+      (obj.zeroCount = Math.round(message.zeroCount));
     message.positive !== undefined &&
       (obj.positive = message.positive
         ? ExponentialHistogramDataPoint_Buckets.toJSON(message.positive)
@@ -2534,12 +2536,12 @@ export const ExponentialHistogramDataPoint = {
     const message = createBaseExponentialHistogramDataPoint();
     message.attributes =
       object.attributes?.map((e) => KeyValue.fromPartial(e)) || [];
-    message.startTimeUnixNano = object.startTimeUnixNano ?? '0';
-    message.timeUnixNano = object.timeUnixNano ?? '0';
-    message.count = object.count ?? '0';
+    message.startTimeUnixNano = object.startTimeUnixNano ?? 0;
+    message.timeUnixNano = object.timeUnixNano ?? 0;
+    message.count = object.count ?? 0;
     message.sum = object.sum ?? undefined;
     message.scale = object.scale ?? 0;
-    message.zeroCount = object.zeroCount ?? '0';
+    message.zeroCount = object.zeroCount ?? 0;
     message.positive =
       object.positive !== undefined && object.positive !== null
         ? ExponentialHistogramDataPoint_Buckets.fromPartial(object.positive)
@@ -2598,7 +2600,7 @@ export const ExponentialHistogramDataPoint_Buckets = {
           continue;
         case 2:
           if (tag === 16) {
-            message.bucketCounts.push(longToString(reader.uint64() as Long));
+            message.bucketCounts.push(longToNumber(reader.uint64() as Long));
 
             continue;
           }
@@ -2606,7 +2608,7 @@ export const ExponentialHistogramDataPoint_Buckets = {
           if (tag === 18) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.bucketCounts.push(longToString(reader.uint64() as Long));
+              message.bucketCounts.push(longToNumber(reader.uint64() as Long));
             }
 
             continue;
@@ -2626,7 +2628,7 @@ export const ExponentialHistogramDataPoint_Buckets = {
     return {
       offset: isSet(object.offset) ? Number(object.offset) : 0,
       bucketCounts: Array.isArray(object?.bucketCounts)
-        ? object.bucketCounts.map((e: any) => String(e))
+        ? object.bucketCounts.map((e: any) => Number(e))
         : [],
     };
   },
@@ -2635,7 +2637,7 @@ export const ExponentialHistogramDataPoint_Buckets = {
     const obj: any = {};
     message.offset !== undefined && (obj.offset = Math.round(message.offset));
     if (message.bucketCounts) {
-      obj.bucketCounts = message.bucketCounts.map((e) => e);
+      obj.bucketCounts = message.bucketCounts.map((e) => Math.round(e));
     } else {
       obj.bucketCounts = [];
     }
@@ -2661,9 +2663,9 @@ export const ExponentialHistogramDataPoint_Buckets = {
 function createBaseSummaryDataPoint(): SummaryDataPoint {
   return {
     attributes: [],
-    startTimeUnixNano: '0',
-    timeUnixNano: '0',
-    count: '0',
+    startTimeUnixNano: 0,
+    timeUnixNano: 0,
+    count: 0,
     sum: 0,
     quantileValues: [],
     flags: 0,
@@ -2678,13 +2680,13 @@ export const SummaryDataPoint = {
     for (const v of message.attributes) {
       KeyValue.encode(v!, writer.uint32(58).fork()).ldelim();
     }
-    if (message.startTimeUnixNano !== '0') {
+    if (message.startTimeUnixNano !== 0) {
       writer.uint32(17).fixed64(message.startTimeUnixNano);
     }
-    if (message.timeUnixNano !== '0') {
+    if (message.timeUnixNano !== 0) {
       writer.uint32(25).fixed64(message.timeUnixNano);
     }
-    if (message.count !== '0') {
+    if (message.count !== 0) {
       writer.uint32(33).fixed64(message.count);
     }
     if (message.sum !== 0) {
@@ -2722,21 +2724,21 @@ export const SummaryDataPoint = {
             break;
           }
 
-          message.startTimeUnixNano = longToString(reader.fixed64() as Long);
+          message.startTimeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 3:
           if (tag !== 25) {
             break;
           }
 
-          message.timeUnixNano = longToString(reader.fixed64() as Long);
+          message.timeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 4:
           if (tag !== 33) {
             break;
           }
 
-          message.count = longToString(reader.fixed64() as Long);
+          message.count = longToNumber(reader.fixed64() as Long);
           continue;
         case 5:
           if (tag !== 41) {
@@ -2776,12 +2778,12 @@ export const SummaryDataPoint = {
         ? object.attributes.map((e: any) => KeyValue.fromJSON(e))
         : [],
       startTimeUnixNano: isSet(object.startTimeUnixNano)
-        ? String(object.startTimeUnixNano)
-        : '0',
+        ? Number(object.startTimeUnixNano)
+        : 0,
       timeUnixNano: isSet(object.timeUnixNano)
-        ? String(object.timeUnixNano)
-        : '0',
-      count: isSet(object.count) ? String(object.count) : '0',
+        ? Number(object.timeUnixNano)
+        : 0,
+      count: isSet(object.count) ? Number(object.count) : 0,
       sum: isSet(object.sum) ? Number(object.sum) : 0,
       quantileValues: Array.isArray(object?.quantileValues)
         ? object.quantileValues.map((e: any) =>
@@ -2802,10 +2804,10 @@ export const SummaryDataPoint = {
       obj.attributes = [];
     }
     message.startTimeUnixNano !== undefined &&
-      (obj.startTimeUnixNano = message.startTimeUnixNano);
+      (obj.startTimeUnixNano = Math.round(message.startTimeUnixNano));
     message.timeUnixNano !== undefined &&
-      (obj.timeUnixNano = message.timeUnixNano);
-    message.count !== undefined && (obj.count = message.count);
+      (obj.timeUnixNano = Math.round(message.timeUnixNano));
+    message.count !== undefined && (obj.count = Math.round(message.count));
     message.sum !== undefined && (obj.sum = message.sum);
     if (message.quantileValues) {
       obj.quantileValues = message.quantileValues.map((e) =>
@@ -2830,9 +2832,9 @@ export const SummaryDataPoint = {
     const message = createBaseSummaryDataPoint();
     message.attributes =
       object.attributes?.map((e) => KeyValue.fromPartial(e)) || [];
-    message.startTimeUnixNano = object.startTimeUnixNano ?? '0';
-    message.timeUnixNano = object.timeUnixNano ?? '0';
-    message.count = object.count ?? '0';
+    message.startTimeUnixNano = object.startTimeUnixNano ?? 0;
+    message.timeUnixNano = object.timeUnixNano ?? 0;
+    message.count = object.count ?? 0;
     message.sum = object.sum ?? 0;
     message.quantileValues =
       object.quantileValues?.map((e) =>
@@ -2928,7 +2930,7 @@ export const SummaryDataPoint_ValueAtQuantile = {
 function createBaseExemplar(): Exemplar {
   return {
     filteredAttributes: [],
-    timeUnixNano: '0',
+    timeUnixNano: 0,
     asDouble: undefined,
     asInt: undefined,
     spanId: new Uint8Array(),
@@ -2944,7 +2946,7 @@ export const Exemplar = {
     for (const v of message.filteredAttributes) {
       KeyValue.encode(v!, writer.uint32(58).fork()).ldelim();
     }
-    if (message.timeUnixNano !== '0') {
+    if (message.timeUnixNano !== 0) {
       writer.uint32(17).fixed64(message.timeUnixNano);
     }
     if (message.asDouble !== undefined) {
@@ -2984,7 +2986,7 @@ export const Exemplar = {
             break;
           }
 
-          message.timeUnixNano = longToString(reader.fixed64() as Long);
+          message.timeUnixNano = longToNumber(reader.fixed64() as Long);
           continue;
         case 3:
           if (tag !== 25) {
@@ -2998,7 +3000,7 @@ export const Exemplar = {
             break;
           }
 
-          message.asInt = longToString(reader.sfixed64() as Long);
+          message.asInt = longToNumber(reader.sfixed64() as Long);
           continue;
         case 4:
           if (tag !== 34) {
@@ -3029,10 +3031,10 @@ export const Exemplar = {
         ? object.filteredAttributes.map((e: any) => KeyValue.fromJSON(e))
         : [],
       timeUnixNano: isSet(object.timeUnixNano)
-        ? String(object.timeUnixNano)
-        : '0',
+        ? Number(object.timeUnixNano)
+        : 0,
       asDouble: isSet(object.asDouble) ? Number(object.asDouble) : undefined,
-      asInt: isSet(object.asInt) ? String(object.asInt) : undefined,
+      asInt: isSet(object.asInt) ? Number(object.asInt) : undefined,
       spanId: isSet(object.spanId)
         ? bytesFromBase64(object.spanId)
         : new Uint8Array(),
@@ -3052,9 +3054,9 @@ export const Exemplar = {
       obj.filteredAttributes = [];
     }
     message.timeUnixNano !== undefined &&
-      (obj.timeUnixNano = message.timeUnixNano);
+      (obj.timeUnixNano = Math.round(message.timeUnixNano));
     message.asDouble !== undefined && (obj.asDouble = message.asDouble);
-    message.asInt !== undefined && (obj.asInt = message.asInt);
+    message.asInt !== undefined && (obj.asInt = Math.round(message.asInt));
     message.spanId !== undefined &&
       (obj.spanId = base64FromBytes(
         message.spanId !== undefined ? message.spanId : new Uint8Array()
@@ -3074,7 +3076,7 @@ export const Exemplar = {
     const message = createBaseExemplar();
     message.filteredAttributes =
       object.filteredAttributes?.map((e) => KeyValue.fromPartial(e)) || [];
-    message.timeUnixNano = object.timeUnixNano ?? '0';
+    message.timeUnixNano = object.timeUnixNano ?? 0;
     message.asDouble = object.asDouble ?? undefined;
     message.asInt = object.asInt ?? undefined;
     message.spanId = object.spanId ?? new Uint8Array();
@@ -3247,7 +3249,7 @@ export const ExportMetricsServiceResponse = {
 };
 
 function createBaseExportMetricsPartialSuccess(): ExportMetricsPartialSuccess {
-  return { rejectedDataPoints: '0', errorMessage: '' };
+  return { rejectedDataPoints: 0, errorMessage: '' };
 }
 
 export const ExportMetricsPartialSuccess = {
@@ -3255,7 +3257,7 @@ export const ExportMetricsPartialSuccess = {
     message: ExportMetricsPartialSuccess,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.rejectedDataPoints !== '0') {
+    if (message.rejectedDataPoints !== 0) {
       writer.uint32(8).int64(message.rejectedDataPoints);
     }
     if (message.errorMessage !== '') {
@@ -3280,7 +3282,7 @@ export const ExportMetricsPartialSuccess = {
             break;
           }
 
-          message.rejectedDataPoints = longToString(reader.int64() as Long);
+          message.rejectedDataPoints = longToNumber(reader.int64() as Long);
           continue;
         case 2:
           if (tag !== 18) {
@@ -3301,8 +3303,8 @@ export const ExportMetricsPartialSuccess = {
   fromJSON(object: any): ExportMetricsPartialSuccess {
     return {
       rejectedDataPoints: isSet(object.rejectedDataPoints)
-        ? String(object.rejectedDataPoints)
-        : '0',
+        ? Number(object.rejectedDataPoints)
+        : 0,
       errorMessage: isSet(object.errorMessage)
         ? String(object.errorMessage)
         : '',
@@ -3312,7 +3314,7 @@ export const ExportMetricsPartialSuccess = {
   toJSON(message: ExportMetricsPartialSuccess): unknown {
     const obj: any = {};
     message.rejectedDataPoints !== undefined &&
-      (obj.rejectedDataPoints = message.rejectedDataPoints);
+      (obj.rejectedDataPoints = Math.round(message.rejectedDataPoints));
     message.errorMessage !== undefined &&
       (obj.errorMessage = message.errorMessage);
     return obj;
@@ -3328,7 +3330,7 @@ export const ExportMetricsPartialSuccess = {
     object: I
   ): ExportMetricsPartialSuccess {
     const message = createBaseExportMetricsPartialSuccess();
-    message.rejectedDataPoints = object.rejectedDataPoints ?? '0';
+    message.rejectedDataPoints = object.rejectedDataPoints ?? 0;
     message.errorMessage = object.errorMessage ?? '';
     return message;
   },
@@ -3437,8 +3439,13 @@ export type Exact<P, I extends P> = P extends Builtin
       [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
     };
 
-function longToString(long: Long) {
-  return long.toString();
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new tsProtoGlobalThis.Error(
+      'Value is larger than Number.MAX_SAFE_INTEGER'
+    );
+  }
+  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

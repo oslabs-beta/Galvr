@@ -108,6 +108,8 @@ export const metricParser = (
                       structuredClone(metricsCur);
                     Object.keys(metricsCurCopy).forEach((key) => {
                       if (
+                        // @ts-expect-error iterating over keys
+                        typeof metricsCur[key] === 'object' &&
                         // @ts-expect-error Object does have hasOwn method
                         Object.hasOwn(metricsCur[key], 'dataPoints')
                       ) {
@@ -134,7 +136,8 @@ export const metricParser = (
                   },
                   []
                 );
-                scopeMetricsArr.push();
+                if (scopeMetricCurObj.metrics.length > 0)
+                  scopeMetricsArr.push(scopeMetricCurObj);
                 return scopeMetricsArr;
               },
               []
@@ -196,7 +199,6 @@ export const metricGetter = async (
       },
       []
     );
-    console.log(res.locals.metrics);
     return next();
   } catch (err) {
     return next({ log: err, message: 'Error geting metrics' });

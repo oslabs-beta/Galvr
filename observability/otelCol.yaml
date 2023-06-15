@@ -19,7 +19,7 @@ spec:
     exporters:
       logging: 
       otlphttp:
-        endpoint: http://todo-metricendpoint:3000
+        endpoint: http://metricendpoint:3000
         tls: 
           insecure: true
       jaeger:
@@ -35,5 +35,5 @@ spec:
           exporters: [jaeger]
         metrics:
           receivers: [otlp]
-          processors: [batch/metrics]
+          processors: []
           exporters: [otlphttp]

@@ -1,7 +1,7 @@
 FROM node:18-alpine
 WORKDIR /app
 COPY . .
-RUN yarn install --production
-RUN tsc
-CMD ["node", "src/server.js"]
+RUN npm install
+RUN npx tsc
+CMD ["node", "dist/server.js"]
 EXPOSE 3000

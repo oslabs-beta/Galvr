@@ -48,16 +48,14 @@ export default async function HistogramPage(): Promise<JSX.Element> {
     resourceElements = allMetrics.map((resourceObj: any, i: number) => {
       /* histograms: an array of Metric objects from the same Resource, each representing a histogram (with one or more data points) */
       const histograms: any[] = [];
-      Object.keys(resourceObj.scopeMetrics).forEach((instrumentationLib) => {
+      resourceObj.scopeMetrics.forEach((instrumentationLib: any) => {
         /* Filter the Metrics objects received to keep only the ones with histogram type and associated dataPoint array exists (has valid dataPoint) */
-        if (resourceObj.scopeMetrics[instrumentationLib][0].histogram) {
-          resourceObj.scopeMetrics[instrumentationLib].forEach(
-            (metricObj: any) => {
-              if (metricObj.histogram.dataPoints) {
-                histograms.push(metricObj);
-              }
+        if (instrumentationLib.metrics[0].histogram) {
+          instrumentationLib.metrics.forEach((metricObj: any) => {
+            if (metricObj.histogram.dataPoints.length) {
+              histograms.push(metricObj);
             }
-          );
+          });
         }
       });
 

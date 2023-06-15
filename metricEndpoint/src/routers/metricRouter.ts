@@ -5,27 +5,18 @@ import {
   metricDecoder,
   metricParser,
   metricSaver,
-  metricGetter,
+  // metricGetter,
 } from '../controllers/metricController';
 
 const router = express.Router();
 
-router.post(
-  '/',
-  metricDecoder,
-  metricParser,
-  metricSaver,
-  metricGetter,
-  (req, res) => {
-    res
-      .set('Content-Type', 'application/x-protobuf')
-      .send(
-        ExportMetricsServiceResponse.encode(
-          ExportMetricsServiceResponse.create()
-        )
-      );
-  }
-);
+router.post('/', metricDecoder, metricParser, metricSaver, (req, res) => {
+  res
+    .set('Content-Type', 'application/x-protobuf')
+    .send(
+      ExportMetricsServiceResponse.encode(ExportMetricsServiceResponse.create())
+    );
+});
 
 /* A separate Router (metricsFromDBRouter) is currently used for handling requested from NextJS pod. */
 

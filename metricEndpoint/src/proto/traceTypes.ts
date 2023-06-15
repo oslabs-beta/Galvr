@@ -7,7 +7,7 @@ export const protobufPackage = "";
 export interface AnyValue {
   stringValue?: string | undefined;
   boolValue?: boolean | undefined;
-  intValue?: number | undefined;
+  intValue?: string | undefined;
   doubleValue?: number | undefined;
   arrayValue?: ArrayValue | undefined;
   kvlistValue?: KeyValueList | undefined;
@@ -62,8 +62,8 @@ export interface Span {
   parentSpanId: Uint8Array;
   name: string;
   kind: Span_SpanKind;
-  startTimeUnixNano: number;
-  endTimeUnixNano: number;
+  startTimeUnixNano: string;
+  endTimeUnixNano: string;
   attributes: KeyValue[];
   droppedAttributesCount: number;
   events: Span_Event[];
@@ -131,7 +131,7 @@ export function span_SpanKindToJSON(object: Span_SpanKind): string {
 }
 
 export interface Span_Event {
-  timeUnixNano: number;
+  timeUnixNano: string;
   name: string;
   attributes: KeyValue[];
   droppedAttributesCount: number;
@@ -198,7 +198,7 @@ export interface ExportTraceServiceResponse {
 }
 
 export interface ExportTracePartialSuccess {
-  rejectedSpans: number;
+  rejectedSpans: string;
   errorMessage: string;
 }
 
@@ -266,7 +266,7 @@ export const AnyValue = {
             break;
           }
 
-          message.intValue = longToNumber(reader.int64() as Long);
+          message.intValue = longToString(reader.int64() as Long);
           continue;
         case 4:
           if (tag !== 33) {
@@ -309,7 +309,7 @@ export const AnyValue = {
     return {
       stringValue: isSet(object.stringValue) ? String(object.stringValue) : undefined,
       boolValue: isSet(object.boolValue) ? Boolean(object.boolValue) : undefined,
-      intValue: isSet(object.intValue) ? Number(object.intValue) : undefined,
+      intValue: isSet(object.intValue) ? String(object.intValue) : undefined,
       doubleValue: isSet(object.doubleValue) ? Number(object.doubleValue) : undefined,
       arrayValue: isSet(object.arrayValue) ? ArrayValue.fromJSON(object.arrayValue) : undefined,
       kvlistValue: isSet(object.kvlistValue) ? KeyValueList.fromJSON(object.kvlistValue) : undefined,
@@ -321,7 +321,7 @@ export const AnyValue = {
     const obj: any = {};
     message.stringValue !== undefined && (obj.stringValue = message.stringValue);
     message.boolValue !== undefined && (obj.boolValue = message.boolValue);
-    message.intValue !== undefined && (obj.intValue = Math.round(message.intValue));
+    message.intValue !== undefined && (obj.intValue = message.intValue);
     message.doubleValue !== undefined && (obj.doubleValue = message.doubleValue);
     message.arrayValue !== undefined &&
       (obj.arrayValue = message.arrayValue ? ArrayValue.toJSON(message.arrayValue) : undefined);
@@ -976,8 +976,8 @@ function createBaseSpan(): Span {
     parentSpanId: new Uint8Array(),
     name: "",
     kind: 0,
-    startTimeUnixNano: 0,
-    endTimeUnixNano: 0,
+    startTimeUnixNano: "0",
+    endTimeUnixNano: "0",
     attributes: [],
     droppedAttributesCount: 0,
     events: [],
@@ -1008,10 +1008,10 @@ export const Span = {
     if (message.kind !== 0) {
       writer.uint32(48).int32(message.kind);
     }
-    if (message.startTimeUnixNano !== 0) {
+    if (message.startTimeUnixNano !== "0") {
       writer.uint32(57).fixed64(message.startTimeUnixNano);
     }
-    if (message.endTimeUnixNano !== 0) {
+    if (message.endTimeUnixNano !== "0") {
       writer.uint32(65).fixed64(message.endTimeUnixNano);
     }
     for (const v of message.attributes) {
@@ -1092,14 +1092,14 @@ export const Span = {
             break;
           }
 
-          message.startTimeUnixNano = longToNumber(reader.fixed64() as Long);
+          message.startTimeUnixNano = longToString(reader.fixed64() as Long);
           continue;
         case 8:
           if (tag !== 65) {
             break;
           }
 
-          message.endTimeUnixNano = longToNumber(reader.fixed64() as Long);
+          message.endTimeUnixNano = longToString(reader.fixed64() as Long);
           continue;
         case 9:
           if (tag !== 74) {
@@ -1167,8 +1167,8 @@ export const Span = {
       parentSpanId: isSet(object.parentSpanId) ? bytesFromBase64(object.parentSpanId) : new Uint8Array(),
       name: isSet(object.name) ? String(object.name) : "",
       kind: isSet(object.kind) ? span_SpanKindFromJSON(object.kind) : 0,
-      startTimeUnixNano: isSet(object.startTimeUnixNano) ? Number(object.startTimeUnixNano) : 0,
-      endTimeUnixNano: isSet(object.endTimeUnixNano) ? Number(object.endTimeUnixNano) : 0,
+      startTimeUnixNano: isSet(object.startTimeUnixNano) ? String(object.startTimeUnixNano) : "0",
+      endTimeUnixNano: isSet(object.endTimeUnixNano) ? String(object.endTimeUnixNano) : "0",
       attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => KeyValue.fromJSON(e)) : [],
       droppedAttributesCount: isSet(object.droppedAttributesCount) ? Number(object.droppedAttributesCount) : 0,
       events: Array.isArray(object?.events) ? object.events.map((e: any) => Span_Event.fromJSON(e)) : [],
@@ -1192,8 +1192,8 @@ export const Span = {
       ));
     message.name !== undefined && (obj.name = message.name);
     message.kind !== undefined && (obj.kind = span_SpanKindToJSON(message.kind));
-    message.startTimeUnixNano !== undefined && (obj.startTimeUnixNano = Math.round(message.startTimeUnixNano));
-    message.endTimeUnixNano !== undefined && (obj.endTimeUnixNano = Math.round(message.endTimeUnixNano));
+    message.startTimeUnixNano !== undefined && (obj.startTimeUnixNano = message.startTimeUnixNano);
+    message.endTimeUnixNano !== undefined && (obj.endTimeUnixNano = message.endTimeUnixNano);
     if (message.attributes) {
       obj.attributes = message.attributes.map((e) => e ? KeyValue.toJSON(e) : undefined);
     } else {
@@ -1229,8 +1229,8 @@ export const Span = {
     message.parentSpanId = object.parentSpanId ?? new Uint8Array();
     message.name = object.name ?? "";
     message.kind = object.kind ?? 0;
-    message.startTimeUnixNano = object.startTimeUnixNano ?? 0;
-    message.endTimeUnixNano = object.endTimeUnixNano ?? 0;
+    message.startTimeUnixNano = object.startTimeUnixNano ?? "0";
+    message.endTimeUnixNano = object.endTimeUnixNano ?? "0";
     message.attributes = object.attributes?.map((e) => KeyValue.fromPartial(e)) || [];
     message.droppedAttributesCount = object.droppedAttributesCount ?? 0;
     message.events = object.events?.map((e) => Span_Event.fromPartial(e)) || [];
@@ -1245,12 +1245,12 @@ export const Span = {
 };
 
 function createBaseSpan_Event(): Span_Event {
-  return { timeUnixNano: 0, name: "", attributes: [], droppedAttributesCount: 0 };
+  return { timeUnixNano: "0", name: "", attributes: [], droppedAttributesCount: 0 };
 }
 
 export const Span_Event = {
   encode(message: Span_Event, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.timeUnixNano !== 0) {
+    if (message.timeUnixNano !== "0") {
       writer.uint32(9).fixed64(message.timeUnixNano);
     }
     if (message.name !== "") {
@@ -1277,7 +1277,7 @@ export const Span_Event = {
             break;
           }
 
-          message.timeUnixNano = longToNumber(reader.fixed64() as Long);
+          message.timeUnixNano = longToString(reader.fixed64() as Long);
           continue;
         case 2:
           if (tag !== 18) {
@@ -1311,7 +1311,7 @@ export const Span_Event = {
 
   fromJSON(object: any): Span_Event {
     return {
-      timeUnixNano: isSet(object.timeUnixNano) ? Number(object.timeUnixNano) : 0,
+      timeUnixNano: isSet(object.timeUnixNano) ? String(object.timeUnixNano) : "0",
       name: isSet(object.name) ? String(object.name) : "",
       attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => KeyValue.fromJSON(e)) : [],
       droppedAttributesCount: isSet(object.droppedAttributesCount) ? Number(object.droppedAttributesCount) : 0,
@@ -1320,7 +1320,7 @@ export const Span_Event = {
 
   toJSON(message: Span_Event): unknown {
     const obj: any = {};
-    message.timeUnixNano !== undefined && (obj.timeUnixNano = Math.round(message.timeUnixNano));
+    message.timeUnixNano !== undefined && (obj.timeUnixNano = message.timeUnixNano);
     message.name !== undefined && (obj.name = message.name);
     if (message.attributes) {
       obj.attributes = message.attributes.map((e) => e ? KeyValue.toJSON(e) : undefined);
@@ -1338,7 +1338,7 @@ export const Span_Event = {
 
   fromPartial<I extends Exact<DeepPartial<Span_Event>, I>>(object: I): Span_Event {
     const message = createBaseSpan_Event();
-    message.timeUnixNano = object.timeUnixNano ?? 0;
+    message.timeUnixNano = object.timeUnixNano ?? "0";
     message.name = object.name ?? "";
     message.attributes = object.attributes?.map((e) => KeyValue.fromPartial(e)) || [];
     message.droppedAttributesCount = object.droppedAttributesCount ?? 0;
@@ -1669,12 +1669,12 @@ export const ExportTraceServiceResponse = {
 };
 
 function createBaseExportTracePartialSuccess(): ExportTracePartialSuccess {
-  return { rejectedSpans: 0, errorMessage: "" };
+  return { rejectedSpans: "0", errorMessage: "" };
 }
 
 export const ExportTracePartialSuccess = {
   encode(message: ExportTracePartialSuccess, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.rejectedSpans !== 0) {
+    if (message.rejectedSpans !== "0") {
       writer.uint32(8).int64(message.rejectedSpans);
     }
     if (message.errorMessage !== "") {
@@ -1695,7 +1695,7 @@ export const ExportTracePartialSuccess = {
             break;
           }
 
-          message.rejectedSpans = longToNumber(reader.int64() as Long);
+          message.rejectedSpans = longToString(reader.int64() as Long);
           continue;
         case 2:
           if (tag !== 18) {
@@ -1715,14 +1715,14 @@ export const ExportTracePartialSuccess = {
 
   fromJSON(object: any): ExportTracePartialSuccess {
     return {
-      rejectedSpans: isSet(object.rejectedSpans) ? Number(object.rejectedSpans) : 0,
+      rejectedSpans: isSet(object.rejectedSpans) ? String(object.rejectedSpans) : "0",
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
   },
 
   toJSON(message: ExportTracePartialSuccess): unknown {
     const obj: any = {};
-    message.rejectedSpans !== undefined && (obj.rejectedSpans = Math.round(message.rejectedSpans));
+    message.rejectedSpans !== undefined && (obj.rejectedSpans = message.rejectedSpans);
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     return obj;
   },
@@ -1733,7 +1733,7 @@ export const ExportTracePartialSuccess = {
 
   fromPartial<I extends Exact<DeepPartial<ExportTracePartialSuccess>, I>>(object: I): ExportTracePartialSuccess {
     const message = createBaseExportTracePartialSuccess();
-    message.rejectedSpans = object.rejectedSpans ?? 0;
+    message.rejectedSpans = object.rejectedSpans ?? "0";
     message.errorMessage = object.errorMessage ?? "";
     return message;
   },
@@ -1817,11 +1817,8 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
+function longToString(long: Long) {
+  return long.toString();
 }
 
 if (_m0.util.Long !== Long) {
