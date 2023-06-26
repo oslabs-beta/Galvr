@@ -97,7 +97,7 @@ export default async function HistogramPage(): Promise<JSX.Element> {
         <TabsContent
           value="overview"
           className="space-y-4"
-          key={resourceObj.resource['k8s.pod.name']}
+          key={resourceObj.resource.attributes['k8s.pod.name']}
         >
           <hr className="border-gray-300 my-6" />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -113,7 +113,7 @@ export default async function HistogramPage(): Promise<JSX.Element> {
                 {obj.resource['service.name']}
               </div> */}
                 <p className="text-lg font-bold text-muted-foreground">
-                  {resourceObj.resource['service.name']}
+                  {resourceObj.resource.attributes['service.name']}
                 </p>
               </CardContent>
             </Card>
@@ -124,7 +124,7 @@ export default async function HistogramPage(): Promise<JSX.Element> {
               </CardHeader>
               <CardContent>
                 <p className="text-lg font-bold text-muted-foreground">
-                  {resourceObj.resource['k8s.pod.name']}
+                  {resourceObj.resource.attributes['k8s.pod.name']}
                 </p>
               </CardContent>
             </Card>
@@ -137,7 +137,7 @@ export default async function HistogramPage(): Promise<JSX.Element> {
               </CardHeader>
               <CardContent>
                 <p className="text-lg font-bold text-muted-foreground">
-                  {resourceObj.resource['telemetry.sdk.language']}
+                  {resourceObj.resource.attributes['telemetry.sdk.language']}
                 </p>
               </CardContent>
             </Card>
