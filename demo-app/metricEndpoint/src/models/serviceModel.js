@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const { histogramSchema } = require('./histogramModel')
-
-const Histogram = mongoose.model('Histogram', histogramSchema)
+const { instrumentationSchema } = require('./instrumentationModel')
 
 const servicesSchema = new Schema({ 
-    service: String,
-    histogram: Histogram
+    serviceName: String,
+    resourceInfo: Object,
+    scopeMetric: instrumentationSchema
 });
 
 module.exports = mongoose.model('Services', servicesSchema);

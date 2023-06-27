@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const histogramSchema = new Schema({   
         timestamp: Date,
-        metaData: Object,
+        metaData:Object,
         timeseries: {
             timeField: 'timeStamp',
             metaField: 'metaData',
