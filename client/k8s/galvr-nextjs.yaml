@@ -1,20 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-metricendpoint
+  name: galvr-nextjs
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: todo-metricendpoint
+      run: galvr-nextjs
   template:
     metadata:
       labels:
-        run: todo-metricendpoint
+        run: galvr-nextjs
+      annotations:
+        instrumentation.opentelemetry.io/inject-nodejs: 'false'
     spec:
       containers:
-        - name: todo-metricendpoint
-          image: todo-metricendpoint
+        - name: galvr-nextjs
+          image: galvr-nextjs
           imagePullPolicy: Never
           ports:
             - containerPort: 3000
@@ -22,10 +24,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-metricendpoint
+  name: galvr-nextjs
 spec:
+  type: NodePort
   selector:
-    run: todo-metricendpoint
+    run: galvr-nextjs
   ports:
     - port: 3000
       targetPort: 3000
+      nodePort: 30003

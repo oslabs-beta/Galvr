@@ -17,10 +17,10 @@
     "sourceMap": true,
     "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
-      "*": ["node_modules/*", "src/types/*"]
+      "*": ["node_modules/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. 
       This specific array tells the TypeScript compiler that in addition to looking in node_modules/@types for every import (*) also look in our own .d.ts file location <baseUrl> + src/types/*. */,
-    "types": ["jest", "node"]
+    "types": ["node"]
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]

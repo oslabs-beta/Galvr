@@ -10,11 +10,21 @@ spec:
           grpc:
           http:
 
+    processors:
+      batch:
+      batch/metrics:
+        send_batch_size: 1000
+        timeout: 5s
+
     exporters:
       logging: 
       otlphttp:
-        endpoint: http://todo-metricendpoint:3000
+        endpoint: http://metricendpoint:3000
         tls: 
+          insecure: true
+      jaeger:
+        endpoint: jaeger-collector:14250
+        tls:
           insecure: true
 
     service:
@@ -22,7 +32,7 @@ spec:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [logging]
+          exporters: [jaeger]
         metrics:
           receivers: [otlp]
           processors: []

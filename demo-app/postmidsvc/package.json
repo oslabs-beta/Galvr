@@ -1,5 +1,5 @@
 {
-  "name": "metric-endpoint",
+  "name": "postmidsvc",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,6 +8,7 @@
     "express": "^4.18.2",
     "mongoose": "^7.2.2",
     "protobufjs": "^7.2.3",
-    "zlib": "^1.0.5"
+    "zlib": "^1.0.5",
+    "node-fetch": "^2.6.11"
   }
 }

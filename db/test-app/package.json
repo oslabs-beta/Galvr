@@ -1,11 +1,12 @@
 {
-  "name": "getmidsvc",
+  "name": "db",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "node-fetch": "^2.6.11"
+    "mongoose": "^7.0.2"
   }
 }
