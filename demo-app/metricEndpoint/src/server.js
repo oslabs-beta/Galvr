@@ -7,9 +7,15 @@ const metricRouter = require('./routers/metricRouter');
 const traceRouter = require('./routers/traceRouter');
 const { protoStatus } = require('./proto');
 
-mongoose.connect('mongodb://localhost:27017/')
-
 const app = express();
+
+mongoose.connect('mongodb://localhost:27017/')
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch(error => {
+    console.error('Error connecting to MongoDB:', error);
+  });
 
 app.use((req, res, next) => {
   const data = [];
