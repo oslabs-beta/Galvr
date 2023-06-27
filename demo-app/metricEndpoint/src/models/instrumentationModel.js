@@ -5,15 +5,17 @@ const { Schema } = mongoose;
 const { histogramSchema } = require('./histogramModel')
 
 const instrumentationSchema = new Schema({
-    'instrument': String,
+    'instrument': {
+        'type': String,
+        'required': true,
+    },
     'metric': {
         'name': String,
         'description': String,
-        'unit': String
+        'unit': String,
+        'required': true
     },
-    'dataPoints': [
-         histogramSchema
-    ]
+    'histogram': histogramSchema
 })
 
 module.exports = instrumentationSchema
