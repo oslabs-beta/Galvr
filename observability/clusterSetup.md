@@ -49,14 +49,14 @@ kubectl port-forward services/jaeger-query 16686:16686
 
 Navigate to localhost:16686 to view the Jaeger UI!
 
-To start the Galvr MongoDB database instance, go to the db/k8 directory and run the following:
+To start the Galvr MongoDB database instance, go to the db/k8s directory and run the following:
 
 ```
 kubectl apply -f mongo-db.yaml
 kubectl apply -f mongo-svc.yaml
 ```
 
-To start the Galvr metricEndpoint backend server, go to the metricEndpoint/k8 directory and run the following:
+To start the Galvr metricEndpoint backend server, go to the metricEndpoint/k8s directory and run the following:
 
 ```
 kubectl apply -f endpoint.yaml
