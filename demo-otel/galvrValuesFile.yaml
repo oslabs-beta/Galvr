@@ -1,0 +1,12 @@
+opentelemetry-collector:
+  config:
+    exporters:
+      otlphttp/example:
+        endpoint: http://metricendpoint:3000
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [otlp, spanmetrics]
+          processors: [memory_limiter, filter/ottl, transform, batch]
+          exporters: [otlphttp/example]
