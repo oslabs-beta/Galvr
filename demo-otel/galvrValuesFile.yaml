@@ -3,9 +3,19 @@ opentelemetry-collector:
     exporters:
       otlphttp/example:
         endpoint: http://metricendpoint:3000
+        tls:
+          insecure: true
+      jaeger:
+        endpoint: jaeger-collector:14250
+        tls:
+          insecure: true
 
     service:
       pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [jaeger, spanmetrics]
         metrics:
           receivers: [otlp, spanmetrics]
           processors: [memory_limiter, filter/ottl, transform, batch]
