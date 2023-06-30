@@ -2,11 +2,15 @@ import mongoose from 'mongoose';
 
 import { type ParsedResourceMetrics } from '../proto/metricTypes';
 
-mongoose
-  .connect('mongodb://mongo-svc:27017/galvr')
-  .catch((err) => console.log(err));
+const mongoURI =
+  process.env.NODE_ENV === 'test'
+    ? 'mongodb://mongo-svc:27017/test'
+    : 'mongodb://mongo-svc:27017/galvr';
+
+mongoose.connect(mongoURI).catch((err) => console.log(err));
 
 mongoose.connection.once('open', () => {
+  console.log(mongoURI);
   console.log('Connected to Database');
 });
 
