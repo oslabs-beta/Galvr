@@ -4,11 +4,11 @@ const { metricResponse } = require('../proto');
 const {
   metricDecoder,
   metricParser,
-} = require('../controllers/metricController');
+} = require('../controllers/metricControllerTemp');
 
 const {
   saveMetrics
-} = require('../controllers/dbController')
+} = require('../../../../metricEndpoint/src/controllers/dbController')
 
 const router = express.Router();
 

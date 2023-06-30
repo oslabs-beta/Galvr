@@ -1,11 +1,19 @@
-const mongoose = require('mongoose');
-
-const { Schema } = mongoose;
+import mongoose from 'mongoose';
 
 const { histogramSchema } = require('./histogramModel')
 
-const instrumentationSchema = new Schema({
-    'instrument': {
+interface InstrumentationMetric {
+    instrumentation: string
+    metric: {
+        name: string,
+        description: string,
+        unit: string,
+    }
+    histogram: any
+}
+
+const instrumentationSchema = new mongoose.Schema<InstrumentationMetric>({
+    'instrumentation': {
         'type': String,
         'required': true,
     },
@@ -16,6 +24,6 @@ const instrumentationSchema = new Schema({
         'required': true
     },
     'histogram': histogramSchema
-})
+});
 
 module.exports = instrumentationSchema

@@ -9,7 +9,7 @@ dbController.saveMetrics = async (req, res, next) => {
     try {
         if (res.locals.metrics) {
 
-          res.locals.forEach( metric => {
+          res.locals.metrics.forEach( metric => {
             const { resource, scopeMetrics } = metric;
 
             const serviceExists = mongoose.connection.db.listCollections({ name: resource.name })
@@ -28,8 +28,9 @@ dbController.saveMetrics = async (req, res, next) => {
           console.log('scopeMetrics: ', JSON.stringify(metric.scopeMetrics));
         return next();
     }
-    } catch (err) {
+    catch (err) {
       return next({ log: err, status: 502, message: 'Error saving metrics' });
   }
+}
 
 module.exports = dbController;

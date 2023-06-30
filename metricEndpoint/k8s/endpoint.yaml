@@ -15,7 +15,7 @@ spec:
       containers:
         - name: metricendpoint
           image: metricendpoint
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
 ---

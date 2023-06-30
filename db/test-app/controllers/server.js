@@ -11,7 +11,7 @@ mongoose
   .catch((err) => console.log(err));
 
 mongoose.connection.once('open', () => {
-  console.log('Connected to Database');
+  console.log('Connected to Database!');
 });
 
 const testSchema = new mongoose.Schema({
