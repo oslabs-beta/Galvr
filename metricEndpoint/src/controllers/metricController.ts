@@ -166,22 +166,48 @@ export const metricSaver = async (
     if (res.locals.metrics) {
 
       res.locals.metrics.forEach( async (metric : ParsedResourceMetrics) => {
-        const { resource, scopeMetrics } = metric;
-      
+        const { resource } = metric;
+        const { attributes } = resource;
+
+        const filter = {serviceName : attributes['service.name']};
+        const update = { scopeMetrics: metric }
+
         const ServiceDoc = await Services.findOneAndUpdate(
-            { name: resource.attributes.name }, // Filter to find current Service document
-            { scopeMetrics: scopeMetrics }, // Updated scopeMetrics
-            {
-              new: true, // returns the updated document
-              upsert: true, // if document doesn't exist, create it using filter and update
-            }) 
-        })
-      }
-      // console.log('metrics: ', JSON.stringify(res.locals.metrics));
+          filter, // Filter to find current Service document
+          update, // Updated scopeMetrics
+          {
+            new: true, // returns the updated document
+            upsert: true, // if document doesn't exist, create it using filter and update
+          }) 
+      })  
+    }
       return next();
     } catch (err) {
         return next({ log: err, status: 502, message: 'Error saving metrics' });
   }
+};
+
+export const metricGetter = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> => {
+  try {
+    const metrics = await Services.find({});
+    res.locals.metrics = metrics.reduce(
+      (arr: ParsedResourceMetrics[], cur: ServiceSchema) => {
+        arr.push(cur.scopeMetrics);
+        return arr;
+      },
+      []
+    );
+    console.log('res.locals.metrics =', res.locals.metrics)
+    return next();
+  } catch (err) {
+    return next({ log: err, message: 'Error geting metrics' });
+  }
+};
+
   // try {
   //   if (res.locals.metrics) {
   //     res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
@@ -205,25 +231,3 @@ export const metricSaver = async (
   // } catch (err) {
   //   return next({ log: err, status: 502, message: 'Error saving metrics' });
   // }
-};
-
-export const metricGetter = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-): Promise<void> => {
-  try {
-    const metrics = await Services.find({});
-    res.locals.metrics = metrics.reduce(
-      (arr: ParsedResourceMetrics[], cur: ServiceSchema) => {
-        arr.push(cur.scopeMetrics);
-        return arr;
-      },
-      []
-    );
-    console.log(res.locals.metrics)
-    return next();
-  } catch (err) {
-    return next({ log: err, message: 'Error geting metrics' });
-  }
-};

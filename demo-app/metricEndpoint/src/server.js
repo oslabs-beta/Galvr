@@ -9,13 +9,13 @@ const { protoStatus } = require('./proto');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/')
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch(error => {
-    console.error('Error connecting to MongoDB:', error);
-  });
+// mongoose.connect('mongodb://localhost:27017/')
+//   .then(() => {
+//     console.log('Connected to MongoDB');
+//   })
+//   .catch(error => {
+//     console.error('Error connecting to MongoDB:', error);
+//   });
 
 app.use((req, res, next) => {
   const data = [];
