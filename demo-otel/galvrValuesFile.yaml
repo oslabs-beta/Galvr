@@ -1,5 +1,10 @@
 opentelemetry-collector:
   config:
+    processors:
+      batch/2:
+        send_batch_size: 10000
+        timeout: 10s
+
     exporters:
       otlphttp/example:
         endpoint: http://metricendpoint:3000
@@ -14,9 +19,18 @@ opentelemetry-collector:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
+          processors: [memory_limiter, batch/2]
           exporters: [jaeger, spanmetrics]
         metrics:
           receivers: [otlp, spanmetrics]
-          processors: [memory_limiter, filter/ottl, transform, batch]
+          processors: [memory_limiter, filter/ottl, transform, batch/2]
           exporters: [otlphttp/example]
+
+jaeger:
+  enabled: false
+
+prometheus:
+  enabled: false
+
+grafana:
+  enabled: false
