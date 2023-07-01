@@ -17,10 +17,11 @@
 //   plugins: [],
 // }
 
-const daisyui = require('daisyui');
+// const daisyui = require('daisyui');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -34,8 +35,9 @@ module.exports = {
       },
       colors: {
         'primary-gray': '#94a3b8',
-      }
+      },
     },
   },
-  plugins: [daisyui],
-}
+  // eslint-disable-next-line global-require
+  plugins: [require('tailwindcss-animate')],
+};
