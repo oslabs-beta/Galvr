@@ -149,6 +149,7 @@ export const metricParser = (
         []
       );
     }
+    // console.log(JSON.stringify(res.locals.metrics));
     return next();
   } catch (err) {
     return next({ log: err, status: 502, message: 'Error parsing metrics' });
