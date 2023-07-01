@@ -178,7 +178,8 @@ export const metricSaver = async (
           {
             new: true, // returns the updated document
             upsert: true, // if document doesn't exist, create it using filter and update
-          }) 
+          })
+        console.log(ServiceDoc); 
       })  
     }
       return next();
