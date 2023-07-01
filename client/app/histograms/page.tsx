@@ -1,20 +1,19 @@
 import type { Metadata } from 'next';
 import { Share2, Languages, Package } from 'lucide-react';
-import fetch from 'node-fetch';
 
 import HistogramAttr from '@/components/HistogramAttr';
 import Histogram from '@/components/Histogram';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import metricEndPoint from '../../k8s/k8sUrls';
 
 /* Mock metrics data for local testing (not in K8S). 
-   For deploying to K8S, comment out below import and const allMetrics declaration, and uncomment the other const allMetrics declaration in exported DashboardPage function component. 
+   For deploying to K8S, comment out below import and const allMetrics declaration, and uncomment the other const allMetrics declaration in exported HistogramPage function component. 
 */
-// eslint-disable-next-line import/no-relative-packages
-// import exampleFormattedMetrics from '../../../observability/exampleFormatted';
+// import demoOTELExample from '../../public/demoOTELExample';
 
-// const allMetrics = exampleFormattedMetrics;
+// const allMetrics = demoOTELExample;
 
 export const metadata: Metadata = {
   title: 'Histograms',
@@ -23,12 +22,11 @@ export const metadata: Metadata = {
 
 async function getMetrics(): Promise<any> {
   try {
-    const res = await fetch(metricEndPoint);
+    const res = await fetch(metricEndPoint, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
     const data = await res.json();
-
     return data;
   } catch (err) {
     console.log(
@@ -51,13 +49,12 @@ export default async function HistogramPage(): Promise<JSX.Element> {
       console.log('resourceObj=', resourceObj)
       resourceObj.scopeMetrics.forEach((instrumentationLib: any) => {
         /* Filter the Metrics objects received to keep only the ones with histogram type and associated dataPoint array exists (has valid dataPoint) */
-        if (instrumentationLib.metrics[0].histogram) {
-          instrumentationLib.metrics.forEach((metricObj: any) => {
-            if (metricObj.histogram.dataPoints.length) {
-              histograms.push(metricObj);
-            }
-          });
-        }
+
+        instrumentationLib.metrics.forEach((metricObj: any) => {
+          if (metricObj.histogram?.dataPoints.length) {
+            histograms.push(metricObj);
+          }
+        });
       });
 
       /* histogramElements: an array of React elements, each representing a histogram from the histograms array */
