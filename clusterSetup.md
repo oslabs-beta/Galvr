@@ -41,6 +41,8 @@ kubectl apply -f app.yaml
 
 Our app should now be visible at localhost:30002!
 
+(Alternatively, follow the readme in demo-otel/demoOTELSetup.md to set up the OTEL demo app instead of our to-do app)
+
 In a separate shell, run the following:
 
 ```
