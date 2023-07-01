@@ -1,10 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose, { type Mongoose } from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { testModel } from '../src/models/metricModel';
+
+let con: Mongoose;
+let mongoServer: MongoMemoryServer;
+
+beforeAll(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  con = await mongoose.connect(mongoServer.getUri(), {});
+});
 
 beforeEach(async () => testModel.collection.drop());
 
-afterAll(() => {
-  mongoose.disconnect().catch((err) => console.log(err));
+afterAll(async () => {
+  if (con) {
+    await con.disconnect();
+  }
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
 });
 
 describe('Test if jest works likes this', () => {
