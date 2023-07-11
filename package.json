@@ -2,6 +2,9 @@
   "name": "galvr",
   "version": "1.0.0",
   "description": "",
+  "scripts": {
+    "test": "NODE_ENV=test jest --verbose"
+  },
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
@@ -32,10 +35,13 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "long": "^5.2.3",
     "mongoose": "^7.2.3",
     "next": "^13.4.4",
+    "protobufjs": "^7.2.3",
     "ts-node": "^10.9.1",
-    "ts-proto": "^1.148.2"
+    "ts-proto": "^1.148.2",
+    "zlib": "^1.0.5"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",

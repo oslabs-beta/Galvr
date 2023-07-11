@@ -1,6 +1,7 @@
 import mongoose, { type Mongoose } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { testModel } from '../src/models/metricModel';
+// eslint-disable-next-line import/no-relative-packages
+import { testModel } from '../metricEndpoint/src/models/metricModel';
 
 let con: Mongoose;
 let mongoServer: MongoMemoryServer;
