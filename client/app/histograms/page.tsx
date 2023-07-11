@@ -6,7 +6,7 @@ import Histogram from '@/components/Histogram';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import metricEndPoint from '../../k8s/k8sUrls';
+import { metricEndPoint, servicesEndpoint} from '../../k8s/k8sUrls';
 
 /* Mock metrics data for local testing (not in K8S). 
    For deploying to K8S, comment out below import and const allMetrics declaration, and uncomment the other const allMetrics declaration in exported HistogramPage function component. 
@@ -22,11 +22,14 @@ export const metadata: Metadata = {
 
 async function getMetrics(): Promise<any> {
   try {
+    const services = await fetch(servicesEndpoint, { cache: 'no-store' }) // Should return an Array of serviceName strings
+
     const res = await fetch(metricEndPoint, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
     const data = await res.json();
+    console.log(data)
     return data;
   } catch (err) {
     console.log(
@@ -46,7 +49,6 @@ export default async function HistogramPage(): Promise<JSX.Element> {
     resourceElements = allMetrics.map((resourceObj: any, i: number) => {
       /* histograms: an array of Metric objects from the same Resource, each representing a histogram (with one or more data points) */
       const histograms: any[] = [];
-      console.log('resourceObj=', resourceObj)
       resourceObj.scopeMetrics.forEach((instrumentationLib: any) => {
         /* Filter the Metrics objects received to keep only the ones with histogram type and associated dataPoint array exists (has valid dataPoint) */
 

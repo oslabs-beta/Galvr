@@ -180,7 +180,7 @@ export const metricSaver = async (
             new: true, // returns the updated document
             upsert: true, // if document doesn't exist, create it using filter and update
           })
-        console.log(ServiceDoc); 
+        // console.log(ServiceDoc); 
       })  
     }
       return next();
@@ -203,13 +203,36 @@ export const metricGetter = async (
       },
       []
     );
-    console.log('res.locals.metrics =', res.locals.metrics)
+    // console.log('res.locals.metrics =', res.locals.metrics)
     return next();
   } catch (err) {
     return next({ log: err, message: 'Error geting metrics' });
   }
 };
 
+export const serviceGetter = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> => { 
+  try {
+
+    console.log('reached serviceGetter')
+    const servicesRes = await Services.find();
+
+    if (!servicesRes) {
+      throw new Error('failed to fetch services from Database')
+    }
+
+    res.locals.services = servicesRes.map((service : ServiceSchema) => service.serviceName);
+
+    if (!res.locals.services) throw new Error();
+
+    return next()
+  } catch (err) {
+    return next({ log: err, message: 'Error getting services' });
+  }
+}
   // try {
   //   if (res.locals.metrics) {
   //     res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {

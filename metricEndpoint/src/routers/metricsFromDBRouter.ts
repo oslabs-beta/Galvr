@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { metricGetter } from '../controllers/metricController';
+import { metricGetter, serviceGetter } from '../controllers/metricController';
 
 const router = express.Router();
 
