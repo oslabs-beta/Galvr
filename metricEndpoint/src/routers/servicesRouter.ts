@@ -1,11 +1,15 @@
 import express from 'express';
 
-import { serviceGetter } from '../controllers/metricController';
+import { allServicesGetter, serviceGetter } from '../controllers/serviceController';
 
 const router = express.Router();
 
-router.get('/', serviceGetter, (req, res) => {
+router.get('/', allServicesGetter, (req, res) => {
   res.json(res.locals.services);
 });
+
+router.get('/:name', serviceGetter, (req,res) => {
+    res.json(res.locals.resourceMetrics);
+}) 
 
 export default router;

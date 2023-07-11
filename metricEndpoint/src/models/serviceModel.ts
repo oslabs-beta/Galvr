@@ -13,12 +13,12 @@ mongoose.connection.once('open', () => {
 
 export interface ServiceSchema {
     serviceName: string;
-    scopeMetrics: ParsedResourceMetrics;
+    resourceMetrics: ParsedResourceMetrics;
   }
 
 const servicesSchema = new mongoose.Schema<ServiceSchema>({ 
     'serviceName': String,
-    'scopeMetrics': {},
+    'resourceMetrics': {},
 });
 
 export const Services = mongoose.model('Services', servicesSchema);

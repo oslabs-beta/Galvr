@@ -22,14 +22,26 @@ export const metadata: Metadata = {
 
 async function getMetrics(): Promise<any> {
   try {
-    const services = await fetch(servicesEndpoint, { cache: 'no-store' }) // Should return an Array of serviceName strings
+    let services = await fetch(servicesEndpoint, { cache: 'no-store' }) // Should return an Array of serviceName strings
+
+    services = await services.json();
+
+    let url = servicesEndpoint + '/todo-frontend';
+
+    console.log(url)
+
+    const individualService = await fetch(url, { cache: 'no-store' })
+
+    const individualServiceData = await individualService.json()
+
+    console.log('individualService', individualServiceData[0].resourceMetrics);
 
     const res = await fetch(metricEndPoint, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
     const data = await res.json();
-    console.log(data)
+    // console.log(data)
     return data;
   } catch (err) {
     console.log(

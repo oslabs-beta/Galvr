@@ -171,7 +171,7 @@ export const metricSaver = async (
         const { attributes } = resource;
 
         const filter = {serviceName : attributes['service.name']};
-        const update = { scopeMetrics: metric }
+        const update = { resourceMetrics: metric }
 
         const ServiceDoc = await Services.findOneAndUpdate(
           filter, // Filter to find current Service document
@@ -196,43 +196,21 @@ export const metricGetter = async (
 ): Promise<void> => {
   try {
     const metrics = await Services.find({});
+    
     res.locals.metrics = metrics.reduce(
       (arr: ParsedResourceMetrics[], cur: ServiceSchema) => {
-        arr.push(cur.scopeMetrics);
+        arr.push(cur.resourceMetrics);
         return arr;
       },
       []
     );
-    // console.log('res.locals.metrics =', res.locals.metrics)
+
     return next();
   } catch (err) {
     return next({ log: err, message: 'Error geting metrics' });
   }
 };
 
-export const serviceGetter = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-): Promise<void> => { 
-  try {
-
-    console.log('reached serviceGetter')
-    const servicesRes = await Services.find();
-
-    if (!servicesRes) {
-      throw new Error('failed to fetch services from Database')
-    }
-
-    res.locals.services = servicesRes.map((service : ServiceSchema) => service.serviceName);
-
-    if (!res.locals.services) throw new Error();
-
-    return next()
-  } catch (err) {
-    return next({ log: err, message: 'Error getting services' });
-  }
-}
   // try {
   //   if (res.locals.metrics) {
   //     res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
