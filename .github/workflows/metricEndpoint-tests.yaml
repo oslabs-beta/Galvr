@@ -1,0 +1,19 @@
+name: 'endpoint-tests'
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push    
+jobs:
+  unit-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+      - run: cd metricEndpoint
+      - run: npm install
+      - run: npm test
