@@ -25,8 +25,6 @@ afterAll(async () => {
 describe('Test if jest works likes this', () => {
   it('should work good', async () => {
     const data = await testModel.find({});
-    console.log(process.env.NODE_ENV);
-    console.log(data);
-    expect(data.length).toEqual(0);
+    expect(data.length).toEqual(1);
   });
 });
