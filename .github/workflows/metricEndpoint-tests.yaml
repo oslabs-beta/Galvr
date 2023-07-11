@@ -15,5 +15,6 @@ jobs:
           node-version: '18.x'
           # cache: 'npm'
       - run: cd metricEndpoint
+      - run: ls
       - run: npm install
       - run: npm test
