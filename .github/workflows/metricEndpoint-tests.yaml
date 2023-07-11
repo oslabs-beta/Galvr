@@ -1,10 +1,9 @@
 name: 'endpoint-tests'
 on:
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - dev
-  push
+  pull_request:
+    branches:
+      - main
+      - dev
 jobs:
   unit-testing:
     runs-on: ubuntu-latest

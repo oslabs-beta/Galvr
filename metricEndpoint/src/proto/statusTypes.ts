@@ -1,4 +1,5 @@
 /* eslint-disable */
+// generated with https://github.com/stephenh/ts-proto
 import * as _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = '';

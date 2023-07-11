@@ -38,9 +38,8 @@
     "long": "^5.2.3",
     "mongoose": "^7.2.3",
     "next": "^13.4.4",
-    "protobufjs": "^7.2.3",
+    "protobufjs": "^7.2.4",
     "ts-node": "^10.9.1",
-    "ts-proto": "^1.148.2",
     "zlib": "^1.0.5"
   },
   "lint-staged": {
