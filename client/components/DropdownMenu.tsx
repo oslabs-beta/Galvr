@@ -19,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useRouter } from 'next/navigation';
 
 const microservices = [
   {
@@ -46,6 +47,7 @@ const microservices = [
 export default function DropdownMenu(): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
+  const router = useRouter();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,6 +76,7 @@ export default function DropdownMenu(): JSX.Element {
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? '' : currentValue);
                   setOpen(false);
+                  router.push(`/${microservice.value}`);
                 }}
               >
                 <Check

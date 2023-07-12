@@ -3,9 +3,7 @@ import { Share2, Languages, Package } from 'lucide-react';
 
 import HistogramAttr from '@/components/HistogramAttr';
 import Histogram from '@/components/Histogram';
-import DropdownMenu from '@/components/DropdownMenu';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import metricEndPoint from '../../k8s/k8sUrls';
 
@@ -92,11 +90,7 @@ export default async function HistogramPage(): Promise<JSX.Element> {
 
       /* Render metadata of one resource and its associated histograms */
       return (
-        <TabsContent
-          value="overview"
-          className="space-y-4"
-          key={resourceObj.resource.attributes['k8s.pod.name']}
-        >
+        <>
           <hr className="border-gray-300 my-6" />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -141,37 +135,11 @@ export default async function HistogramPage(): Promise<JSX.Element> {
             </Card>
           </div>
           {histogramElements}
-        </TabsContent>
+        </>
       );
     });
   }
 
-  /* Render the page heading and all resourceElements */
-  return (
-    <>
-      <div className="flex-col flex">
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Histograms</h2>
-          </div>
-          <Tabs defaultValue="overview" className="space-y-10">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
-                Analytics
-              </TabsTrigger>
-              <TabsTrigger value="reports" disabled>
-                Reports
-              </TabsTrigger>
-              <TabsTrigger value="notifications" disabled>
-                Notifications
-              </TabsTrigger>
-            </TabsList>
-            <DropdownMenu />
-            {resourceElements}
-          </Tabs>
-        </div>
-      </div>
-    </>
-  );
+  /* Render all resourceElements */
+  return <>{resourceElements}</>;
 }
