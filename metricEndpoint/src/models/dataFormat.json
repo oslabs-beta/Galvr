@@ -1,0 +1,29 @@
+{
+    "name": "todo-backend",
+    "resourceinfo": {
+        "service.name": "todo-backend",
+        "telemetry.sdk.language": "nodejs",
+        "telemetry.sdk.name": "opentelemetry",
+        "telemetry.sdk.version": "1.13.0",
+        "container.id": "71fd21d42138f5ab15bd33add6f72d703baa5abaae58448bdf8048d856844099",
+        "k8s.container.name": "todo-back",
+        "k8s.deployment.name": "todo-backend",
+        "k8s.namespace.name": "default",
+        "k8s.node.name": "docker-desktop",
+        "k8s.pod.name": "todo-backend-6b8df9f9bd-vg7b5",
+        "k8s.replicaset.name": "todo-backend-6b8df9f9bd",
+        "host.name": "todo-backend-6b8df9f9bd-vg7b5",
+        "host.arch": "amd64",
+        "os.type": "linux",
+        "os.version": "5.15.49-linuxkit",
+        "process.pid": "1",
+        "process.executable.name": "node",
+        "process.executable.path": "/usr/local/bin/node",
+        "process.command_args": ["/usr/local/bin/node", "/app/src/index.js"],
+        "process.runtime.version": "18.16.0",
+        "process.runtime.name": "nodejs",
+        "process.runtime.description": "Node.js",
+        "process.command": "/app/src/index.js",
+        "process.owner": "root"
+    }
+}
