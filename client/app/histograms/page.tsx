@@ -5,7 +5,7 @@ import HistogramAttr from '@/components/HistogramAttr';
 import Histogram from '@/components/Histogram';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import metricEndPoint from '../../k8s/k8sUrls';
+import { metricEndPoint, servicesEndpoint} from '../../k8s/k8sUrls';
 
 /* Mock metrics data for local testing (not in K8S). 
    For deploying to K8S, comment out below import and const allMetrics declaration, and uncomment the other const allMetrics declaration in exported HistogramPage function component. 
@@ -21,11 +21,26 @@ export const metadata: Metadata = {
 
 async function getMetrics(): Promise<any> {
   try {
+    let services = await fetch(servicesEndpoint, { cache: 'no-store' }) // Should return an Array of serviceName strings
+
+    services = await services.json();
+
+    let url = servicesEndpoint + '/todo-frontend';
+
+    console.log(url)
+
+    const individualService = await fetch(url, { cache: 'no-store' })
+
+    const individualServiceData = await individualService.json()
+
+    console.log('individualService', individualServiceData[0].resourceMetrics);
+
     const res = await fetch(metricEndPoint, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
     const data = await res.json();
+    // console.log(data)
     return data;
   } catch (err) {
     console.log(
