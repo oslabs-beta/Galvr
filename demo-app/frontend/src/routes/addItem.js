@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
       headers: { 'Content-Type': 'application/json' },
     });
     const data = await item.json();
+    console.log('addItem Data', data)
     return res.send(data);
   } catch (err) {
     return next(err);
