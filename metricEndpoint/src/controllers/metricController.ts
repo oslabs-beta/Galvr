@@ -23,10 +23,12 @@ export const metricDecoder = (
 ): void => {
   try {
     if (req.body) {
+      console.log('requestBody', JSON.stringify(req.body));
+
       const metric = ExportMetricsServiceRequest.decode(req.body);
       res.locals.metrics = metric;
 
-      console.log('Unparsed: ', JSON.stringify(res.locals.metrics));
+      // console.log('Unparsed: ', JSON.stringify(res.locals.metrics));
     }
     return next();
   } catch (err) {
@@ -167,7 +169,7 @@ export const metricSaver = async (
 ): Promise<void> => {
   try {
     if (res.locals.metrics) {
-      console.log('Parsed: ', JSON.stringify(res.locals.metrics));
+      // console.log('Parsed: ', JSON.stringify(res.locals.metrics));
 
       res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
         const { resource } = metric;

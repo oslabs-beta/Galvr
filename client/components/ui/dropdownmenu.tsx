@@ -23,11 +23,15 @@ import { useRouter } from 'next/navigation';
 
 interface ServicesProp {
   services: string[];
+  selected: string | null;
 }
 
-export default function DropdownMenu({ services }: ServicesProp): JSX.Element {
+export default function DropdownMenu({
+  services,
+  selected,
+}: ServicesProp): JSX.Element {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState(selected ?? '');
   const router = useRouter();
 
   return (

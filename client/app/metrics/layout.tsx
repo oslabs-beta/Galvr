@@ -1,13 +1,10 @@
-import DropdownMenu from '@/components/DropdownMenu';
+import DropdownMenu from '@/components/ui/dropdownmenu';
 import { servicesEndpoint } from '../../k8s/k8sUrls';
 
 /*
-  The two lines below iare mock data (demoServices) for testing. 
-  For production, comment these two lines out and uncomment the getService function invocation in MetricLayout component.
+  Mock data (demoServices) for testing locally. 
 */
 import demoServices from '../../test/demoServices';
-
-// const services = demoServices;
 
 async function getServices(): Promise<string[]> {
   if (process.env.NODE_ENV === 'development') {
@@ -32,19 +29,23 @@ async function getServices(): Promise<string[]> {
 
 export default async function MetricLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: {
+    servicename: string | null;
+  };
 }): Promise<JSX.Element> {
   const services: string[] = await getServices();
 
   return (
     <>
-      <div className="flex-col flex">
+      <div className="flex-col flex w-full">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Metrics</h2>
           </div>
-          <DropdownMenu services={services} />
+          <DropdownMenu services={services} selected={params.servicename} />
           {children}
         </div>
       </div>
