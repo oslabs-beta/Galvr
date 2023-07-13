@@ -44,7 +44,8 @@
         "@typescript-eslint/consistent-type-imports": "warn",
         "@typescript-eslint/return-await": ["error", "in-try-catch"],
         "@typescript-eslint/strict-boolean-expressions": "off",
-        "@typescript-eslint/restrict-template-expressions": "warn"
+        "@typescript-eslint/restrict-template-expressions": "warn",
+        "import/no-relative-packages": "off"
       },
       // To resolve import path parsing issue with typescript
       "settings": {

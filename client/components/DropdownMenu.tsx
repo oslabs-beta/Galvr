@@ -21,30 +21,11 @@ import {
 } from '@/components/ui/popover';
 import { useRouter } from 'next/navigation';
 
-const microservices = [
-  {
-    value: 'next.js',
-    label: 'Next.js',
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit',
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
-  },
-  {
-    value: 'remix',
-    label: 'Remix',
-  },
-  {
-    value: 'astro',
-    label: 'Astro',
-  },
-];
+interface ServicesProp {
+  services: string[];
+}
 
-export default function DropdownMenu(): JSX.Element {
+export default function DropdownMenu({ services }: ServicesProp): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   const router = useRouter();
@@ -56,36 +37,35 @@ export default function DropdownMenu(): JSX.Element {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[300px] justify-between"
         >
           {value
-            ? microservices.find((microservice) => microservice.value === value)
-                ?.label
+            ? services.find((microservice) => microservice === value)
             : 'Microservice...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0 bg-white">
+      <PopoverContent className="w-[300px] p-0 bg-white">
         <Command>
           <CommandInput placeholder="Search microservice..." />
           <CommandEmpty>No microservice found.</CommandEmpty>
           <CommandGroup>
-            {microservices.map((microservice) => (
+            {services.map((microservice) => (
               <CommandItem
-                key={microservice.value}
+                key={microservice}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? '' : currentValue);
                   setOpen(false);
-                  router.push(`/${microservice.value}`);
+                  router.push(`/metrics/${microservice}`);
                 }}
               >
                 <Check
                   className={cn(
                     'mr-2 h-4 w-4',
-                    value === microservice.value ? 'opacity-100' : 'opacity-0'
+                    value === microservice ? 'opacity-100' : 'opacity-0'
                   )}
                 />
-                {microservice.label}
+                {microservice}
               </CommandItem>
             ))}
           </CommandGroup>

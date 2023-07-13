@@ -20,7 +20,7 @@ export default function Nav(): JSX.Element {
 
       <div className="sm:flex hidden">
         <div className="flex gap-3 md:grap-5">
-          <Link href="histograms" className="black_btn">
+          <Link href="metrics" className="black_btn">
             Metrics
           </Link>
           <a href="http://localhost:16686/dependencies" className="black_btn">
