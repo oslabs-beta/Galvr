@@ -24,6 +24,7 @@ export const metricDecoder = (
       const metric = ExportMetricsServiceRequest.decode(req.body);
       res.locals.metrics = metric;
     }
+
     return next();
   } catch (err) {
     return next({ log: err, message: 'Error decoding metrics' });

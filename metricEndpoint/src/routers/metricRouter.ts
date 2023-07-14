@@ -14,7 +14,9 @@ router.post('/', metricDecoder, metricParser, metricSaver, (req, res) => {
   res
     .set('Content-Type', 'application/x-protobuf')
     .send(
-      ExportMetricsServiceResponse.encode(ExportMetricsServiceResponse.create())
+      ExportMetricsServiceResponse.encode(
+        ExportMetricsServiceResponse.create()
+      ).finish()
     );
 });
 
