@@ -17,9 +17,12 @@ export interface ServiceSchema {
   resourceMetrics: ParsedResourceMetrics;
 }
 
-const servicesSchema = new mongoose.Schema<ServiceSchema>({
-  serviceName: String,
-  resourceMetrics: {},
-});
+const servicesSchema = new mongoose.Schema<ServiceSchema>(
+  {
+    serviceName: String,
+    resourceMetrics: {},
+  },
+  { minimize: false }
+);
 
 export const Services = mongoose.model('Services', servicesSchema);

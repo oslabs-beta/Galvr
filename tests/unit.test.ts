@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 /* eslint-disable import/no-relative-packages */
 import mongoose from 'mongoose';
+import request from 'supertest';
 import { type Request, type Response, type NextFunction } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
+import { type Server } from 'http';
+import app from '../metricEndpoint/src/server';
 import {
   metricDecoder,
   metricParser,
@@ -19,10 +22,12 @@ import unparsedMetrics from '../observability/otelDemoUnparsed';
 import parsedMetrics from '../observability/otelDemoParsed';
 
 let mongoServer: MongoMemoryServer;
+let server: Server;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   await mongoose.connect(mongoServer.getUri(), {});
+  server = app.listen(3000);
 });
 
 afterAll(async () => {
@@ -30,9 +35,13 @@ afterAll(async () => {
   if (mongoServer) {
     await mongoServer.stop();
   }
+  if (server) server.close();
 });
 
 describe('Saving Metrics', () => {
+  beforeAll(async () => {
+    await Services.deleteMany({});
+  });
   it('should decode metrics', () => {
     const req = {
       body: ExportMetricsServiceRequest.encode(unparsedMetrics).finish(),
@@ -83,15 +92,10 @@ describe('Fetching Metrics', () => {
   beforeAll(async () => {
     await Services.deleteMany({});
     parsedMetrics.forEach(async (service) => {
-      await Services.findOneAndUpdate(
-        {
-          serviceName: service.resource.attributes['service.name'],
-        },
-        {
-          resourceMetrics: service,
-        },
-        { upsert: true }
-      );
+      await Services.create({
+        serviceName: service.resource.attributes['service.name'],
+        resourceMetrics: service,
+      });
     });
     let services = await Services.find();
     let count = 0;
@@ -118,5 +122,50 @@ describe('Fetching Metrics', () => {
     expect(
       JSON.stringify(res.locals.resourceMetrics[0].resourceMetrics)
     ).toEqual(JSON.stringify(parsedMetrics[0]));
+  });
+});
+
+xdescribe('POST requests', () => {
+  beforeAll(async () => {
+    await Services.deleteMany({});
+  });
+  it('should respond to empty metric requests with success', async () => {});
+});
+
+describe('GET requests', () => {
+  beforeAll(async () => {
+    await Services.deleteMany({});
+    parsedMetrics.forEach(async (service) => {
+      await Services.create({
+        serviceName: service.resource.attributes['service.name'],
+        resourceMetrics: service,
+      });
+    });
+    let services = await Services.find();
+    let count = 0;
+    while (services.length !== 3 && count < 5) {
+      count += 1;
+      // eslint-disable-next-line no-await-in-loop
+      services = await Services.find();
+    }
+  });
+
+  it('should fetch a list of services', async () => {
+    const response = await request(server).get('/services');
+    expect(response.status).toEqual(200);
+    expect(response.headers['content-type']).toMatch(/json/);
+    expect(response.body.length).toBe(3);
+    expect(response.body.includes('checkoutservice')).toBe(true);
+  });
+
+  it('should fetch resource metrics of a single service', async () => {
+    const response = await request(server).get('/services/checkoutservice');
+    expect(response.status).toEqual(200);
+    expect(response.headers['content-type']).toMatch(/json/);
+    expect(response.body.length).toBe(1);
+    expect(response.body[0].serviceName).toBe('checkoutservice');
+    expect(JSON.stringify(response.body[0].resourceMetrics)).toEqual(
+      JSON.stringify(parsedMetrics[0])
+    );
   });
 });
