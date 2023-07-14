@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: endpointtests
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: endpointtests
+  template:
+    metadata:
+      labels:
+        run: endpointtests
+    spec:
+      containers:
+        - name: endpointtests
+          image: endpointtests
+          imagePullPolicy: Never

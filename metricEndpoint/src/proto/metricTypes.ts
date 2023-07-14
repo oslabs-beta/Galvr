@@ -1,4 +1,5 @@
 /* eslint-disable */
+// generated with https://github.com/stephenh/ts-proto
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 

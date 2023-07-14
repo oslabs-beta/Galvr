@@ -1,5 +1,4 @@
 import type express from 'express';
-import mongoose from 'mongoose';
 import {
   type AnyValue,
   ExportMetricsServiceRequest,
@@ -13,8 +12,7 @@ import {
   type ParsedDataPoint,
   type ParsedScopeMetrics,
 } from '../proto/metricTypes';
-import { type testMetric, testModel } from '../models/metricModel';
-import { type ServiceSchema, Services } from '../models/serviceModel'
+import { type ServiceSchema, Services } from '../models/serviceModel';
 
 export const metricDecoder = (
   req: express.Request,
@@ -151,7 +149,6 @@ export const metricParser = (
         []
       );
     }
-    // console.log(JSON.stringify(res.locals.metrics));
     return next();
   } catch (err) {
     return next({ log: err, status: 502, message: 'Error parsing metrics' });
@@ -165,27 +162,22 @@ export const metricSaver = async (
 ): Promise<void> => {
   try {
     if (res.locals.metrics) {
-
-      res.locals.metrics.forEach( async (metric : ParsedResourceMetrics) => {
+      res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
         const { resource } = metric;
         const { attributes } = resource;
 
-        const filter = {serviceName : attributes['service.name']};
-        const update = { resourceMetrics: metric }
+        const filter = { serviceName: attributes['service.name'] };
+        const update = { resourceMetrics: metric };
 
-        const ServiceDoc = await Services.findOneAndUpdate(
-          filter, // Filter to find current Service document
-          update, // Updated scopeMetrics
-          {
-            new: true, // returns the updated document
-            upsert: true, // if document doesn't exist, create it using filter and update
-          })
-        // console.log(ServiceDoc); 
-      })  
+        await Services.findOneAndUpdate(filter, update, {
+          new: true,
+          upsert: true,
+        });
+      });
     }
-      return next();
-    } catch (err) {
-        return next({ log: err, status: 502, message: 'Error saving metrics' });
+    return next();
+  } catch (err) {
+    return next({ log: err, status: 502, message: 'Error saving metrics' });
   }
 };
 
@@ -196,7 +188,7 @@ export const metricGetter = async (
 ): Promise<void> => {
   try {
     const metrics = await Services.find({});
-    
+
     res.locals.metrics = metrics.reduce(
       (arr: ParsedResourceMetrics[], cur: ServiceSchema) => {
         arr.push(cur.resourceMetrics);
@@ -210,27 +202,3 @@ export const metricGetter = async (
     return next({ log: err, message: 'Error geting metrics' });
   }
 };
-
-  // try {
-  //   if (res.locals.metrics) {
-  //     res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
-  //       const resourceString = JSON.stringify(metric.resource);
-  //       const curMetric = await testModel.findOne({
-  //         resourceString,
-  //       });
-  //       if (curMetric) {
-  //         await testModel.findByIdAndUpdate(curMetric._id, {
-  //           metrics: metric,
-  //         });
-  //       } else {
-  //         await testModel.create({
-  //           resourceString,
-  //           metrics: metric,
-  //         });
-  //       }
-  //     });
-  //   }
-  //   return next();
-  // } catch (err) {
-  //   return next({ log: err, status: 502, message: 'Error saving metrics' });
-  // }
