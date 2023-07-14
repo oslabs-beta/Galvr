@@ -23,7 +23,7 @@ export const metricDecoder = (
 ): void => {
   try {
     if (req.body) {
-      console.log('requestBody', JSON.stringify(req.body));
+      // console.log('requestBody', JSON.stringify(req.body));
 
       const metric = ExportMetricsServiceRequest.decode(req.body);
       res.locals.metrics = metric;

@@ -53,7 +53,7 @@ export const serviceGetter = async (
 
     if (!service) throw new Error();
 
-    console.log(service);
+    // console.log(JSON.stringify(service[0].resourceMetrics));
 
     res.locals.resourceMetrics = service[0].resourceMetrics;
 
