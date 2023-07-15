@@ -22,4 +22,4 @@ jobs:
           context: ./metricEndpoint
           file: ./metricEndpoint/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/galvr/metricendpoint:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/galvr:endpoint
