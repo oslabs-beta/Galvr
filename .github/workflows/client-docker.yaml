@@ -22,4 +22,4 @@ jobs:
           context: ./client
           file: ./client/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/galvr:client
+          tags: galvrmetrics/galvr:client
