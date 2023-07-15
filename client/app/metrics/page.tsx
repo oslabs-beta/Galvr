@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { RadarChart } from '@/components/RadarChart';
 
 export const metadata: Metadata = {
   title: 'Metrics',
@@ -11,7 +10,6 @@ export default async function MetricsPage(): Promise<JSX.Element> {
   return (
     <>
       <hr className="border-gray-300 my-6" />
-      <RadarChart />
     </>
   );
 }

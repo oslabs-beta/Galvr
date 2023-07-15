@@ -3,6 +3,7 @@ import { Share2, Languages, Package } from 'lucide-react';
 
 import HistogramAttr from '@/components/HistogramAttr';
 import Histogram from '@/components/Histogram';
+import { RadarChart } from '@/components/RadarChart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { servicesEndpoint } from '../../../k8s/k8sUrls';
@@ -96,7 +97,7 @@ export default async function HistogramPage({
     return (
       <>
         <hr className="border-gray-300 my-6" />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -136,6 +137,9 @@ export default async function HistogramPage({
                 {serviceObj.resource.attributes['telemetry.sdk.language']}
               </p>
             </CardContent>
+          </Card>
+          <Card>
+            <RadarChart />
           </Card>
         </div>
         {histogramElements}

@@ -43,6 +43,8 @@ export const metricParser = (
 ): void => {
   try {
     if (res.locals.metrics) {
+      // console.log('Unparsed: ', JSON.stringify(res.locals.metrics));
+
       const attributeParser = (arr: KeyValue[]): ParsedKeyValue =>
         arr.reduce((obj: ParsedKeyValue, cur: KeyValue) => {
           const curObj: ParsedKeyValue = {};
@@ -155,7 +157,7 @@ export const metricParser = (
         []
       );
     }
-    // console.log(JSON.stringify(res.locals.metrics));
+    // console.log('Parsed: ', JSON.stringify(res.locals.metrics));
     return next();
   } catch (err) {
     return next({ log: err, status: 502, message: 'Error parsing metrics' });
@@ -178,6 +180,8 @@ export const metricSaver = async (
         const filter = { serviceName: attributes['service.name'] };
         const update = { resourceMetrics: metric };
 
+        // console.log('Parsed ResourceMetrics: ', JSON.stringify(metric));
+
         const ServiceDoc = await Services.findOneAndUpdate(
           filter, // Filter to find current Service document
           update, // Updated scopeMetrics
@@ -186,7 +190,7 @@ export const metricSaver = async (
             upsert: true, // if document doesn't exist, create it using filter and update
           }
         );
-        // console.log(ServiceDoc);
+        // console.log('Saved to database: ', JSON.stringify(ServiceDoc));
       });
     }
     return next();

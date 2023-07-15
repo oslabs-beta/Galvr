@@ -20,9 +20,9 @@ opentelemetry-collector:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, batch/2]
-          exporters: [jaeger, spanmetrics]
+          exporters: [jaeger]
         metrics:
-          receivers: [otlp, spanmetrics]
+          receivers: [otlp]
           processors: [memory_limiter, filter/ottl, transform, batch/2]
           exporters: [otlphttp/example]
 
