@@ -17,12 +17,19 @@ import {
   serviceGetter,
 } from '../metricEndpoint/src/controllers/serviceController';
 import { Services } from '../metricEndpoint/src/models/serviceModel';
-import { ExportMetricsServiceRequest } from '../metricEndpoint/src/proto/metricTypes';
+import {
+  ExportMetricsServiceRequest,
+  ExportMetricsServiceResponse,
+} from '../metricEndpoint/src/proto/metricTypes';
 import unparsedMetrics from '../observability/otelDemoUnparsed';
 import parsedMetrics from '../observability/otelDemoParsed';
 
 let mongoServer: MongoMemoryServer;
 let server: Server;
+const metricBuf = ExportMetricsServiceRequest.encode(unparsedMetrics).finish();
+const unparsedMetricString = JSON.stringify(unparsedMetrics);
+const parsedMetricString = JSON.stringify(parsedMetrics);
+const checkoutMetricString = JSON.stringify(parsedMetrics[0]);
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
@@ -44,23 +51,19 @@ describe('Saving Metrics', () => {
   });
   it('should decode metrics', () => {
     const req = {
-      body: ExportMetricsServiceRequest.encode(unparsedMetrics).finish(),
+      body: metricBuf,
     } as Request;
     const res = { locals: {} } as Response;
     const next: NextFunction = () => true;
     metricDecoder(req, res, next);
-    const metrics = JSON.stringify(res.locals.metrics);
-    const comparison = JSON.stringify(unparsedMetrics);
-    expect(metrics).toEqual(comparison);
+    expect(JSON.stringify(res.locals.metrics)).toEqual(unparsedMetricString);
   });
   it('should parse metrics', () => {
     const req = {} as Request;
     const res = { locals: { metrics: unparsedMetrics } } as unknown as Response;
     const next: NextFunction = () => true;
     metricParser(req, res, next);
-    const metrics = JSON.stringify(res.locals.metrics);
-    const comparison = JSON.stringify(parsedMetrics);
-    expect(metrics).toEqual(comparison);
+    expect(JSON.stringify(res.locals.metrics)).toEqual(parsedMetricString);
   });
   it('should save metrics', async () => {
     await Services.deleteMany({});
@@ -68,20 +71,14 @@ describe('Saving Metrics', () => {
     const res = { locals: { metrics: parsedMetrics } } as unknown as Response;
     const next: NextFunction = () => true;
     await metricSaver(req, res, next);
-    let services = await Services.find();
-    let count = 0;
-    while (services.length !== 3 && count < 5) {
-      count += 1;
-      // eslint-disable-next-line no-await-in-loop
-      services = await Services.find();
-    }
+    const services = await Services.find();
     expect(services.length).toBe(3);
     const serviceNames = services.map((service) => service.serviceName);
     expect(serviceNames.includes('checkoutservice')).toBe(true);
     services.forEach((service) => {
       if (service.serviceName === 'checkoutservice') {
         expect(JSON.stringify(service.resourceMetrics)).toEqual(
-          JSON.stringify(parsedMetrics[0])
+          checkoutMetricString
         );
       }
     });
@@ -97,13 +94,6 @@ describe('Fetching Metrics', () => {
         resourceMetrics: service,
       });
     });
-    let services = await Services.find();
-    let count = 0;
-    while (services.length !== 3 && count < 5) {
-      count += 1;
-      // eslint-disable-next-line no-await-in-loop
-      services = await Services.find();
-    }
   });
   it('should fetch a list of service names', async () => {
     const req = {} as Request;
@@ -121,15 +111,48 @@ describe('Fetching Metrics', () => {
     expect(res.locals.resourceMetrics[0].serviceName).toBe('checkoutservice');
     expect(
       JSON.stringify(res.locals.resourceMetrics[0].resourceMetrics)
-    ).toEqual(JSON.stringify(parsedMetrics[0]));
+    ).toEqual(checkoutMetricString);
   });
 });
 
-xdescribe('POST requests', () => {
+describe('POST requests', () => {
   beforeAll(async () => {
     await Services.deleteMany({});
   });
-  it('should respond to empty metric requests with success', async () => {});
+  it('should save data from metric requests', async () => {
+    const response = await request(server)
+      .post('/v1/metrics')
+      .send(metricBuf)
+      .set({ 'Content-Type': 'application/x-protobuf' })
+      .buffer()
+      .parse((res, callback) => {
+        res.setEncoding('binary');
+        let data = '';
+        res.on('data', (chunk: string) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          callback(null, Buffer.from(data, 'binary'));
+        });
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toMatch(/x-protobuf/);
+    const message = ExportMetricsServiceResponse.decode(response.body);
+    expect(message.partialSuccess).toBe(undefined);
+
+    const services = await Services.find();
+    expect(services.length).toBe(3);
+    const serviceNames = services.map((service) => service.serviceName);
+    expect(serviceNames.includes('checkoutservice')).toBe(true);
+    services.forEach((service) => {
+      if (service.serviceName === 'checkoutservice') {
+        expect(JSON.stringify(service.resourceMetrics)).toEqual(
+          checkoutMetricString
+        );
+      }
+    });
+  });
 });
 
 describe('GET requests', () => {
@@ -141,13 +164,6 @@ describe('GET requests', () => {
         resourceMetrics: service,
       });
     });
-    let services = await Services.find();
-    let count = 0;
-    while (services.length !== 3 && count < 5) {
-      count += 1;
-      // eslint-disable-next-line no-await-in-loop
-      services = await Services.find();
-    }
   });
 
   it('should fetch a list of services', async () => {
@@ -165,7 +181,7 @@ describe('GET requests', () => {
     expect(response.body.length).toBe(1);
     expect(response.body[0].serviceName).toBe('checkoutservice');
     expect(JSON.stringify(response.body[0].resourceMetrics)).toEqual(
-      JSON.stringify(parsedMetrics[0])
+      checkoutMetricString
     );
   });
 });

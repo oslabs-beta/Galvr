@@ -1,5 +1,6 @@
 import express from 'express';
-import zlib from 'zlib';
+import bodyParser from 'body-parser';
+// import zlib from 'zlib';
 
 import metricRouter from './routers/metricRouter';
 import traceRouter from './routers/traceRouter';
@@ -9,31 +10,30 @@ import { Status } from './proto/statusTypes';
 
 const app = express();
 
+app.use(bodyParser.raw({ type: 'application/x-protobuf' }));
+
+// app.use((req, res, next) => {
+//   if (req.get('Content-Encoding') === 'gzip') {
+//     const data: any[] = [];
+//     req.addListener('data', (chunk) => {
+//       data.push(Buffer.from(chunk));
+//     });
+//     req.addListener('end', () => {
+//       const buffer = Buffer.concat(data);
+//       zlib.gunzip(buffer, (err, result) => {
+//         if (!err) {
+//           req.body = result;
+//           next();
+//         } else {
+//           next({ log: err });
+//         }
+//       });
+//     });
+//   } else next();
+// });
+
 app.use('/metricsFromDB', metricsFromDBRouter);
 app.use('/services', servicesRouter);
-
-// app.use('/services', servicesRouter);
-
-app.use((req, res, next) => {
-  if (req.get('Content-Encoding') === 'gzip') {
-    const data: any[] = [];
-    req.addListener('data', (chunk) => {
-      data.push(Buffer.from(chunk));
-    });
-    req.addListener('end', () => {
-      const buffer = Buffer.concat(data);
-      zlib.gunzip(buffer, (err, result) => {
-        if (!err) {
-          req.body = result;
-          next();
-        } else {
-          next({ log: err });
-        }
-      });
-    });
-  }
-});
-
 app.use('/v1/metrics', metricRouter);
 app.use('/v1/traces', traceRouter);
 
