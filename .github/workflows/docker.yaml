@@ -19,7 +19,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./metricEndpoint
+          context: .
           file: ./metricEndpoint/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/galvr/metricendpoint:latest

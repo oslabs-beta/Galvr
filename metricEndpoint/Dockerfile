@@ -1,6 +1,6 @@
 FROM node:18-alpine
 WORKDIR /app
-COPY . .
+COPY ./metricEndpoint .
 RUN npm install --production
 RUN npx tsc
 CMD ["node", "dist/server.js"]
