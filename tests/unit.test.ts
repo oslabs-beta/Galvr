@@ -71,13 +71,7 @@ describe('Saving Metrics', () => {
     const res = { locals: { metrics: parsedMetrics } } as unknown as Response;
     const next: NextFunction = () => true;
     await metricSaver(req, res, next);
-    let services = await Services.find();
-    let count = 0;
-    while (services.length !== 3 && count < 5) {
-      count += 1;
-      // eslint-disable-next-line no-await-in-loop
-      services = await Services.find();
-    }
+    const services = await Services.find();
     expect(services.length).toBe(3);
     const serviceNames = services.map((service) => service.serviceName);
     expect(serviceNames.includes('checkoutservice')).toBe(true);
@@ -100,13 +94,6 @@ describe('Fetching Metrics', () => {
         resourceMetrics: service,
       });
     });
-    let services = await Services.find();
-    let count = 0;
-    while (services.length !== 3 && count < 5) {
-      count += 1;
-      // eslint-disable-next-line no-await-in-loop
-      services = await Services.find();
-    }
   });
   it('should fetch a list of service names', async () => {
     const req = {} as Request;
@@ -154,13 +141,7 @@ describe('POST requests', () => {
     const message = ExportMetricsServiceResponse.decode(response.body);
     expect(message.partialSuccess).toBe(undefined);
 
-    let services = await Services.find();
-    let count = 0;
-    while (services.length !== 3 && count < 5) {
-      count += 1;
-      // eslint-disable-next-line no-await-in-loop
-      services = await Services.find();
-    }
+    const services = await Services.find();
     expect(services.length).toBe(3);
     const serviceNames = services.map((service) => service.serviceName);
     expect(serviceNames.includes('checkoutservice')).toBe(true);
@@ -183,13 +164,6 @@ describe('GET requests', () => {
         resourceMetrics: service,
       });
     });
-    let services = await Services.find();
-    let count = 0;
-    while (services.length !== 3 && count < 5) {
-      count += 1;
-      // eslint-disable-next-line no-await-in-loop
-      services = await Services.find();
-    }
   });
 
   it('should fetch a list of services', async () => {
