@@ -3,9 +3,15 @@ import { Share2, Languages, Package } from 'lucide-react';
 
 import HistogramAttr from '@/components/HistogramAttr';
 import Histogram from '@/components/Histogram';
-import { RadarChart } from '@/components/RadarChart';
+import PolarAreaChart from '@/components/PolarAreaChart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+import type {
+  ParsedMetric,
+  ParsedResourceMetrics,
+  ParsedScopeMetrics,
+  ParsedHistogramDataPoint,
+} from '../../../lib/metricTypes';
 import { servicesEndpoint } from '../../../k8s/k8sUrls';
 
 /* 
@@ -18,7 +24,9 @@ export const metadata: Metadata = {
   description: 'A collection of metrics histograms.',
 };
 
-async function getServiceMetric(serviceName: string): Promise<any> {
+async function getServiceMetric(
+  serviceName: string
+): Promise<ParsedResourceMetrics | null> {
   if (process.env.NODE_ENV === 'development') {
     return demoOTELExample;
   }
@@ -30,14 +38,14 @@ async function getServiceMetric(serviceName: string): Promise<any> {
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
-    const data = await res.json();
+    const data: ParsedResourceMetrics = await res.json();
 
     return data;
   } catch (err) {
     console.log(
       `Error encounted when fetching metrics from metricEndPoint: ${err}`
     );
-    return undefined;
+    return null;
   }
 }
 
@@ -50,54 +58,93 @@ export default async function HistogramPage({
   const serviceObj = await getServiceMetric(params.servicename);
 
   if (serviceObj) {
-    /* histograms: an array of Metric objects from the same Resource, each representing a histogram (with one or more data points) */
-    const histograms: any[] = [];
-    serviceObj.scopeMetrics.forEach((instrumentationLib: any) => {
-      /* Filter the Metrics objects received to keep only the ones with histogram type and associated dataPoint array exists (has valid dataPoint) */
+    /* histograms: an array of Metric objects from the same Resource, each representing a histogram, sum or gauge (with one or more data points) */
+    const histograms: ParsedMetric[] = [];
+    const multiGaugeOrSum: ParsedMetric[] = [];
 
-      instrumentationLib.metrics.forEach((metricObj: any) => {
-        if (metricObj.histogram?.dataPoints.length) {
-          histograms.push(metricObj);
-        }
-      });
-    });
+    serviceObj.scopeMetrics.forEach(
+      (instrumentationLib: ParsedScopeMetrics) => {
+        /* Filter the Metrics objects received to keep only the ones with histogram type and associated dataPoint array exists (has valid dataPoint) */
+
+        instrumentationLib.metrics.forEach((metricObj: ParsedMetric) => {
+          if (metricObj.description) {
+            if (metricObj.histogram?.dataPoints.length) {
+              histograms.push(metricObj);
+            }
+
+            if (metricObj.gauge && metricObj.gauge.dataPoints.length > 1) {
+              multiGaugeOrSum.push(metricObj);
+            }
+
+            if (metricObj.sum && metricObj.sum.dataPoints.length > 1) {
+              multiGaugeOrSum.push(metricObj);
+            }
+          }
+        });
+      }
+    );
 
     /* histogramElements: an array of React elements, each representing a histogram from the histograms array */
-    const histogramElements = histograms.map((histoObj) => (
-      <div
-        className="grid gap-4 md:grid-cols-2 lg:grid-cols-7"
-        key={histoObj.name}
-      >
-        <Card className="col-span-5">
-          <CardContent className="pl-2">
-            <Histogram
-              description={histoObj.description || ''}
-              unit={histoObj.unit || ''}
-              xAxisLabels={histoObj.histogram.dataPoints[0].explicitBounds}
-              dataArrays={histoObj.histogram.dataPoints.map(
-                (dataPoint: any) => dataPoint.bucketCounts
+    const histogramElements = histograms.map(
+      (histoObj): JSX.Element => (
+        <div
+          className="grid gap-4 md:grid-cols-2 lg:grid-cols-7"
+          key={histoObj.name}
+        >
+          <Card className="col-span-5">
+            <CardContent className="pl-2">
+              <Histogram
+                description={histoObj.description || ''}
+                unit={histoObj.unit || ''}
+                xAxisLabels={histoObj.histogram!.dataPoints[0].explicitBounds}
+                dataArrays={histoObj.histogram!.dataPoints.map(
+                  (dataPoint: ParsedHistogramDataPoint) =>
+                    dataPoint.bucketCounts
+                )}
+              />
+            </CardContent>
+          </Card>
+          <Card className="col-span-2 overflow-auto h-96">
+            <HistogramAttr
+              attrArrays={histoObj.histogram!.dataPoints.map(
+                (dataPoint: ParsedHistogramDataPoint) => ({
+                  count: dataPoint.count,
+                  min: dataPoint.min,
+                  max: dataPoint.max,
+                  ...dataPoint.attributes,
+                })
               )}
             />
-          </CardContent>
-        </Card>
-        <Card className="col-span-2 overflow-auto h-96">
-          <HistogramAttr
-            attrArrays={histoObj.histogram.dataPoints.map((dataPoint: any) => ({
-              count: dataPoint.count,
-              min: dataPoint.min,
-              max: dataPoint.max,
-              ...dataPoint.attributes,
-            }))}
-          />
-        </Card>
-      </div>
-    ));
+          </Card>
+        </div>
+      )
+    );
+
+    /* multiGaugeOrSumElements: an array of React elements, each representing a gauge or sum with multiple datapoints */
+    const multiGaugeOrSumElements = multiGaugeOrSum.map(
+      (multiGaugeOrSumObj): JSX.Element => {
+        const { description, unit } = multiGaugeOrSumObj;
+        const dataPointsArr =
+          multiGaugeOrSumObj.sum?.dataPoints ??
+          multiGaugeOrSumObj.gauge?.dataPoints;
+
+        return (
+          <Card key={multiGaugeOrSumObj.name}>
+            <PolarAreaChart
+              description={description}
+              unit={unit}
+              dataPointsArr={dataPointsArr!}
+            />
+          </Card>
+        );
+      }
+    );
 
     /* Render metadata of one resource and its associated histograms */
     return (
       <>
         <hr className="border-gray-300 my-6" />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -138,9 +185,9 @@ export default async function HistogramPage({
               </p>
             </CardContent>
           </Card>
-          <Card>
-            <RadarChart />
-          </Card>
+        </div>
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
+          {multiGaugeOrSumElements}
         </div>
         {histogramElements}
       </>

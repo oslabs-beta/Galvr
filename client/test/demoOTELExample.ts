@@ -1,4 +1,6 @@
-const demoOTELExample = {
+import type { ParsedResourceMetrics } from '../lib/metricTypes';
+
+const demoOTELExample: ParsedResourceMetrics = {
   resource: {
     attributes: {
       'container.id':
