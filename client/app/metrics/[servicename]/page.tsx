@@ -4,6 +4,7 @@ import { Share2, Languages, Package } from 'lucide-react';
 import HistogramAttr from '@/components/HistogramAttr';
 import Histogram from '@/components/Histogram';
 import PolarAreaChart from '@/components/PolarAreaChart';
+import Table from '@/components/Table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import type {
@@ -49,6 +50,23 @@ async function getServiceMetric(
   }
 }
 
+function allocateGaugeOrSum(
+  metricObj: ParsedMetric,
+  metricType: 'gauge' | 'sum',
+  multiGaugeOrSumWithZero: ParsedMetric[],
+  multiGaugeOrSumNoZero: ParsedMetric[]
+): void {
+  let hasZero = false;
+  metricObj[metricType]!.dataPoints.forEach((datapoint) => {
+    if (datapoint.asDouble === 0 || datapoint.asInt === '0') {
+      hasZero = true;
+    }
+  });
+  hasZero
+    ? multiGaugeOrSumWithZero.push(metricObj)
+    : multiGaugeOrSumNoZero.push(metricObj);
+}
+
 export default async function HistogramPage({
   params,
 }: {
@@ -60,24 +78,38 @@ export default async function HistogramPage({
   if (serviceObj) {
     /* histograms: an array of Metric objects from the same Resource, each representing a histogram, sum or gauge (with one or more data points) */
     const histograms: ParsedMetric[] = [];
-    const multiGaugeOrSum: ParsedMetric[] = [];
+    const multiGaugeOrSumNoZero: ParsedMetric[] = [];
+    const multiGaugeOrSumWithZero: ParsedMetric[] = [];
 
     serviceObj.scopeMetrics.forEach(
       (instrumentationLib: ParsedScopeMetrics) => {
         /* Filter the Metrics objects received to keep only the ones with histogram type and associated dataPoint array exists (has valid dataPoint) */
 
         instrumentationLib.metrics.forEach((metricObj: ParsedMetric) => {
+          /*
+            Only render the metric data with descriptions (meaningful data to the frontend users).
+          */
           if (metricObj.description) {
             if (metricObj.histogram?.dataPoints.length) {
               histograms.push(metricObj);
             }
 
             if (metricObj.gauge && metricObj.gauge.dataPoints.length > 1) {
-              multiGaugeOrSum.push(metricObj);
+              allocateGaugeOrSum(
+                metricObj,
+                'gauge',
+                multiGaugeOrSumWithZero,
+                multiGaugeOrSumNoZero
+              );
             }
 
             if (metricObj.sum && metricObj.sum.dataPoints.length > 1) {
-              multiGaugeOrSum.push(metricObj);
+              allocateGaugeOrSum(
+                metricObj,
+                'sum',
+                multiGaugeOrSumWithZero,
+                multiGaugeOrSumNoZero
+              );
             }
           }
         });
@@ -120,17 +152,38 @@ export default async function HistogramPage({
       )
     );
 
-    /* multiGaugeOrSumElements: an array of React elements, each representing a gauge or sum with multiple datapoints */
-    const multiGaugeOrSumElements = multiGaugeOrSum.map(
-      (multiGaugeOrSumObj): JSX.Element => {
-        const { description, unit } = multiGaugeOrSumObj;
+    /* multiGaugeOrSumNoZeroElements: an array of React elements, each representing a gauge or sum with multiple datapoints using Polar Chart */
+    const multiGaugeOrSumNoZeroElements = multiGaugeOrSumNoZero.map(
+      (multiGaugeOrSumNoZeroObj): JSX.Element => {
+        const { description, unit } = multiGaugeOrSumNoZeroObj;
         const dataPointsArr =
-          multiGaugeOrSumObj.sum?.dataPoints ??
-          multiGaugeOrSumObj.gauge?.dataPoints;
+          multiGaugeOrSumNoZeroObj.sum?.dataPoints ??
+          multiGaugeOrSumNoZeroObj.gauge?.dataPoints;
 
         return (
-          <Card key={multiGaugeOrSumObj.name}>
+          <Card key={multiGaugeOrSumNoZeroObj.name}>
             <PolarAreaChart
+              description={description}
+              unit={unit}
+              dataPointsArr={dataPointsArr!}
+            />
+          </Card>
+        );
+      }
+    );
+
+    /*
+     */
+    const multiGaugeOrSumWithZeroElements = multiGaugeOrSumWithZero.map(
+      (multiGaugeOrSumWithZeroObj): JSX.Element => {
+        const { description, unit } = multiGaugeOrSumWithZeroObj;
+        const dataPointsArr =
+          multiGaugeOrSumWithZeroObj.sum?.dataPoints ??
+          multiGaugeOrSumWithZeroObj.gauge?.dataPoints;
+
+        return (
+          <Card className="pl-5 pr-5" key={multiGaugeOrSumWithZeroObj.name}>
+            <Table
               description={description}
               unit={unit}
               dataPointsArr={dataPointsArr!}
@@ -186,10 +239,11 @@ export default async function HistogramPage({
             </CardContent>
           </Card>
         </div>
-        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
-          {multiGaugeOrSumElements}
-        </div>
         {histogramElements}
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
+          {multiGaugeOrSumNoZeroElements}
+          {multiGaugeOrSumWithZeroElements}
+        </div>
       </>
     );
   }

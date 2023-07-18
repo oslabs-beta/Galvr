@@ -33,11 +33,74 @@ export default function PolarAreaChart({
 }): JSX.Element {
   const labelArr: string[] = [];
   const dataArr: number[] = [];
+  let min = Infinity;
+  let needLogScale = false;
+  dataPointsArr.forEach((dataPoint) => {
+    const currData = dataPoint.asDouble ?? parseInt(dataPoint.asInt!, 10);
+    min = Math.min(min, currData);
+    if (Math.log10(currData) - Math.log10(min) > 1.5) {
+      needLogScale = true;
+    }
+  });
+
+  const optionsLogarithm = {
+    plugins: {
+      title: {
+        display: true,
+        text: [`${description}`, `${unit ? `Unit: ${unit}` : ''}`],
+        font: {
+          size: 14,
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context: any) => (10 ** context.parsed.r).toLocaleString(),
+        },
+      },
+    },
+    scales: {
+      r: {
+        ticks: {
+          callback: (value: number) => {
+            const convertedValue = 10 ** value;
+            return convertedValue < 1
+              ? convertedValue.toFixed(1).toLocaleString()
+              : Math.round(convertedValue).toLocaleString();
+          },
+        },
+      },
+    },
+  };
+
+  const optionsLinear = {
+    plugins: {
+      title: {
+        display: true,
+        text: [`${description}`, `${unit ? `Unit: ${unit}` : ''}`],
+        font: {
+          size: 14,
+        },
+      },
+    },
+  };
 
   dataPointsArr.forEach((dataPoint) => {
     labelArr.push(printAttrObj(dataPoint.attributes));
-    dataArr.push(dataPoint.asDouble ?? parseInt(dataPoint.asInt!, 10));
+    const currData = dataPoint.asDouble ?? parseInt(dataPoint.asInt!, 10);
+    min = Math.min(min, currData);
+    if (Math.log10(currData) - Math.log10(min) > 1.5) {
+      needLogScale = true;
+    }
+    dataArr.push(currData);
   });
+
+  if (needLogScale) {
+    for (let i = 0; i < dataArr.length; i += 1) {
+      dataArr[i] = Math.log10(dataArr[i]);
+    }
+  }
+
+  const options = needLogScale ? optionsLogarithm : optionsLinear;
 
   const data = {
     labels: labelArr,
@@ -53,18 +116,9 @@ export default function PolarAreaChart({
           'rgba(153, 102, 255, 0.5)',
           'rgba(255, 159, 64, 0.5)',
         ],
-        borderWidth: 3,
+        borderWidth: 1,
       },
     ],
-  };
-
-  const options = {
-    plugins: {
-      title: {
-        display: true,
-        text: [`${description}`, `${unit ? `Unit: ${unit}` : ''}`],
-      },
-    },
   };
 
   return <PolarArea data={data} options={options} />;
