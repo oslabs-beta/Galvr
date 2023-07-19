@@ -10,7 +10,7 @@ import {
 
 import type { ParsedNumberDataPoint } from '../lib/metricTypes';
 
-export default function TableDemo({
+export default function TableMultiDataPoints({
   description,
   unit,
   dataPointsArr,
@@ -22,13 +22,15 @@ export default function TableDemo({
   const attributes = Object.keys(dataPointsArr[0].attributes);
   const headerRow = attributes.map(
     (attribute): JSX.Element => (
-      <TableHead key={attribute}>{attribute}</TableHead>
+      <TableHead
+        key={attribute}
+      >{`${attribute[0].toUpperCase()}${attribute.slice(1)}`}</TableHead>
     )
   );
 
   const tableRow = dataPointsArr.map(
     (dataPoint, idx): JSX.Element => (
-      <TableRow key={idx}>
+      <TableRow key={idx} className={idx % 2 ? '' : 'bg-gray-50'}>
         {attributes.map(
           (attr): JSX.Element => (
             <TableCell key={attr}>{dataPoint.attributes[attr]}</TableCell>
@@ -50,7 +52,7 @@ export default function TableDemo({
       <TableHeader>
         <TableRow>
           {headerRow}
-          <TableHead className="text-right">data</TableHead>
+          <TableHead className="text-right">Data</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>{tableRow}</TableBody>

@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { ColorPalette } from '@/lib/utils';
 
 export default function Histogram({
   description,
@@ -34,9 +35,7 @@ export default function Histogram({
   const datasets = dataArrays.map((dataArr, i: number) => ({
     label: `Datapoint ${i + 1}`,
     data: dataArr.slice(1),
-    backgroundColor: `hsl(${Math.floor(
-      (i * 360) / dataArrays.length
-    )}, 80%, 50%)`,
+    backgroundColor: ColorPalette[i % 10],
   }));
 
   const options = {
