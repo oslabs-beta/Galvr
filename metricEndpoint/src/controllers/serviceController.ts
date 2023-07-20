@@ -1,18 +1,4 @@
 import type express from 'express';
-import mongoose from 'mongoose';
-import {
-  type AnyValue,
-  ExportMetricsServiceRequest,
-  type KeyValue,
-  type ParsedKeyValue,
-  type ResourceMetrics,
-  type ParsedResourceMetrics,
-  type ScopeMetrics,
-  type ParsedMetric,
-  type DataPoint,
-  type ParsedDataPoint,
-  type ParsedScopeMetrics,
-} from '../proto/metricTypes';
 
 import { type ServiceSchema, Services } from '../models/serviceModel';
 

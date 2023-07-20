@@ -1,5 +1,4 @@
 import type express from 'express';
-import mongoose from 'mongoose';
 import {
   type AnyValue,
   ExportMetricsServiceRequest,
@@ -13,7 +12,6 @@ import {
   type ParsedDataPoint,
   type ParsedScopeMetrics,
 } from '../proto/metricTypes';
-import { type testMetric, testModel } from '../models/metricModel';
 import { type ServiceSchema, Services } from '../models/serviceModel';
 
 export const metricDecoder = (
@@ -30,6 +28,7 @@ export const metricDecoder = (
 
       // console.log('Unparsed: ', JSON.stringify(res.locals.metrics));
     }
+
     return next();
   } catch (err) {
     return next({ log: err, message: 'Error decoding metrics' });
@@ -112,6 +111,7 @@ export const metricParser = (
 
                 scopeMetricCurObj.metrics = scopeMetricsCur.metrics.reduce(
                   (metricsArr: ParsedMetric[], metricsCur) => {
+                    // @ts-expect-error metrics is mutated in place, causing type errors between parsed and unparsed version.
                     const metricsCurCopy: ParsedMetric =
                       structuredClone(metricsCur);
                     Object.keys(metricsCurCopy).forEach((key) => {
@@ -171,16 +171,12 @@ export const metricSaver = async (
 ): Promise<void> => {
   try {
     if (res.locals.metrics) {
-      // console.log('Parsed: ', JSON.stringify(res.locals.metrics));
-
       res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
         const { resource } = metric;
         const { attributes } = resource;
 
         const filter = { serviceName: attributes['service.name'] };
         const update = { resourceMetrics: metric };
-
-        // console.log('Parsed ResourceMetrics: ', JSON.stringify(metric));
 
         const ServiceDoc = await Services.findOneAndUpdate(
           filter, // Filter to find current Service document
@@ -190,7 +186,7 @@ export const metricSaver = async (
             upsert: true, // if document doesn't exist, create it using filter and update
           }
         );
-        // console.log('Saved to database: ', JSON.stringify(ServiceDoc));
+        // console.log(ServiceDoc);
       });
     }
     return next();
