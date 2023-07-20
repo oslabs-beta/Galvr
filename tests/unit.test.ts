@@ -21,6 +21,7 @@ import {
   ExportMetricsServiceRequest,
   ExportMetricsServiceResponse,
 } from '../metricEndpoint/src/proto/metricTypes';
+// import unparsedMetrics from '../observability/otelDemoUnparsed';
 import unparsedMetrics from '../observability/otelDemoUnparsed';
 import parsedMetrics from '../observability/otelDemoParsed';
 
@@ -107,11 +108,12 @@ describe('Fetching Metrics', () => {
     const res = { locals: {} } as Response;
     const next: NextFunction = () => true;
     await serviceGetter(req, res, next);
-    expect(res.locals.resourceMetrics.length).toBe(1);
-    expect(res.locals.resourceMetrics[0].serviceName).toBe('checkoutservice');
-    expect(
-      JSON.stringify(res.locals.resourceMetrics[0].resourceMetrics)
-    ).toEqual(checkoutMetricString);
+    expect(res.locals.resourceMetrics.resource.attributes['service.name']).toBe(
+      'checkoutservice'
+    );
+    expect(JSON.stringify(res.locals.resourceMetrics)).toEqual(
+      checkoutMetricString
+    );
   });
 });
 
@@ -178,10 +180,9 @@ describe('GET requests', () => {
     const response = await request(server).get('/services/checkoutservice');
     expect(response.status).toEqual(200);
     expect(response.headers['content-type']).toMatch(/json/);
-    expect(response.body.length).toBe(1);
-    expect(response.body[0].serviceName).toBe('checkoutservice');
-    expect(JSON.stringify(response.body[0].resourceMetrics)).toEqual(
-      checkoutMetricString
+    expect(response.body.resource.attributes['service.name']).toBe(
+      'checkoutservice'
     );
+    expect(JSON.stringify(response.body)).toEqual(checkoutMetricString);
   });
 });

@@ -1,4 +1,4 @@
-const PARSED = [
+const parsed = [
   {
     resource: {
       attributes: {
@@ -9,9 +9,11 @@ const PARSED = [
         'os.description':
           'Alpine Linux 3.17.3 (Linux demo-otel-checkoutservice-794dbf4d77-82nns 5.15.49-linuxkit #1 SMP PREEMPT Tue Sep 13 07:51:32 UTC 2022 aarch64)',
         'os.type': 'linux',
+        'process.command_args': ['./checkoutservice'],
         'process.executable.name': 'checkoutservice',
         'process.executable.path': '/usr/src/app/checkoutservice',
         'process.owner': 'root',
+        'process.pid': '1',
         'process.runtime.description': 'go version go1.19.2 linux/arm64',
         'process.runtime.name': 'go',
         'process.runtime.version': 'go1.19.2',
@@ -340,6 +342,7 @@ const PARSED = [
           '/usr/lib/jvm/java-17-openjdk-arm64/bin/java -javaagent:/app/opentelemetry-javaagent.jar',
         'process.executable.path':
           '/usr/lib/jvm/java-17-openjdk-arm64/bin/java',
+        'process.pid': '1',
         'process.runtime.description':
           'Debian OpenJDK 64-Bit Server VM 17.0.6+10-Debian-1deb11u1',
         'process.runtime.name': 'OpenJDK Runtime Environment',
@@ -371,7 +374,10 @@ const PARSED = [
             sum: {
               dataPoints: [
                 {
-                  attributes: { spanProcessorType: 'BatchSpanProcessor' },
+                  attributes: {
+                    dropped: false,
+                    spanProcessorType: 'BatchSpanProcessor',
+                  },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
                   asInt: '206',
@@ -420,7 +426,7 @@ const PARSED = [
             sum: {
               dataPoints: [
                 {
-                  attributes: { type: 'span' },
+                  attributes: { success: true, type: 'span' },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
                   asInt: '206',
@@ -504,7 +510,7 @@ const PARSED = [
             sum: {
               dataPoints: [
                 {
-                  attributes: {},
+                  attributes: { daemon: true },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
                   asInt: '16',
@@ -512,7 +518,7 @@ const PARSED = [
                   flags: 0,
                 },
                 {
-                  attributes: {},
+                  attributes: { daemon: false },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
                   asInt: '1',
@@ -882,7 +888,7 @@ const PARSED = [
               dataPoints: [
                 {
                   attributes: {
-                    pool: "CodeH2023-07-13T00:56:03.757049055Z eap 'non-profiled nmethods'",
+                    pool: "CodeHeap 'non-profiled nmethods'",
                     type: 'non_heap',
                   },
                   startTimeUnixNano: '1689208365835760755',
@@ -1283,7 +1289,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -1409,7 +1415,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -1429,7 +1435,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -1489,7 +1495,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -1582,7 +1588,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -1631,7 +1637,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -1767,7 +1773,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2045,7 +2051,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2149,7 +2155,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2380,7 +2386,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2419,7 +2425,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2479,7 +2485,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2705,7 +2711,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2716,7 +2722,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2727,7 +2733,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2743,8 +2749,7 @@ const PARSED = [
               dataPoints: [
                 {
                   attributes: {
-                    'client-id':
-                      'consumer-frauddetectionservice-12023-07-13T00:56:03.757049055Z ',
+                    'client-id': 'consumer-frauddetectionservice-1',
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
@@ -2850,7 +2855,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2949,7 +2954,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -2968,7 +2973,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -3154,7 +3159,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -3236,7 +3241,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -3247,7 +3252,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -3258,7 +3263,7 @@ const PARSED = [
                   },
                   startTimeUnixNano: '1689208365835760755',
                   timeUnixNano: '1689209745867720714',
-                  asDouble: null,
+                  asDouble: undefined,
                   exemplars: [],
                   flags: 0,
                 },
@@ -3597,7 +3602,7 @@ const PARSED = [
           {
             name: 'process.runtime.dotnet.jit.compilation_time',
             description:
-              'The amount of time the JIT compiler h2023-07-13T00:56:03.757049055Z as spent compiling methods since the process start.',
+              'The amount of time the JIT compiler has spent compiling methods since the process start.',
             unit: 'ns',
             sum: {
               dataPoints: [
@@ -3777,7 +3782,9 @@ const PARSED = [
                     'http.method': 'POST',
                     'http.route': '/oteldemo.CartService/GetCart',
                     'http.scheme': 'http',
+                    'http.status_code': '200',
                     'net.host.name': 'demo-otel-cartservice',
+                    'net.host.port': '8080',
                   },
                   startTimeUnixNano: '1689208366030060000',
                   timeUnixNano: '1689209746003117300',
@@ -3816,7 +3823,9 @@ const PARSED = [
                     'http.method': 'POST',
                     'http.route': '/oteldemo.CartService/AddItem',
                     'http.scheme': 'http',
+                    'http.status_code': '200',
                     'net.host.name': 'demo-otel-cartservice',
+                    'net.host.port': '8080',
                   },
                   startTimeUnixNano: '1689208366030060000',
                   timeUnixNano: '1689209746003117300',
@@ -3855,7 +3864,9 @@ const PARSED = [
                     'http.method': 'POST',
                     'http.route': '/oteldemo.CartService/EmptyCart',
                     'http.scheme': 'http',
+                    'http.status_code': '200',
                     'net.host.name': 'demo-otel-cartservice',
+                    'net.host.port': '8080',
                   },
                   startTimeUnixNano: '1689208366030060000',
                   timeUnixNano: '1689209746003117300',
@@ -3899,3 +3910,5 @@ const PARSED = [
     schemaUrl: '',
   },
 ];
+
+export default parsed;
