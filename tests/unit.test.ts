@@ -21,7 +21,6 @@ import {
   ExportMetricsServiceRequest,
   ExportMetricsServiceResponse,
 } from '../metricEndpoint/src/proto/metricTypes';
-// import unparsedMetrics from '../observability/otelDemoUnparsed';
 import unparsedMetrics from '../observability/otelDemoUnparsed';
 import parsedMetrics from '../observability/otelDemoParsed';
 

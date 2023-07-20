@@ -21,12 +21,8 @@ export const metricDecoder = (
 ): void => {
   try {
     if (req.body) {
-      // console.log('requestBody', JSON.stringify(req.body));
-
       const metric = ExportMetricsServiceRequest.decode(req.body);
       res.locals.metrics = metric;
-
-      // console.log('Unparsed: ', JSON.stringify(res.locals.metrics));
     }
 
     return next();
@@ -42,8 +38,6 @@ export const metricParser = (
 ): void => {
   try {
     if (res.locals.metrics) {
-      // console.log('Unparsed: ', JSON.stringify(res.locals.metrics));
-
       const attributeParser = (arr: KeyValue[]): ParsedKeyValue =>
         arr.reduce((obj: ParsedKeyValue, cur: KeyValue) => {
           const curObj: ParsedKeyValue = {};
@@ -157,7 +151,6 @@ export const metricParser = (
         []
       );
     }
-    // console.log('Parsed: ', JSON.stringify(res.locals.metrics));
     return next();
   } catch (err) {
     return next({ log: err, status: 502, message: 'Error parsing metrics' });
@@ -216,27 +209,3 @@ export const metricGetter = async (
     return next({ log: err, message: 'Error geting metrics' });
   }
 };
-
-// try {
-//   if (res.locals.metrics) {
-//     res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
-//       const resourceString = JSON.stringify(metric.resource);
-//       const curMetric = await testModel.findOne({
-//         resourceString,
-//       });
-//       if (curMetric) {
-//         await testModel.findByIdAndUpdate(curMetric._id, {
-//           metrics: metric,
-//         });
-//       } else {
-//         await testModel.create({
-//           resourceString,
-//           metrics: metric,
-//         });
-//       }
-//     });
-//   }
-//   return next();
-// } catch (err) {
-//   return next({ log: err, status: 502, message: 'Error saving metrics' });
-// }

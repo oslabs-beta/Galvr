@@ -8,7 +8,6 @@ export const allServicesGetter = async (
   next: express.NextFunction
 ): Promise<void> => {
   try {
-    console.log('reached serviceGetter');
     const servicesRes = await Services.find();
 
     if (!servicesRes) {
@@ -34,15 +33,9 @@ export const serviceGetter = async (
 ): Promise<void> => {
   try {
     const { name } = req.params;
-
     const service = await Services.find({ serviceName: name });
-
     if (!service) throw new Error();
-
-    // console.log(JSON.stringify(service[0].resourceMetrics));
-
     res.locals.resourceMetrics = service[0].resourceMetrics;
-
     return next();
   } catch (err) {
     return next({
