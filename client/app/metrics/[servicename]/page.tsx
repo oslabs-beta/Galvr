@@ -144,7 +144,7 @@ export default async function HistogramPage({
     const histogramElements = histograms.map(
       (histoObj): JSX.Element => (
         <div
-          className="grid gap-4 md:grid-cols-2 lg:grid-cols-7"
+          className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 max-w-7xl"
           key={histoObj.name}
         >
           <Card className="col-span-5">
@@ -279,9 +279,13 @@ export default async function HistogramPage({
           </Card>
         </div>
         {histogramElements}
-        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 pt-10">
           {multiGaugeOrSumNoZeroElements}
+        </div>
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 pt-10">
           {multiGaugeOrSumWithZeroElements}
+        </div>
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 pt-10">
           {singleGaugeOrSumElements}
         </div>
       </>
