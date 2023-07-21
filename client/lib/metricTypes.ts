@@ -1,5 +1,4 @@
 /* eslint-disable */
-// generated with https://github.com/stephenh/ts-proto
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 
@@ -357,27 +356,6 @@ export const AnyValue = {
       }
       reader.skipType(tag & 7);
     }
-    type keys =
-      | 'stringValue'
-      | 'boolValue'
-      | 'intValue'
-      | 'doubleValue'
-      | 'arrayValue'
-      | 'kvlistValue'
-      | 'bytesValue';
-
-    const keyArr: keys[] = [
-      'stringValue',
-      'boolValue',
-      'intValue',
-      'doubleValue',
-      'arrayValue',
-      'kvlistValue',
-      'bytesValue',
-    ];
-    keyArr.forEach((key) => {
-      if (message[key] === undefined) delete message[key];
-    });
     return message;
   },
 
@@ -1302,22 +1280,6 @@ export const Metric = {
       }
       reader.skipType(tag & 7);
     }
-    type keys =
-      | 'gauge'
-      | 'sum'
-      | 'histogram'
-      | 'exponentialHistogram'
-      | 'summary';
-    const keyArr: keys[] = [
-      'gauge',
-      'sum',
-      'histogram',
-      'exponentialHistogram',
-      'summary',
-    ];
-    keyArr.forEach((type: keys) => {
-      if (message[type] === undefined) delete message[type];
-    });
     return message;
   },
 
@@ -1948,8 +1910,6 @@ export const NumberDataPoint = {
       }
       reader.skipType(tag & 7);
     }
-    if (message.asDouble === undefined) delete message.asDouble;
-    if (message.asInt === undefined) delete message.asInt;
     return message;
   },
 
@@ -2194,9 +2154,6 @@ export const HistogramDataPoint = {
       }
       reader.skipType(tag & 7);
     }
-    if (message.max === undefined) delete message.max;
-    if (message.min === undefined) delete message.min;
-    if (message.sum === undefined) delete message.sum;
     return message;
   },
 
@@ -2489,9 +2446,6 @@ export const ExponentialHistogramDataPoint = {
       }
       reader.skipType(tag & 7);
     }
-    if (message.max === undefined) delete message.max;
-    if (message.min === undefined) delete message.min;
-    if (message.sum === undefined) delete message.sum;
     return message;
   },
 
@@ -3066,8 +3020,6 @@ export const Exemplar = {
       }
       reader.skipType(tag & 7);
     }
-    if (message.asDouble === undefined) delete message.asDouble;
-    if (message.asInt === undefined) delete message.asInt;
     return message;
   },
 

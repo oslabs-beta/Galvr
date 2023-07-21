@@ -105,6 +105,7 @@ export const metricParser = (
 
                 scopeMetricCurObj.metrics = scopeMetricsCur.metrics.reduce(
                   (metricsArr: ParsedMetric[], metricsCur) => {
+                    // @ts-expect-error metrics is mutated in place, causing type errors between parsed and unparsed version.
                     const metricsCurCopy: ParsedMetric =
                       structuredClone(metricsCur);
                     Object.keys(metricsCurCopy).forEach((key) => {
@@ -170,10 +171,15 @@ export const metricSaver = async (
         const filter = { serviceName: attributes['service.name'] };
         const update = { resourceMetrics: metric };
 
-        await Services.findOneAndUpdate(filter, update, {
-          new: true,
-          upsert: true,
-        });
+        const ServiceDoc = await Services.findOneAndUpdate(
+          filter, // Filter to find current Service document
+          update, // Updated scopeMetrics
+          {
+            new: true, // returns the updated document
+            upsert: true, // if document doesn't exist, create it using filter and update
+          }
+        );
+        // console.log(ServiceDoc);
       });
     }
     return next();

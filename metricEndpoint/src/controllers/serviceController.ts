@@ -33,13 +33,9 @@ export const serviceGetter = async (
 ): Promise<void> => {
   try {
     const { name } = req.params;
-
-    const resourceMetrics = await Services.find({ serviceName: name });
-
-    if (!resourceMetrics) throw new Error();
-
-    res.locals.resourceMetrics = resourceMetrics;
-
+    const service = await Services.find({ serviceName: name });
+    if (!service) throw new Error();
+    res.locals.resourceMetrics = service[0].resourceMetrics;
     return next();
   } catch (err) {
     return next({

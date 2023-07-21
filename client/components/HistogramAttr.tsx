@@ -3,7 +3,7 @@ import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 export default function HistogramAttr({
   attrArrays,
 }: {
-  attrArrays: any[][];
+  attrArrays: any[];
 }): JSX.Element {
   const attrTables = attrArrays.map((attrObj, i) => (
     <div key={i}>
