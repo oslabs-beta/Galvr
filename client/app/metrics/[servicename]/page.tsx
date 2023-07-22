@@ -279,13 +279,13 @@ export default async function HistogramPage({
           </Card>
         </div>
         {histogramElements}
-        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 pt-10">
+        <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3 pt-10">
           {multiGaugeOrSumNoZeroElements}
         </div>
-        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 pt-10">
+        <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3 pt-10">
           {multiGaugeOrSumWithZeroElements}
         </div>
-        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 pt-10">
+        <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3 pt-10">
           {singleGaugeOrSumElements}
         </div>
       </>

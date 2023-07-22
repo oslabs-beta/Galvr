@@ -110,7 +110,8 @@ export default function PolarAreaChart({
         label: '',
         data: dataArr,
         backgroundColor: ColorPalette,
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: 'black',
       },
     ],
   };

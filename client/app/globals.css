@@ -103,6 +103,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    @apply bg-slate-200;
   }
 }
 

@@ -17,7 +17,7 @@ export default function TableSingleDataPoint({
 }): JSX.Element {
   const tableRow = metricObjArr.map(
     (metricObj, idx): JSX.Element => (
-      <TableRow key={idx} className={idx % 2 ? '' : 'bg-gray-50'}>
+      <TableRow key={idx} className={idx % 2 ? '' : 'bg-gray-100'}>
         <TableCell>{`${metricObj.description}. ${
           metricObj.unit ? `(Unit: ${metricObj.unit})` : ''
         }`}</TableCell>

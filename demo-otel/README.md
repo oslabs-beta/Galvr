@@ -1,4 +1,4 @@
-### Run these steps to set up the OTEL Demo App in your K8 cluster (with built-in instrumentation and OTEL collector)
+### Run the following steps to deploy an OpenTelemetry Demo App to your Kubernetes cluster, and connect it to the Galvr instance available in the same cluster to view the demo app's OTEL metrics.
 
 - Install HELM per Helm's documentation(https://helm.sh/docs/)
 
