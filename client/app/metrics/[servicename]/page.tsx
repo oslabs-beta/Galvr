@@ -160,7 +160,7 @@ export default async function HistogramPage({
               />
             </CardContent>
           </Card>
-          <Card className="col-span-2 overflow-auto h-96">
+          <Card className="col-span-2 overflow-auto h-[29rem]">
             <HistogramAttr
               attrArrays={histoObj.histogram!.dataPoints.map(
                 (dataPoint: ParsedHistogramDataPoint) => ({
