@@ -1,11 +1,8 @@
-name: docker-endpoint
+name: docker-client
 on:
-  pull_request:
-    branches:
-      - 'main'
   push:
     branches:
-      - 'sam/readme'
+      - 'main'
 jobs:
   build:
     runs-on: ubuntu-latest
