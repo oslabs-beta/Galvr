@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: metricendpoint
-          image: galvrmetrics/galvr:endpoint
-          imagePullPolicy: IfNotPresent
+          image: galvrmetrics/endpoint:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
 ---
@@ -98,8 +98,8 @@ spec:
     spec:
       containers:
         - name: galvr-nextjs
-          image: galvrmetrics/galvr:client
-          imagePullPolicy: IfNotPresent
+          image: galvrmetrics/client:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
 ---

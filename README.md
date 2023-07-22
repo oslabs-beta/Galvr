@@ -19,19 +19,19 @@ kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releas
 Start the openTelemetry collector:
 
 ```
-kubectl apply -f https://github.com/oslabs-beta/Galvr/blob/main/k8s/observability/otelCol.yaml
+kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/otelCol.yaml
 ```
 
 If your services are not already instrumented, openTelemetry has a number of autoinstrumentation options (https://opentelemetry.io/docs/kubernetes/operator/automatic/). Autoinstrumentation for services written in Node.js can be added to your cluster with:
 
 ```
-kubectl apply -f https://github.com/oslabs-beta/Galvr/blob/main/k8s/observability/otelNode.yaml
+kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/otelNode.yaml
 ```
 
 If you would like to use Jaeger for request tracing (recommended), replace the default openTelemetry collector with:
 
 ```
-kubectl apply -f https://github.com/oslabs-beta/Galvr/blob/main/k8s/observability/otelCol-jaeger.yaml
+kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/otelCol-jaeger.yaml
 ```
 
 and start up the Jaeger collector, and a basic all-in-one Jaeger instance:
@@ -39,7 +39,7 @@ and start up the Jaeger collector, and a basic all-in-one Jaeger instance:
 ```
 kubectl create namespace observability
 kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.45.0/jaeger-operator.yaml -n observability
-kubectl apply -f https://github.com/oslabs-beta/Galvr/blob/main/k8s/observability/jaeger.yaml
+kubectl apply -f https://github.com/oslabs-beta/releases/download/latest/jaeger.yaml
 ```
 
 For the Jaeger client to be available outside the cluster, you made need to port forward it:
@@ -48,5 +48,5 @@ For the Jaeger client to be available outside the cluster, you made need to port
 Finally, start Galvr! The client will be available at local port 30003.
 
 ```
-kubectl apply -f https://github.com/oslabs-beta/Galvr/blob/main/k8s/galvr/galvr.yml
+kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/galvr.yml
 ```
