@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metricendpoint
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: metricendpoint
+  template:
+    metadata:
+      labels:
+        run: metricendpoint
+    spec:
+      containers:
+        - name: metricendpoint
+          image: galvrmetrics/galvr:endpoint
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metricendpoint
+spec:
+  selector:
+    run: metricendpoint
+  ports:
+    - port: 3000
+      targetPort: 3000
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongodb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+        selector: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          volumeMounts:
+            - name: mongo-data-dir
+              mountPath: /data/db
+      volumes:
+        - name: mongo-data-dir
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: database
+  name: mongo-svc
+spec:
+  ports:
+    - port: 27017
+      protocol: TCP
+  selector:
+    app: database
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: galvr-nextjs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: galvr-nextjs
+  template:
+    metadata:
+      labels:
+        run: galvr-nextjs
+      annotations:
+        instrumentation.opentelemetry.io/inject-nodejs: 'false'
+    spec:
+      containers:
+        - name: galvr-nextjs
+          image: galvrmetrics/galvr:client
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: galvr-nextjs
+spec:
+  type: NodePort
+  selector:
+    run: galvr-nextjs
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30003
