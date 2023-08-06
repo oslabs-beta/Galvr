@@ -30,4 +30,4 @@
   kubectl apply -f client.yaml
   ```
 
-- After deployed in Kubernetes, visit url: http://localhost:30003/ to view the Galvr in your browser.
+- After deployed in Kubernetes, visit url: http://localhost:30003/ to view the Galvr frontend in your browser.
