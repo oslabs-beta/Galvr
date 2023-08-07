@@ -13,25 +13,38 @@
 // })
 
 
-import {addCommands} from "cypress-mongodb";
+// import {addCommands} from "cypress-mongodb";
 
-addCommands();
+// addCommands();
 
-describe('Check data ', () => {
-  it('connects', () => {
-    cy.visit('https://example.cypress.io')
+// describe('Check data ', () => {
+//   it('connects', () => {
+//     cy.visit('https://example.cypress.io')
+//   })
+// })
+
+
+// describe('MongoDB test ', () => {
+//   it('create_collection', () => {
+//     cy.createCollection('testCollection', { database: 'test', failSilently: 'true' }).then(result => {
+//       cy.log('collection created!')
+//       cy.log(result); // Will return 'Collection created' or the error object if collection already exists. Will not fail the test 
+//     });
+//   })
+// })
+
+describe('My First Test', () => {
+    it('Visits the Kitchen Sink', () => {
+      cy.visit('http://localhost:3000/')
+      cy.contains('Metrics').click()
+      //cy.get('select').select('loadgenerator')  
+      cy.get('button').contains('Select microservice').click()
+      cy.get('button').contains('loadgenerator')
+
+  
+
+    })
   })
-})
-
-
-describe('MongoDB test ', () => {
-  it('create_collection', () => {
-    cy.createCollection('testCollection', { database: 'test', failSilently: 'true' }).then(result => {
-      cy.log('collection created!')
-      cy.log(result); // Will return 'Collection created' or the error object if collection already exists. Will not fail the test 
-    });
-  })
-})
 
 // TODO: Seed our data into database
 // Before running the tests, we need to seed our data into the database.
