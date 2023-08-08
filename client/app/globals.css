@@ -103,6 +103,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    @apply bg-slate-200;
   }
 }
 
@@ -176,7 +177,7 @@ body {
 /* Tailwind Styles */
 
 .app {
-  @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
+  @apply relative z-10 flex justify-center items-center flex-col max-w-full mx-auto sm:px-16 px-6;
 }
 
 .black_btn {

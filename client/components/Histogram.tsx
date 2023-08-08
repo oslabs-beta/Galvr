@@ -36,6 +36,8 @@ export default function Histogram({
     label: `Datapoint ${i + 1}`,
     data: dataArr.slice(1),
     backgroundColor: ColorPalette[i % 10],
+    borderWidth: 2,
+    borderColor: 'black',
   }));
 
   const options = {

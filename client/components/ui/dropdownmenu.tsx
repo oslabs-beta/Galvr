@@ -41,18 +41,18 @@ export default function DropdownMenu({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[300px] justify-between"
+          className="w-[300px] justify-between bg-slate-50"
         >
           {value
             ? services.find((microservice) => microservice === value)
-            : 'Select microservice'}
+            : 'Select service'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0 bg-white">
         <Command>
           <CommandInput placeholder="Search microservice..." />
-          <CommandEmpty>No microservice found.</CommandEmpty>
+          <CommandEmpty>No service found.</CommandEmpty>
           <CommandGroup>
             {services.map((microservice) => (
               <CommandItem

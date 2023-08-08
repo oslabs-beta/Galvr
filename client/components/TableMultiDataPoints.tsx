@@ -30,7 +30,7 @@ export default function TableMultiDataPoints({
 
   const tableRow = dataPointsArr.map(
     (dataPoint, idx): JSX.Element => (
-      <TableRow key={idx} className={idx % 2 ? '' : 'bg-gray-50'}>
+      <TableRow key={idx} className={idx % 2 ? '' : 'bg-gray-100'}>
         {attributes.map(
           (attr): JSX.Element => (
             <TableCell key={attr}>{dataPoint.attributes[attr]}</TableCell>
