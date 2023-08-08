@@ -1,7 +1,8 @@
 {
   "name": "galvr",
   "version": "1.0.0",
-  "description": "",
+  "description": "k8s communication metric visualizer",
+  "license": "MIT",
   "scripts": {
     "test": "NODE_ENV=test jest --verbose"
   },
