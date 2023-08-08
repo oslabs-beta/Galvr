@@ -23,7 +23,6 @@ describe('Nav.cy.tsx', () => {
       });
       cy.mount(<Nav />);
       expect(Cypress.Buffer.isBuffer(img)).to.be.true;
-      //cy.mount(<Home/>)
     });
   });
 });
