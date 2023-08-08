@@ -18,7 +18,7 @@ async function getServices(): Promise<string[]> {
     }
     const servicesArr: string[] = await res.json();
     // console.log(data)
-    return servicesArr;
+    return servicesArr.sort();
   } catch (err) {
     console.log(
       `Error encounted when fetching metrics from metricEndPoint: ${err}`
