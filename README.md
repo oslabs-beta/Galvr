@@ -12,7 +12,7 @@ Due to its unopinionated nature, Galvr can also handle any metric it receives as
 
 ### Quick Start
 
-This guide assumes you have a k8s cluster up and running.
+This guide assumes you have a Kubernetes cluster up and running.
 
 ##### Install cert-manager, which is required for the Otel (and Jaeger) operators:
 
