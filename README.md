@@ -68,7 +68,7 @@ kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/g
 
 ### Demo
 
-If you do not have already have a microservice application with which to test Galvr but would like to, we encourage you to try it with the OpenTelemetry Demo application. Instructions for setup can be found in the [demo/demo-otel](./demo/demo-otel/README.md) folder.
+If you do not have already have a microservice application with which to test Galvr but would like to, we encourage you to try it with the OpenTelemetry Demo application. Instructions for setup can be found in the [demo/otel](./demo/otel/README.md) folder.
 
 ### License
 
