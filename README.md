@@ -6,10 +6,10 @@
 
 Galvr is a communication metric visualization dashboard for Kubernetes clusters. It is built on the [OpenTelemetry](https://opentelemetry.io/docs/what-is-opentelemetry/) observability framework and takes advantage of the metric aggregation processing done by OpenTelemtry instrumentation. It can work with any cluster using instrumentation that exports metrics with the [OTLP specification](https://opentelemetry.io/docs/specs/otlp/). Galvr is intended to be used alongside the [Jaeger](https://www.jaegertracing.io/) distributed tracing platform; in fact, it was created to be a sibling product meant for metrics instead of traces. Galvr consists of two services: a metric collector backend, and a metric visualization frontend. Currently, the two services must be used together, but future development may allow a la carte use.
 
-Galvr is meant to be an unopinionated tool, as such, it can handle clusters of any configuration. It simply provides the user with a list of instrumented services and allows them to view whatever metrics they wish.
+Galvr is an unopinionated tool; as such, it works with Kubernetes clusters of any microservice configuration. It simply provides the user with a list of instrumented services and allows them to view whatever metrics they wish.
 <img src="./public/Searching-and-Filtering.gif" alt="Choosing a Service"/>
 
-Due to its unopinionated nature, Galvr can also handle any metric it receives as long as it follows OTLP specifications. This means it will visualize any histogram, sum, or gauge data type.  
+Galvr can also handle any metric it receives as long as the metric object follows OTLP specifications. This means it will visualize any histogram, sum, or gauge data type.  
 <img src="./public/Different-Metrics.gif" alt="Different Metric Visualizations"/>
 
 ### Quick Start
