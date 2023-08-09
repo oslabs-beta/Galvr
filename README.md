@@ -1,4 +1,4 @@
-<img src="./public/Galvr.png" alt="Galvr" width="200"/>
+<img src="./public/Galvr.png" alt="Galvr" style="display: block;margin-left: auto;margin-right: auto;width:300px"/>
 
 ### About
 
@@ -66,7 +66,7 @@ kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/g
 
 ### Demo
 
-If you do not have already have a microservice application with which to test Galvr but would like to, we encourage you to try it with the OpenTelemetry Demo application. Instructions for setup can be found in the demo/demo-otel folder.
+If you do not have already have a microservice application with which to test Galvr but would like to, we encourage you to try it with the OpenTelemetry Demo application. Instructions for setup can be found in the [demo/demo-otel](./demo/demo-otel/README.md) folder.
 
 ### License
 
