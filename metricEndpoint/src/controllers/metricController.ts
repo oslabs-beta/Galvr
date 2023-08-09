@@ -12,14 +12,16 @@ import {
   type ParsedDataPoint,
   type ParsedScopeMetrics,
 } from '../proto/metricTypes';
-import { type ServiceSchema, Services } from '../models/serviceModel';
+import { Services } from '../models/serviceModel';
 
+/* Decodes protobuf stored in request body */
 export const metricDecoder = (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ): void => {
   try {
+
     if (req.body) {
       const metric = ExportMetricsServiceRequest.decode(req.body);
       res.locals.metrics = metric;
@@ -31,19 +33,25 @@ export const metricDecoder = (
   }
 };
 
+/* Parse incoming metrics for storage */
 export const metricParser = (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ): void => {
+
   try {
+  
     if (res.locals.metrics) {
+      /* Define a helper function for parsing attributes in an array of KeyValue objects */
       const attributeParser = (arr: KeyValue[]): ParsedKeyValue =>
         arr.reduce((obj: ParsedKeyValue, cur: KeyValue) => {
           const curObj: ParsedKeyValue = {};
           let curValue: any = cur.value
             ? Object.values(cur.value)[0]
             : undefined;
+
+          /* Check if the curValue is an object with a 'values' property */
           if (
             typeof curValue === 'object' &&
             // @ts-expect-error Object does have hasOwn method
@@ -57,7 +65,9 @@ export const metricParser = (
               []
             );
           }
+
           curObj[cur.key] = curValue;
+
           return Object.assign(obj, curObj);
         }, {});
 
@@ -66,6 +76,7 @@ export const metricParser = (
           resourceMetricsArr: ParsedResourceMetrics[],
           resourceMetricsCur: ResourceMetrics
         ) => {
+
           const curResourceMetricObj: ParsedResourceMetrics = {
             resource: { attributes: {}, droppedAttributesCount: 0 },
             scopeMetrics: [],
@@ -83,18 +94,21 @@ export const metricParser = (
           if (resourceMetricsCur.schemaUrl)
             curResourceMetricObj.schemaUrl = resourceMetricsCur.schemaUrl;
 
+          /* Parse scopeMetrics array */
           curResourceMetricObj.scopeMetrics =
             resourceMetricsCur.scopeMetrics.reduce(
               (
                 scopeMetricsArr: ParsedScopeMetrics[],
                 scopeMetricsCur: ScopeMetrics
               ) => {
+                
                 const scopeMetricCurObj: ParsedScopeMetrics = {
                   scope: undefined,
                   metrics: [],
                   schemaUrl: scopeMetricsCur.schemaUrl,
                 };
 
+                /* Parse scope attributes */
                 scopeMetricCurObj.scope = scopeMetricsCur.scope?.attributes
                   ? Object.assign(scopeMetricsCur.scope, {
                       attributes: attributeParser(
@@ -103,11 +117,14 @@ export const metricParser = (
                     })
                   : scopeMetricsCur.scope;
 
+                /* Parse metrics array */
                 scopeMetricCurObj.metrics = scopeMetricsCur.metrics.reduce(
                   (metricsArr: ParsedMetric[], metricsCur) => {
                     // @ts-expect-error metrics is mutated in place, causing type errors between parsed and unparsed version.
                     const metricsCurCopy: ParsedMetric =
                       structuredClone(metricsCur);
+
+                    /* Parse datapoints array within each metrics */
                     Object.keys(metricsCurCopy).forEach((key) => {
                       if (
                         // @ts-expect-error iterating over keys
@@ -157,12 +174,14 @@ export const metricParser = (
   }
 };
 
+/* Stores incomming metrics sent from the OpenTelemetry Collector */
 export const metricSaver = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
+    /* Storing most up-to-date metric for each service in the Services Collection */
     if (res.locals.metrics) {
       res.locals.metrics.forEach(async (metric: ParsedResourceMetrics) => {
         const { resource } = metric;
@@ -171,41 +190,18 @@ export const metricSaver = async (
         const filter = { serviceName: attributes['service.name'] };
         const update = { resourceMetrics: metric };
 
-        const ServiceDoc = await Services.findOneAndUpdate(
-          filter, // Filter to find current Service document
-          update, // Updated scopeMetrics
+        await Services.findOneAndUpdate(
+          filter, /* Filter to find current Service document */
+          update, /* Updated scopeMetrics */
           {
-            new: true, // returns the updated document
-            upsert: true, // if document doesn't exist, create it using filter and update
+            new: true, /* returns the updated document */
+            upsert: true, /* if document doesn't exist, create it using filter and update */
           }
         );
-        // console.log(ServiceDoc);
       });
-    }
+    };
     return next();
   } catch (err) {
     return next({ log: err, status: 502, message: 'Error saving metrics' });
-  }
-};
-
-export const metricGetter = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-): Promise<void> => {
-  try {
-    const metrics = await Services.find({});
-
-    res.locals.metrics = metrics.reduce(
-      (arr: ParsedResourceMetrics[], cur: ServiceSchema) => {
-        arr.push(cur.resourceMetrics);
-        return arr;
-      },
-      []
-    );
-
-    return next();
-  } catch (err) {
-    return next({ log: err, message: 'Error geting metrics' });
-  }
+  };
 };

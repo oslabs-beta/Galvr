@@ -4,4 +4,4 @@ COPY . .
 RUN npm install
 RUN npx tsc
 CMD ["node", "dist/server.js"]
-EXPOSE 3000
+EXPOSE 3000\
