@@ -5,11 +5,11 @@ import {
   metricDecoder,
   metricParser,
   metricSaver,
-  // metricGetter,
 } from '../controllers/metricController';
 
 const router = express.Router();
 
+/* Decode, parse, and save metrics provided by OTEL Collector */
 router.post('/', metricDecoder, metricParser, metricSaver, (req, res) => {
   res
     .set('Content-Type', 'application/x-protobuf')
@@ -19,11 +19,5 @@ router.post('/', metricDecoder, metricParser, metricSaver, (req, res) => {
       ).finish()
     );
 });
-
-/* A separate Router (metricsFromDBRouter) is currently used for handling requested from NextJS pod. */
-
-// router.get('/', metricGetter, (req, res) => {
-//   res.json(res.locals.metrics);
-// });
 
 export default router;
