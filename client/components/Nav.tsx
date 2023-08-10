@@ -1,10 +1,23 @@
 'use client';
 
-// import React, { userState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Nav(): JSX.Element {
+  const [jaegerExists, setjaegerExists] = useState(false);
+
+  const checkJaeger = async (): Promise<void> => {
+    try {
+      const result = await fetch('http://localhost:16686/dependencies', {
+        method: 'HEAD',
+        mode: 'no-cors',
+      });
+      if (result) setjaegerExists(true);
+    } catch (err) {}
+  };
+  checkJaeger().catch(() => setjaegerExists(false));
+
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-s flex-center">
@@ -23,9 +36,11 @@ export default function Nav(): JSX.Element {
           <Link href="metrics" className="black_btn">
             Metrics
           </Link>
-          <a href="http://localhost:16686/dependencies" className="black_btn">
-            Traces
-          </a>
+          {jaegerExists && (
+            <a href="http://localhost:16686/dependencies" className="black_btn">
+              Traces
+            </a>
+          )}
           {/* <Link href="Graph_3" className="black_btn">
             Graph_3
           </Link> */}
