@@ -1,4 +1,8 @@
 /* eslint-disable */
+
+/*
+  Types automatically generated from Protobuf schema.
+*/
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 

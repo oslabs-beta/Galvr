@@ -58,14 +58,3 @@ EXPOSE 3000
 ENV PORT 3000
 
 CMD ["node", "server.js"]
-
-
-
-# # NextJS Dev Mode For Testing
-
-# FROM node:18-alpine
-# WORKDIR /app
-# COPY . .
-# RUN npm i
-# EXPOSE 3000
-# CMD ["npm", "run", "dev"]

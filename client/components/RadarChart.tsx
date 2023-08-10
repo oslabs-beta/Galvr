@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 
+// Register the optional components for ChartJS.
 ChartJS.register(
   RadialLinearScale,
   PointElement,

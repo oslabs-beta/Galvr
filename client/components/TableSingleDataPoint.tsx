@@ -10,6 +10,7 @@ import {
 
 import type { ParsedMetric } from '../lib/metricTypes';
 
+// Table for presenting metrics data with single data point.
 export default function TableSingleDataPoint({
   metricObjArr,
 }: {

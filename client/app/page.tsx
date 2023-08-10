@@ -1,7 +1,4 @@
-// import Image from 'next/image';
-// eslint-disable-next-line import/no-unresolved
-// import Graph from '@/components/Graph';
-
+// Render the home page contents.
 export default function Home(): JSX.Element {
   return (
     <section className="w-full flex-center flex-col">
@@ -17,8 +14,6 @@ export default function Home(): JSX.Element {
         translates that into a valuable visualization dashboard in order to help
         users swiftly analyze performance and identify latency.{' '}
       </p>
-
-      {/* <Graph /> */}
     </section>
   );
 }

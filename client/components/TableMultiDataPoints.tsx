@@ -10,6 +10,7 @@ import {
 
 import type { ParsedNumberDataPoint } from '../lib/metricTypes';
 
+// Table to render metrics data with multiple data points.
 export default function TableMultiDataPoints({
   description,
   unit,

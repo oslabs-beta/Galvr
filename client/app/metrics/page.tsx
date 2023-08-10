@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MetricsPage(): Promise<JSX.Element> {
-  /* Render the border */
+  /* Render the border, when no service is selected. */
   return (
     <>
       <hr className="border-gray-300 my-6" />

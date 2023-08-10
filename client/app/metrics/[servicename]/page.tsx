@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   description: 'A collection of metrics histograms.',
 };
 
+// Fecth data from backend for metrics data.
 async function getServiceMetric(
   serviceName: string
 ): Promise<ParsedResourceMetrics | null> {
@@ -51,6 +52,7 @@ async function getServiceMetric(
   }
 }
 
+// Separate gauge and sum metrics to two arrays, one with no-zero values and the other with certain zero values.
 function allocateGaugeOrSum(
   metricObj: ParsedMetric,
   metricType: 'gauge' | 'sum',
@@ -68,7 +70,8 @@ function allocateGaugeOrSum(
     : multiGaugeOrSumNoZero.push(metricObj);
 }
 
-export default async function HistogramPage({
+// Component for rendering the selected service's metadata and metrics.
+export default async function MetricsPage({
   params,
 }: {
   params: { servicename: string };
@@ -232,7 +235,7 @@ export default async function HistogramPage({
       )
     );
 
-    /* Render metadata of one resource and its associated histograms */
+    /* Render metadata of one resource and its associated metrics */
     return (
       <>
         <hr className="border-gray-300 my-6" />
