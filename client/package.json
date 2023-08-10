@@ -1,0 +1,47 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "cypress": "cypress open"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.4",
+    "@radix-ui/react-popover": "^1.0.6",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@types/node": "20.2.5",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "chart.js": "^4.3.0",
+    "class-variance-authority": "^0.6.1",
+    "clsx": "^1.2.1",
+    "cypress-mongodb": "^5.5.0",
+    "cmdk": "^0.2.0",
+    "daisyui": "^3.1.7",
+    "long": "^5.2.3",
+    "lucide-react": "^0.240.0",
+    "next": "13.4.4",
+    "next-themes": "^0.2.1",
+    "node-fetch": "^3.3.1",
+    "postcss": "8.4.24",
+    "protobufjs": "^7.2.4",
+    "react": "18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "18.2.0",
+    "sharp": "^0.32.1",
+    "tailwind-merge": "^1.13.2",
+    "tailwindcss": "3.3.2",
+    "tailwindcss-animate": "^1.0.6",
+    "typescript": "5.1.3"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.12",
+    "cypress": "^12.17.1",
+    "daisyui": "^3.0.3"
+  }
+}
