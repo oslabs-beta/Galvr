@@ -2,7 +2,7 @@ name: docker-endpoint
 on:
   push:
     branches:
-      - 'main'
+      - 'sam/docker'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +20,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./metricEndpoint
+          platform: linux/amd64,linux/arm64
           file: ./metricEndpoint/Dockerfile
           push: true
           tags: galvrmetrics/endpoint:latest
