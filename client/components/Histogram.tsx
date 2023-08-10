@@ -12,6 +12,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { ColorPalette } from '@/lib/utils';
 
+// Render one histogram based on the data provided.
 export default function Histogram({
   description,
   unit,

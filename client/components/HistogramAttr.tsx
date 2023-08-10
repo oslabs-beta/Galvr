@@ -1,5 +1,6 @@
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+// Render the attributes for the histogram.
 export default function HistogramAttr({
   attrArrays,
 }: {

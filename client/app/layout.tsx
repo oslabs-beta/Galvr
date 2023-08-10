@@ -9,6 +9,7 @@ export const metadata = {
   description: 'Metrics and Traces Monitoring Tool for Kubernetes',
 };
 
+// Overall layout for the app.
 export default function RootLayout({
   children,
 }: {

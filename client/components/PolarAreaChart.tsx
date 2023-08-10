@@ -15,6 +15,7 @@ import type { ParsedNumberDataPoint, ParsedKeyValue } from '../lib/metricTypes';
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend, Title);
 
+// Helper function to format the key value pairs in the metrics.
 const printAttrObj = (attrObject: ParsedKeyValue): string => {
   let res = '';
   Object.keys(attrObject).forEach((key) => {
@@ -23,6 +24,7 @@ const printAttrObj = (attrObject: ParsedKeyValue): string => {
   return res;
 };
 
+// Render a polar chart.
 export default function PolarAreaChart({
   description,
   unit,
@@ -44,6 +46,7 @@ export default function PolarAreaChart({
     }
   });
 
+  // Log scale options
   const optionsLogarithm = {
     plugins: {
       title: {
@@ -73,6 +76,7 @@ export default function PolarAreaChart({
     },
   };
 
+  // Linear scale options.
   const optionsLinear = {
     plugins: {
       title: {
@@ -85,6 +89,7 @@ export default function PolarAreaChart({
     },
   };
 
+  // To determine whether log or linear scale is required.
   dataPointsArr.forEach((dataPoint) => {
     labelArr.push(printAttrObj(dataPoint.attributes));
     const currData = dataPoint.asDouble ?? parseInt(dataPoint.asInt!, 10);

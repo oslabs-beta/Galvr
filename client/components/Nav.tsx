@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Navigation bar at the top of the page
 export default function Nav(): JSX.Element {
   const [jaegerExists, setjaegerExists] = useState(false);
 
+  // Check if Jaeger is connected and render the link conditionally
   const checkJaeger = async (): Promise<void> => {
     try {
       const result = await fetch('http://localhost:16686/dependencies', {
@@ -41,9 +43,6 @@ export default function Nav(): JSX.Element {
               Traces
             </a>
           )}
-          {/* <Link href="Graph_3" className="black_btn">
-            Graph_3
-          </Link> */}
         </div>
       </div>
     </nav>

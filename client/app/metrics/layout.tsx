@@ -17,7 +17,7 @@ async function getServices(): Promise<string[]> {
       throw new Error('Failed to fetch data');
     }
     const servicesArr: string[] = await res.json();
-    // console.log(data)
+
     return servicesArr.sort();
   } catch (err) {
     console.log(
@@ -38,6 +38,7 @@ export default async function MetricLayout({
 }): Promise<JSX.Element> {
   const services: string[] = await getServices();
 
+  // Layout for the metric page.
   return (
     <>
       <div className="flex-col flex w-full">
@@ -45,6 +46,7 @@ export default async function MetricLayout({
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Metrics</h2>
           </div>
+          {/* Dropdown menu for selecting services */}
           <DropdownMenu services={services} selected={params.servicename} />
           {children}
         </div>

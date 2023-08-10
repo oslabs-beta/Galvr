@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+// Helper function to merge class names.
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
@@ -18,6 +19,7 @@ export function absoluteUrl(path: string): string {
   return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
 }
 
+// Color palette for the ChartJS graphs.
 export const ColorPalette = [
   'rgba(255, 99, 132, 0.5)',
   'rgba(54, 162, 235, 0.5)',
