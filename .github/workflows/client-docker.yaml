@@ -1,6 +1,6 @@
-name: docker-endpoint
+name: docker-client
 on:
-  pull_request:
+  push:
     branches:
       - 'main'
 jobs:
@@ -22,4 +22,4 @@ jobs:
           context: ./client
           file: ./client/Dockerfile
           push: true
-          tags: galvrmetrics/galvr:client
+          tags: galvrmetrics/client:latest

@@ -1,0 +1,39 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+spec:
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+
+    processors:
+      batch:
+      batch/metrics:
+        send_batch_size: 1000
+        timeout: 5s
+
+    exporters:
+      logging: 
+      otlphttp:
+        endpoint: http://metricendpoint:3000
+        tls: 
+          insecure: true
+      jaeger:
+        endpoint: jaeger-collector:14250
+        tls:
+          insecure: true
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [jaeger]
+        metrics:
+          receivers: [otlp]
+          processors: []
+          exporters: [otlphttp]

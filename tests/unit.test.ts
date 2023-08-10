@@ -21,8 +21,8 @@ import {
   ExportMetricsServiceRequest,
   ExportMetricsServiceResponse,
 } from '../metricEndpoint/src/proto/metricTypes';
-import unparsedMetrics from '../observability/otelDemoUnparsed';
-import parsedMetrics from '../observability/otelDemoParsed';
+import unparsedMetrics from './otelDemoUnparsed';
+import parsedMetrics from './otelDemoParsed';
 
 let mongoServer: MongoMemoryServer;
 let server: Server;
