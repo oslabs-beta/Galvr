@@ -2,7 +2,7 @@ name: docker-endpoint
 on:
   push:
     branches:
-      - 'sam/docker'
+      - 'main'
 jobs:
   build:
     runs-on: ubuntu-latest
