@@ -2,6 +2,7 @@ import type express from 'express';
 
 import { type ServiceSchema, Services } from '../models/serviceModel';
 
+/* Collect names of active services within current cluster */
 export const allServicesGetter = async (
   req: express.Request,
   res: express.Response,
@@ -14,6 +15,7 @@ export const allServicesGetter = async (
       throw new Error('failed to fetch services from Database');
     }
 
+    /* Store serviceName string array in res.locals.services */
     res.locals.services = servicesRes.map(
       (service: ServiceSchema) => service.serviceName
     );
@@ -22,10 +24,14 @@ export const allServicesGetter = async (
 
     return next();
   } catch (err) {
-    return next({ log: err, message: 'Error getting services' });
+    return next({ 
+      log: err, 
+      message: 'Error getting services' 
+    });
   }
 };
 
+/* Querying Service collection using provided serviceName */
 export const serviceGetter = async (
   req: express.Request,
   res: express.Response,
