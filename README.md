@@ -2,7 +2,16 @@
   <img src="./public/Galvr.png" alt="Galvr" width="300px"/>
 </div>
 
-### About
+## Sections
+
+- [About](#about)
+- [Quick Start](#quick-start)
+- [Demo](#demo)
+- [License](#license)
+- [Contribute](#contribute)
+- [Authors](#authors)
+
+## About
 
 Galvr is a communication metric visualization dashboard for Kubernetes clusters. It is built on the [OpenTelemetry](https://opentelemetry.io/docs/what-is-opentelemetry/) observability framework and takes advantage of the metric aggregation processing done by OpenTelemtry instrumentation. It can work with any cluster using instrumentation that exports metrics with the [OTLP specification](https://opentelemetry.io/docs/specs/otlp/). Galvr is intended to be used alongside the [Jaeger](https://www.jaegertracing.io/) distributed tracing platform; in fact, it was created to be a sibling product meant for metrics instead of traces. Galvr consists of two services: a metric collector backend, and a metric visualization frontend. Currently, the two services must be used together, but future development may allow a la carte use.
 
@@ -12,7 +21,7 @@ Galvr is an unopinionated tool; as such, it works with Kubernetes clusters of an
 Galvr can also handle any metric it receives as long as the metric object follows OTLP specifications. This means it will visualize any histogram, sum, or gauge data type.  
 <img src="./public/Different-Metrics.gif" alt="Different Metric Visualizations"/>
 
-### Quick Start
+## Quick Start
 
 This guide assumes you have a Kubernetes cluster up and running.
 
@@ -66,15 +75,19 @@ kubectl port-forward services/jaeger-query 16686:16686
 kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/galvr.yml
 ```
 
-### Demo
+## Demo
 
 If you do not have already have a microservice application with which to test Galvr but would like to, we encourage you to try it with the OpenTelemetry Demo application. Instructions for setup can be found in the [demo/otel](./demo/otel/README.md) folder.
 
-### License
+## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-### Authors
+## Contribute
+
+We welcome contributions to Galvr from the open source community. Feel free to open an issue or submit a pull request! If you are submitting changes to the codebase, we request that you fork the repository and create a new branch with your changes before submitting a pull request.
+
+## Authors
 
 **Daniel Jaworski** [GitHub](https://github.com/Djaworski1) | [LinkedIn](https://www.linkedin.com/in/jaworskidaniel/)  
 **Sam Blackburn** [GitHub](https://github.com/samrblackburn) | [LinkedIn](https://www.linkedin.com/in/samrblackburn/)  
