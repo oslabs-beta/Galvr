@@ -60,7 +60,7 @@ kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/o
 ```sh
 kubectl create namespace observability
 kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.45.0/jaeger-operator.yaml -n observability
-kubectl apply -f https://github.com/oslabs-beta/releases/download/latest/jaeger.yaml
+kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/jaeger.yaml
 ```
 
 ##### For the Jaeger client to be available outside the cluster, you made need to port forward it:
