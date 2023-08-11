@@ -43,19 +43,19 @@ kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releas
 kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/otelCol.yaml
 ```
 
-> ###### 3b. If your services are not already instrumented, openTelemetry has a number of autoinstrumentation options (https://opentelemetry.io/docs/kubernetes/operator/automatic/). Autoinstrumentation for services written in Node.js can be added to your cluster with:
+> ###### a. If your services are not already instrumented, openTelemetry has a number of autoinstrumentation options (https://opentelemetry.io/docs/kubernetes/operator/automatic/). Autoinstrumentation for services written in Node.js can be added to your cluster with:
 
 > > ```sh
 > > kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/otelNode.yaml
 > > ```
 
-> ###### 3c. If you would like to use Jaeger for request tracing (recommended), replace the default openTelemetry collector with:
+> ###### b. If you would like to use Jaeger for request tracing (recommended), replace the default openTelemetry collector with:
 
 > > ```sh
 > > kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/otelCol-jaeger.yaml
 > > ```
 
-> ###### 3d. and start up the Jaeger collector, as well as a basic all-in-one Jaeger instance:
+> ###### c. and start up the Jaeger collector, as well as a basic all-in-one Jaeger instance:
 
 > > ```sh
 > > kubectl create namespace observability
@@ -63,7 +63,7 @@ kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/o
 > > kubectl apply -f https://github.com/oslabs-beta/Galvr/releases/download/latest/jaeger.yaml
 > > ```
 
-> ###### 3e. For the Jaeger client to be available outside the cluster, you made need to port forward it:
+> ###### d. For the Jaeger client to be available outside the cluster, you made need to port forward it:
 
 > > ```sh
 > > kubectl port-forward services/jaeger-query 16686:16686
